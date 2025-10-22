@@ -1,0 +1,34 @@
+{
+  "name": "rechildhood",
+  "version": "1.0.0",
+  "description": "一个以\"数字时代的童年\"为主题的互动叙事网站，结合数据可视化与情感叙事，揭示儿童在短视频与社交平台中的曝光、数字劳动与商业化问题。",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development",
+    "serve": "vite --mode production",
+    "build": "vite build",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "echarts": "^5.4.0",
+    "echarts-wordcloud": "^2.1.0",
+    "tailwindcss": "^3.3.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^4.0.0"
+  },
+  "keywords": [
+    "vue3",
+    "echarts",
+    "digital childhood",
+    "data visualization",
+    "interactive storytelling"
+  ],
+  "author": "ReChildhood Team",
+  "license": "MIT"
+}
