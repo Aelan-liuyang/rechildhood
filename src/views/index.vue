@@ -14,7 +14,8 @@
           <button class="mode-btn" @click="toggleDark">{{ darkMode ? '标准模式' : '暗黑模式' }}</button>
         </div>
         <div class="nav-progress">
-          <div class="progress-bar" :style="{ width: scrollProgress + '%' }"></div>
+          <div class="progress-bar" :style="{ width: scrollProgress + '%' }">
+          </div>
         </div>
       </div>
     </nav>
@@ -118,7 +119,7 @@
 
       <div class="chart-container">
         <div class="chart-title">儿童账号数量增长趋势</div>
-        <canvas ref="chartGrowth"></canvas>
+        <canvas ref="chartGrowth" data-chart-type="growth"></canvas>
       </div>
     </section>
 
@@ -149,7 +150,7 @@
         <!-- 用户年龄分布饼图 -->
         <div class="pie-chart-container" ref="pieContainer">
           <div class="chart-title">短视频用户年龄分布</div>
-          <canvas ref="pieChart"></canvas>
+          <canvas ref="pieChart" data-chart-type="pie"></canvas>
         </div>
 
         <p class="definition-highlight fade-in-up">
@@ -218,7 +219,8 @@
               <span class="event-icon">{{ event.icon }}</span>
             </div>
             <div class="event-title">{{ event.title }}</div>
-            <div class="event-type" :class="event.typeClass">{{ event.desc }}</div>
+            <div class="event-type" :class="event.typeClass">{{ event.desc }}
+            </div>
             <div class="event-detail">{{ event.detail }}</div>
           </div>
         </div>
@@ -277,11 +279,11 @@
       <div class="dual-chart-container">
         <div class="chart-wrapper fade-in-left">
           <div class="chart-label">传统童工 ↓</div>
-          <canvas ref="chartTraditional"></canvas>
+          <canvas ref="chartTraditional" data-chart-type="traditional"></canvas>
         </div>
         <div class="chart-wrapper fade-in-right">
           <div class="chart-label chart-label-rise">数字童工 ↑</div>
-          <canvas ref="chartDigital"></canvas>
+          <canvas ref="chartDigital" data-chart-type="digital"></canvas>
         </div>
       </div>
     </section>
@@ -521,7 +523,7 @@
 
       <!-- 法律时间线 -->
       <div class="law-timeline">
-        <div class="law-title">中国未成年人网络保护法律演进</div>
+        <div class="law-title">中国网红儿童权益保护法律政策演进</div>
         <div class="law-events">
           <div class="law-event" v-for="(law, index) in laws" :key="index"
             :style="{ animationDelay: index * 0.1 + 's' }">
@@ -659,11 +661,15 @@ const solutions = [
 ]
 
 const laws = [
-  { year: '2006', content: '《未成年人保护法》首次提出网络保护' },
-  { year: '2016', content: '《网络安全法》出台' },
-  { year: '2019', content: '《儿童个人信息网络保护规定》发布' },
-  { year: '2021', content: '修订《未成年人保护法》增设网络保护专章' },
-  { year: '2023', content: '《未成年人网络保护条例》实施' }
+  { year: '2019年10月', content: '《儿童个人信息网络保护规定》网信办首部儿童网络保护专门规章' },
+  { year: '2020年11月', content: '《网络直播营销管理办法（试行）》国家互联网信息办公室等七部委联合发布' },
+  { year: '2021年6月', content: '《未成年人保护法》修订 明确网络游戏电子身份认证' },
+  { year: '2021年7月', content: '《关于进一步减轻义务教育阶段学生作业负担和校外培训负担的意见》防止未成年人沉迷网络游戏' },
+  { year: '2021年9月', content: '《关于开展文娱领域综合治理工作的通知》抵制泛娱乐化、流量至上等不良倾向' },
+  { year: '2022年10月', content: '《未成年人网络保护条例》提出未成年人个人信息保护措施' },
+  { year: '2023年1月', content: '《未成年人网络保护条例》明确网络欺凌及防治措施' },
+  { year: '2023年5月', content: '未成年人网络环境专项治理 整治儿童软色情等违法不良信息' },
+  { year: '2024年至今', content: '清朗专项行动常态化强化监管与执法' }
 ]
 
 const selectedTime = ref(null)
@@ -683,6 +689,15 @@ const darkMode = ref(false)
 
 const toggleDark = () => {
   darkMode.value = !darkMode.value
+
+  // 重新创建所有图表以更新颜色
+  nextTick(() => {
+    if (showChart1.value && chart1.value) createChart1()
+    if (chartGrowth.value) createGrowthChart()
+    if (pieChart.value) createPieChart()
+    if (chartTraditional.value) createTraditionalChart()
+    if (chartDigital.value) createDigitalChart()
+  })
 }
 
 const timelineEvents = ref([
@@ -760,6 +775,7 @@ const timelineRefs = ref([])
 let chartInstances = []
 let scrollObserver = null
 let timelineObserver = null
+const createdCharts = new Set() // 追踪已创建的图表
 
 // 计算属性
 const currentDate = computed(() => {
@@ -830,6 +846,16 @@ const createChart1 = () => {
   const ctx = chart1.value
   if (!ctx) return
 
+  // 检查并销毁已存在的图表
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) {
+    existingChart.destroy()
+  }
+
+  // 根据当前模式设置颜色
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
+
   const average = 22
   const chartInstance = new Chart(ctx, {
     type: 'bar',
@@ -852,7 +878,7 @@ const createChart1 = () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#fff', font: { size: 14 } }
+          labels: { color: textColor, font: { size: 14 } }
         },
         tooltip: {
           backgroundColor: 'rgba(0,0,0,0.8)',
@@ -871,7 +897,7 @@ const createChart1 = () => {
               label: {
                 enabled: true,
                 content: '平均值',
-                backgroundColor: '#111',
+                backgroundColor: darkMode.value ? '#111' : '#fff',
                 color: '#f59e0b'
               }
             }
@@ -880,12 +906,12 @@ const createChart1 = () => {
       },
       scales: {
         x: {
-          ticks: { color: '#fff' },
-          grid: { color: '#333' }
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         },
         y: {
-          ticks: { color: '#fff' },
-          grid: { color: '#333' }
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         }
       },
       onClick: (evt, elements) => {
@@ -906,6 +932,16 @@ const createChart1 = () => {
 const createGrowthChart = () => {
   const ctx = chartGrowth.value
   if (!ctx) return
+
+  // 检查并销毁已存在的图表
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) {
+    existingChart.destroy()
+  }
+
+  // 根据当前模式设置颜色
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
 
   const chartInstance = new Chart(ctx, {
     type: 'line',
@@ -930,17 +966,17 @@ const createGrowthChart = () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#fff', font: { size: 14 } }
+          labels: { color: textColor, font: { size: 14 } }
         }
       },
       scales: {
         x: {
-          ticks: { color: '#fff' },
-          grid: { color: '#333' }
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         },
         y: {
-          ticks: { color: '#fff' },
-          grid: { color: '#333' }
+          ticks: { color: textColor },
+          grid: { color: gridColor }
         }
       }
     }
@@ -952,6 +988,15 @@ const createGrowthChart = () => {
 const createPieChart = () => {
   const ctx = pieChart.value
   if (!ctx) return
+
+  // 检查并销毁已存在的图表
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) {
+    existingChart.destroy()
+  }
+
+  // 根据当前模式设置颜色
+  const textColor = darkMode.value ? '#fff' : '#333'
 
   const chartInstance = new Chart(ctx, {
     type: 'doughnut',
@@ -969,7 +1014,7 @@ const createPieChart = () => {
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { color: '#fff', font: { size: 14 }, padding: 20 }
+          labels: { color: textColor, font: { size: 14 }, padding: 20 }
         }
       }
     }
@@ -981,6 +1026,16 @@ const createPieChart = () => {
 const createTraditionalChart = () => {
   const ctx = chartTraditional.value
   if (!ctx) return
+
+  // 检查并销毁已存在的图表
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) {
+    existingChart.destroy()
+  }
+
+  // 根据当前模式设置颜色
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
 
   const chartInstance = new Chart(ctx, {
     type: 'line',
@@ -1001,12 +1056,12 @@ const createTraditionalChart = () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#fff' }
+          labels: { color: textColor }
         }
       },
       scales: {
-        x: { ticks: { color: '#fff' }, grid: { color: '#333' } },
-        y: { ticks: { color: '#fff' }, grid: { color: '#333' } }
+        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor }, grid: { color: gridColor } }
       }
     }
   })
@@ -1017,6 +1072,16 @@ const createTraditionalChart = () => {
 const createDigitalChart = () => {
   const ctx = chartDigital.value
   if (!ctx) return
+
+  // 检查并销毁已存在的图表
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) {
+    existingChart.destroy()
+  }
+
+  // 根据当前模式设置颜色
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
 
   const chartInstance = new Chart(ctx, {
     type: 'line',
@@ -1037,12 +1102,12 @@ const createDigitalChart = () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#fff' }
+          labels: { color: textColor }
         }
       },
       scales: {
-        x: { ticks: { color: '#fff' }, grid: { color: '#333' } },
-        y: { ticks: { color: '#fff' }, grid: { color: '#333' } }
+        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor }, grid: { color: gridColor } }
       }
     }
   })
@@ -1064,23 +1129,45 @@ const setupScrollObserver = () => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible')
 
-          // 创建图表
-          if (entry.target.querySelector('canvas[ref="chartGrowth"]')) {
-            nextTick(() => createGrowthChart())
-          }
-          if (entry.target.querySelector('canvas[ref="pieChart"]')) {
-            nextTick(() => createPieChart())
-          }
-          if (entry.target.querySelector('canvas[ref="chartTraditional"]')) {
+          // 查找所有 canvas 元素
+          const canvases = entry.target.querySelectorAll('canvas[data-chart-type]')
+
+          canvases.forEach((canvas) => {
+            const chartType = canvas.getAttribute('data-chart-type')
+
+            // 检查是否已创建过该图表
+            if (createdCharts.has(chartType)) {
+              return
+            }
+
+            // 根据类型创建对应的图表
             nextTick(() => {
-              createTraditionalChart()
-              createDigitalChart()
+              switch (chartType) {
+                case 'chart1':
+                  if (showChart1.value) {
+                    createChart1()
+                    createdCharts.add('chart1')
+                  }
+                  break
+                case 'growth':
+                  createGrowthChart()
+                  createdCharts.add('growth')
+                  break
+                case 'pie':
+                  createPieChart()
+                  createdCharts.add('pie')
+                  break
+                case 'traditional':
+                  createTraditionalChart()
+                  createdCharts.add('traditional')
+                  break
+                case 'digital':
+                  createDigitalChart()
+                  createdCharts.add('digital')
+                  break
+              }
             })
-          }
-          // 检查 chart1 是否在可见区域
-          if (entry.target.querySelector('canvas[ref="chart1"]')) {
-            nextTick(() => createChart1())
-          }
+          })
         }
       })
     },
@@ -1226,8 +1313,29 @@ onMounted(() => {
 .digital-child-labor:not(.dark) .solution-card,
 .digital-child-labor:not(.dark) .law-content {
   background: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(102, 126, 234, 0.2) !important;
+  border: 1px solid rgba(102, 126, 234, 0.3) !important;
   color: #111 !important;
+}
+
+.digital-child-labor:not(.dark) .time-option,
+.digital-child-labor:not(.dark) .type-card,
+.digital-child-labor:not(.dark) .impact-card,
+.digital-child-labor:not(.dark) .audience-card {
+  color: #111 !important;
+  border-color: rgba(102, 126, 234, 0.3) !important;
+}
+
+.digital-child-labor:not(.dark) .opening-text,
+.digital-child-labor:not(.dark) .scroll-indicator span,
+.digital-child-labor:not(.dark) .scroll-hint,
+.digital-child-labor:not(.dark) .alert-text,
+.digital-child-labor:not(.dark) .highlight-text {
+  color: #333 !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.digital-child-labor:not(.dark) .scroll-arrow {
+  color: #667eea !important;
 }
 
 .digital-child-labor:not(.dark) .nav-bar {
@@ -1247,7 +1355,7 @@ onMounted(() => {
 }
 
 
-/* 暗黑模式（默认） */
+/* 暗黑模式 */
 .digital-child-labor.dark {
   --primary: #8b5cf6;
   --accent: #22d3ee;
@@ -1257,6 +1365,21 @@ onMounted(() => {
 
 .digital-child-labor.dark .section {
   background: transparent !important;
+}
+
+.digital-child-labor.dark .glass-card,
+.digital-child-labor.dark .chart-container,
+.digital-child-labor.dark .stat-card,
+.digital-child-labor.dark .platform-item,
+.digital-child-labor.dark .timeline-content,
+.digital-child-labor.dark .modal-content,
+.digital-child-labor.dark .postcard-design,
+.digital-child-labor.dark .perspective-item,
+.digital-child-labor.dark .data-item,
+.digital-child-labor.dark .chain-item,
+.digital-child-labor.dark .solution-card,
+.digital-child-labor.dark .law-content {
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .digital-child-labor.dark .gradient-text,
@@ -1275,6 +1398,17 @@ onMounted(() => {
   color: var(--accent);
 }
 
+.digital-child-labor.dark .opening-text,
+.digital-child-labor.dark .scroll-indicator span,
+.digital-child-labor.dark .scroll-hint {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 4px 30px rgba(255, 255, 255, 0.3) !important;
+}
+
+.digital-child-labor.dark .scroll-arrow {
+  color: var(--primary) !important;
+}
+
 /* 导航栏 */
 .nav-bar {
   position: fixed;
@@ -1282,11 +1416,13 @@ onMounted(() => {
   left: 0;
   right: 0;
   z-index: 999;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(18px) saturate(140%);
-  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 30, 0.95) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5), transparent) 1;
   transform: translateY(-100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .nav-bar.nav-visible {
@@ -1306,9 +1442,23 @@ onMounted(() => {
   font-size: 20px;
   font-weight: bold;
   padding: 20px 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  position: relative;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.3));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 15px rgba(118, 75, 162, 0.6));
+  }
 }
 
 .nav-links {
@@ -1327,19 +1477,45 @@ onMounted(() => {
 }
 
 .mode-btn {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
   color: #fff;
-  border: 1px solid rgba(102, 126, 234, 0.4);
+  border: 1px solid rgba(102, 126, 234, 0.5);
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 8px 16px;
   font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
 }
 
 .mode-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  border-color: rgba(118, 75, 162, 0.8);
+}
+
+.mode-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.mode-btn:active {
+  transform: translateY(0);
 }
 
 .nav-links::-webkit-scrollbar {
@@ -1413,6 +1589,43 @@ onMounted(() => {
   align-items: center;
   padding: 80px 20px;
   position: relative;
+  overflow: hidden;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  animation: floatingOrb 15s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes floatingOrb {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  25% {
+    transform: translate(-30%, -30%) scale(1.2);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translate(-70%, -50%) scale(0.8);
+    opacity: 0.6;
+  }
+
+  75% {
+    transform: translate(-50%, -70%) scale(1.1);
+    opacity: 0.4;
+  }
 }
 
 .section.visible>* {
@@ -1561,21 +1774,21 @@ onMounted(() => {
 @keyframes phoneAppear {
   0% {
     opacity: 0;
-    transform: scale(0.5) translateY(100px) rotateX(30deg);
+    transform: scale(0.5) translateY(100px) rotateX(30deg) rotateY(-15deg);
   }
 
   60% {
     opacity: 1;
-    transform: scale(1.05) translateY(-10px) rotateX(0deg);
+    transform: scale(1.05) translateY(-10px) rotateX(0deg) rotateY(5deg);
   }
 
   80% {
-    transform: scale(0.98) translateY(5px) rotateX(0deg);
+    transform: scale(0.98) translateY(5px) rotateX(0deg) rotateY(-2deg);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0) rotateX(0deg);
+    transform: scale(1) translateY(0) rotateX(0deg) rotateY(0deg);
   }
 }
 
@@ -1840,6 +2053,7 @@ onMounted(() => {
   font-weight: 500;
   letter-spacing: 1px;
   color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease;
 }
 
 .scroll-arrow {
@@ -1864,7 +2078,8 @@ onMounted(() => {
 
 /* 渐变文字 */
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 48px;
@@ -1872,6 +2087,20 @@ onMounted(() => {
   text-align: center;
   margin-bottom: 60px;
   line-height: 1.3;
+  animation: gradientShift 6s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* 玻璃卡片 */
@@ -1884,6 +2113,30 @@ onMounted(() => {
   max-width: 700px;
   width: 100%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
 }
 
 .question {
@@ -1952,7 +2205,7 @@ onMounted(() => {
   width: 100%;
   max-width: 900px;
   height: 450px;
-  background: rgba(255, 255, 255, 0.03);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 40px;
@@ -1961,6 +2214,15 @@ onMounted(() => {
   position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .chart-container canvas {
@@ -1969,14 +2231,18 @@ onMounted(() => {
   height: 100% !important;
   display: block;
   max-height: 350px;
+  border-radius: 12px;
 }
 
 .chart-title {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 30px;
-  color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
 }
 
 .chart-note {
@@ -2175,7 +2441,7 @@ onMounted(() => {
   max-width: 500px;
   height: 400px;
   margin: 60px auto;
-  background: rgba(255, 255, 255, 0.03);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 40px;
@@ -2183,6 +2449,15 @@ onMounted(() => {
   position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.pie-chart-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .pie-chart-container canvas {
@@ -2191,6 +2466,7 @@ onMounted(() => {
   height: 100% !important;
   display: block;
   max-height: 300px;
+  border-radius: 12px;
 }
 
 .definition-highlight {
@@ -2674,7 +2950,7 @@ onMounted(() => {
 }
 
 .chart-wrapper {
-  background: rgba(255, 255, 255, 0.03);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 40px;
@@ -2684,6 +2960,15 @@ onMounted(() => {
   position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.chart-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .chart-wrapper canvas {
@@ -2692,6 +2977,7 @@ onMounted(() => {
   height: 100% !important;
   display: block;
   max-height: 300px;
+  border-radius: 12px;
 }
 
 .chart-label {
@@ -3265,6 +3551,7 @@ onMounted(() => {
   font-size: 20px;
   line-height: 1.8;
   opacity: 0.9;
+  color: white;
 }
 
 .modal-quote {
@@ -3286,6 +3573,7 @@ onMounted(() => {
   background: rgba(102, 126, 234, 0.1);
   border-radius: 16px;
   border: 2px solid rgba(102, 126, 234, 0.3);
+  color: white;
 }
 
 .algorithm-visual {
@@ -3325,6 +3613,7 @@ onMounted(() => {
   background: rgba(102, 126, 234, 0.1);
   border-radius: 12px;
   border-left: 4px solid #667eea;
+  color: #667eea;
 }
 
 /* 第四章 */
@@ -3452,6 +3741,7 @@ onMounted(() => {
   font-weight: bold;
   margin-bottom: 15px;
   color: #667eea;
+  width: 105px;
 }
 
 .solution-text {
@@ -3461,68 +3751,197 @@ onMounted(() => {
 }
 
 .law-timeline {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 100px auto;
-  padding: 60px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 80px 60px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.law-timeline::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  animation: floatingLight 20s ease-in-out infinite;
+}
+
+@keyframes floatingLight {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-30%, 30%);
+  }
 }
 
 .law-title {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 36px;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 50px;
-  color: #764ba2;
+  margin-bottom: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 6s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 1px;
 }
 
 .law-events {
   position: relative;
-  padding-left: 60px;
+  padding-left: 80px;
+  z-index: 1;
 }
 
 .law-events::before {
   content: '';
   position: absolute;
-  left: 20px;
+  left: 30px;
   top: 0;
   bottom: 0;
-  width: 3px;
-  background: linear-gradient(to bottom, #667eea, #764ba2);
+  width: 4px;
+  background: linear-gradient(to bottom,
+      #667eea 0%,
+      #764ba2 50%,
+      #f093fb 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+  animation: timelineGlow 3s ease-in-out infinite;
+}
+
+@keyframes timelineGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(118, 75, 162, 0.8);
+  }
 }
 
 .law-event {
   position: relative;
-  margin-bottom: 40px;
-  animation: slideIn 0.6s ease-out both;
+  margin-bottom: 50px;
+  padding: 25px 30px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  animation: slideInRight 0.8s ease-out both;
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.law-event:hover {
+  transform: translateX(10px);
+  background: rgba(102, 126, 234, 0.08);
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
 }
 
 .law-event::before {
   content: '';
   position: absolute;
-  left: -48px;
-  top: 5px;
-  width: 16px;
-  height: 16px;
-  background: #667eea;
+  left: -56px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 50%;
-  border: 3px solid #000;
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+  border: 4px solid #000;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2),
+    0 0 20px rgba(102, 126, 234, 0.6);
+  transition: all 0.4s ease;
+  animation: pulsePoint 2s ease-in-out infinite;
+}
+
+@keyframes pulsePoint {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2),
+      0 0 20px rgba(102, 126, 234, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.1),
+      0 0 30px rgba(118, 75, 162, 0.8);
+  }
+}
+
+.law-event:hover::before {
+  transform: translateY(-50%) scale(1.2);
+  background: linear-gradient(135deg, #764ba2, #f093fb);
+}
+
+.law-event::after {
+  content: '';
+  position: absolute;
+  left: -42px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, transparent);
+  transition: width 0.4s ease;
+}
+
+.law-event:hover::after {
+  width: 40px;
 }
 
 .law-year {
-  font-size: 24px;
-  font-weight: bold;
-  color: #667eea;
-  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  display: inline-block;
+  letter-spacing: 0.5px;
 }
 
 .law-content {
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.8;
   opacity: 0.9;
+  color: white;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.law-event:hover .law-content {
+  opacity: 1;
+  color: #fff;
 }
 
 /* 明信片 */
@@ -3762,13 +4181,27 @@ onMounted(() => {
     inset 0 0 0 2px rgba(255, 255, 255, 0.03),
     0 0 0 6px rgba(0, 0, 0, 0.6);
   overflow: hidden;
-  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: phoneIdle 4s ease-in-out infinite;
+}
+
+@keyframes phoneIdle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .close-phone-screen.screen-off {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
     inset 0 0 0 2px rgba(255, 255, 255, 0.01),
     0 0 0 6px rgba(0, 0, 0, 0.9);
+  animation: none;
 }
 
 .close-phone-notch {
@@ -3802,7 +4235,7 @@ onMounted(() => {
   background: radial-gradient(circle at 30% 30%, #3af, #003);
   border-radius: 50%;
   box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.2);
-  transition: all 1s ease;
+  transition: all 5s ease;
 }
 
 .close-phone-screen.screen-off .close-notch-camera {
@@ -3843,7 +4276,7 @@ onMounted(() => {
   left: 20px;
   right: 20px;
   bottom: 60px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.4), rgba(118, 75, 162, 0.4));
   border-radius: 44px;
   display: flex;
   flex-direction: column;
@@ -3852,12 +4285,26 @@ onMounted(() => {
   padding: 30px;
   overflow: hidden;
   position: relative;
-  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.1);
+}
+
+.close-screen-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  opacity: 1;
+  transition: opacity 5s ease;
 }
 
 .close-phone-screen.screen-off .close-screen-content {
   background: #000;
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 1);
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 1);
+}
+
+.close-phone-screen.screen-off .close-screen-content::before {
+  opacity: 0;
 }
 
 .close-screen-content::after {
@@ -3871,7 +4318,7 @@ onMounted(() => {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
   border-radius: 2px;
   opacity: 0.9;
-  transition: opacity 1s ease;
+  transition: opacity 5s ease;
 }
 
 .close-phone-screen.screen-off .close-screen-content::after {
@@ -3884,19 +4331,23 @@ onMounted(() => {
   line-height: 1.6;
   font-weight: 700;
   text-shadow: 0 4px 30px rgba(255, 255, 255, 0.5);
-  transition: all 1.5s ease;
+  transition: all 5s ease;
   opacity: 1;
+  transform: scale(1);
+  z-index: 1;
 }
 
 .close-phone-screen.screen-off .close-text {
   opacity: 0;
-  transform: scale(0.5);
+  transform: scale(0.3);
+  filter: blur(10px);
 }
 
 .scroll-hint {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
   animation: fadeInOut 2s ease-in-out infinite;
+  transition: color 0.3s ease;
 }
 
 @keyframes fadeInOut {
@@ -3927,13 +4378,61 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .nav-content {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .nav-logo {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+  }
+
   .nav-links {
-    gap: 15px;
+    gap: 8px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 10px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .nav-links::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-links::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 2px;
   }
 
   .nav-link {
-    font-size: 12px;
+    font-size: 11px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  .nav-actions {
+    justify-content: center;
+    order: -1;
+  }
+
+  .mode-btn {
+    font-size: 11px;
     padding: 6px 12px;
+  }
+
+  .nav-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   .gradient-text {
@@ -4140,6 +4639,7 @@ onMounted(() => {
 
   .modal-text {
     font-size: 16px;
+    color: white;
   }
 
   .impact-grid {
@@ -4168,15 +4668,38 @@ onMounted(() => {
   }
 
   .law-timeline {
-    padding: 40px 30px;
+    padding: 50px 30px;
+  }
+
+  .law-title {
+    font-size: 28px;
   }
 
   .law-events {
-    padding-left: 40px;
+    padding-left: 50px;
+  }
+
+  .law-event {
+    padding: 20px;
+    margin-bottom: 35px;
   }
 
   .law-event::before {
-    left: -32px;
+    left: -42px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .law-event::after {
+    display: none;
+  }
+
+  .law-year {
+    font-size: 18px;
+  }
+
+  .law-content {
+    font-size: 15px;
   }
 
   .postcard-design {
