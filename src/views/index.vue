@@ -684,8 +684,8 @@ const showPostcard = ref(false)
 const phoneScreenOff = ref(false)
 const phoneCloseSection = ref(null)
 
-// 模式状态
-const darkMode = ref(false)
+// 模式状态 - 默认暗黑模式
+const darkMode = ref(true)
 
 const toggleDark = () => {
   darkMode.value = !darkMode.value
@@ -4378,61 +4378,10 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .nav-content {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 10px;
-  }
 
-  .nav-logo {
-    text-align: center;
-    padding: 10px 0;
-    font-size: 16px;
-  }
-
-  .nav-links {
-    gap: 8px;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding: 10px 0;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .nav-links::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .nav-links::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.3);
-    border-radius: 2px;
-  }
-
-  .nav-link {
-    font-size: 11px;
-    padding: 6px 10px;
-    white-space: nowrap;
-    min-width: fit-content;
-  }
-
-  .nav-actions {
-    justify-content: center;
-    order: -1;
-  }
-
-  .mode-btn {
-    font-size: 11px;
-    padding: 6px 12px;
-  }
-
-  .nav-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  /* 移动端隐藏导航栏 */
+  .nav-bar {
+    display: none !important;
   }
 
   .gradient-text {
