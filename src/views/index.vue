@@ -123,6 +123,73 @@
       </div>
     </section>
 
+    <!-- 儿童博主数据分析 -->
+    <section class="section" ref="sectionKidsBloggers">
+      <h2 class="gradient-text fade-in-up">儿童类博主发展现状</h2>
+
+      <!-- 抖音平台儿童类博主注册量变化 -->
+      <div class="glass-card slide-in">
+        <div class="chart-container">
+          <div class="chart-title">📱 抖音平台儿童类博主注册量变化 (2019-2024)</div>
+          <canvas ref="chartKidsRegistration" data-chart-type="kids-registration"></canvas>
+          <div class="chart-note">数据来源：抖音平台公开数据</div>
+        </div>
+      </div>
+
+      <!-- 近期儿童类博主播放量排名 -->
+      <div class="glass-card slide-in" style="animation-delay: 0.2s;">
+        <div class="chart-title">🔥 近期儿童类博主播放量 TOP 10</div>
+        <div class="chart-container">
+          <canvas ref="chartKidsViewRanking" data-chart-type="kids-view-ranking"></canvas>
+        </div>
+      </div>
+
+      <!-- 热点榜单中儿童类型占比 -->
+      <div class="glass-card slide-in" style="animation-delay: 0.4s;">
+        <div class="chart-title">📊 热点榜单中儿童内容类型占比</div>
+        <div class="pie-chart-container">
+          <canvas ref="chartKidsTypeRatio" data-chart-type="kids-type-ratio"></canvas>
+        </div>
+      </div>
+
+      <!-- 儿童博主粉丝年龄分布 -->
+      <div class="glass-card slide-in" style="animation-delay: 0.6s;">
+        <div class="chart-container">
+          <div class="chart-title">👥 儿童博主粉丝年龄分布</div>
+          <canvas ref="chartFansAge" data-chart-type="fans-age"></canvas>
+          <div class="chart-note">儿童观看儿童内容占比超过 40%</div>
+        </div>
+      </div>
+
+      <!-- 儿童博主内容类型分布 -->
+      <div class="glass-card slide-in" style="animation-delay: 0.8s;">
+        <div class="chart-title">🎭 儿童博主内容类型分布</div>
+        <div class="chart-wrapper">
+          <canvas ref="chartContentType" data-chart-type="content-type"></canvas>
+        </div>
+      </div>
+
+      <!-- 数据总结卡片 -->
+      <div class="stats-container" style="margin-top: 60px;">
+        <div class="stat-card grow-in" style="animation-delay: 1s;">
+          <div class="stat-number">340万+</div>
+          <div class="stat-label">抖音平台儿童类博主总数</div>
+        </div>
+        <div class="stat-card grow-in" style="animation-delay: 1.2s;">
+          <div class="stat-number">45亿+</div>
+          <div class="stat-label">月均总播放量</div>
+        </div>
+        <div class="stat-card grow-in" style="animation-delay: 1.4s;">
+          <div class="stat-number">68%</div>
+          <div class="stat-label">儿童博主商业化比例</div>
+        </div>
+        <div class="stat-card grow-in" style="animation-delay: 1.6s;">
+          <div class="stat-number">2733%</div>
+          <div class="stat-label">5年增长率 (2019-2024)</div>
+        </div>
+      </div>
+    </section>
+
     <!-- 警示 -->
     <section class="section warning-section" ref="section4">
       <div class="alert-text scale-in">
@@ -697,6 +764,11 @@ const toggleDark = () => {
     if (pieChart.value) createPieChart()
     if (chartTraditional.value) createTraditionalChart()
     if (chartDigital.value) createDigitalChart()
+    if (chartKidsRegistration.value) createKidsRegistrationChart()
+    if (chartKidsViewRanking.value) createKidsViewRankingChart()
+    if (chartKidsTypeRatio.value) createKidsTypeRatioChart()
+    if (chartFansAge.value) createFansAgeChart()
+    if (chartContentType.value) createContentTypeChart()
   })
 }
 
@@ -770,6 +842,11 @@ const chartGrowth = ref(null)
 const pieChart = ref(null)
 const chartTraditional = ref(null)
 const chartDigital = ref(null)
+const chartKidsRegistration = ref(null)
+const chartKidsViewRanking = ref(null)
+const chartKidsTypeRatio = ref(null)
+const chartFansAge = ref(null)
+const chartContentType = ref(null)
 const timelineRefs = ref([])
 
 let chartInstances = []
@@ -1115,6 +1192,240 @@ const createDigitalChart = () => {
   chartInstances.push(chartInstance)
 }
 
+// 儿童博主注册量变化图表
+const createKidsRegistrationChart = () => {
+  const ctx = chartKidsRegistration.value
+  if (!ctx) return
+
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) existingChart.destroy()
+
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
+
+  const chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+      datasets: [{
+        label: '儿童类博主注册数量 (万)',
+        data: [12, 35, 78, 145, 235, 340],
+        borderColor: '#667eea',
+        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 6,
+        pointBackgroundColor: '#667eea',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointHoverRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: textColor, font: { size: 14 } } }
+      },
+      scales: {
+        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+        y: {
+          ticks: { color: textColor },
+          grid: { color: gridColor },
+          beginAtZero: true
+        }
+      }
+    }
+  })
+  chartInstances.push(chartInstance)
+}
+
+// 儿童博主播放量排名图表
+const createKidsViewRankingChart = () => {
+  const ctx = chartKidsViewRanking.value
+  if (!ctx) return
+
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) existingChart.destroy()
+
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
+
+  const chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['萌娃日常', '才艺展示', '亲子互动', '搞笑剧情', '知识科普', '玩具开箱', '美食制作', '户外探险', '手工DIY', '萌宠互动'],
+      datasets: [{
+        label: '播放量 (亿)',
+        data: [8.5, 7.2, 6.8, 6.3, 5.9, 5.4, 4.8, 4.5, 4.2, 3.9],
+        backgroundColor: [
+          '#667eea', '#764ba2', '#f093fb', '#4facfe',
+          '#43e97b', '#fa709a', '#feca57', '#ff6b6b',
+          '#48dbfb', '#ff9ff3'
+        ],
+        borderWidth: 0,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColor },
+          grid: { color: gridColor }
+        },
+        y: {
+          ticks: { color: textColor },
+          grid: { display: false }
+        }
+      }
+    }
+  })
+  chartInstances.push(chartInstance)
+}
+
+// 热点榜单儿童类型占比图表
+const createKidsTypeRatioChart = () => {
+  const ctx = chartKidsTypeRatio.value
+  if (!ctx) return
+
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) existingChart.destroy()
+
+  const textColor = darkMode.value ? '#fff' : '#333'
+
+  const chartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['儿童娱乐', '成人娱乐', '新闻资讯', '知识教育', '生活日常', '其他'],
+      datasets: [{
+        data: [32, 28, 15, 12, 8, 5],
+        backgroundColor: [
+          '#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a'
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: textColor, font: { size: 13 }, padding: 15 }
+        }
+      }
+    }
+  })
+  chartInstances.push(chartInstance)
+}
+
+// 粉丝年龄分布图表
+const createFansAgeChart = () => {
+  const ctx = chartFansAge.value
+  if (!ctx) return
+
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) existingChart.destroy()
+
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
+
+  const chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['0-12岁', '13-18岁', '19-25岁', '26-35岁', '36-45岁', '46岁+'],
+      datasets: [{
+        label: '观看比例 (%)',
+        data: [42, 18, 15, 12, 8, 5],
+        backgroundColor: function (context) {
+          const value = context.parsed.y
+          if (value >= 40) return '#ff6b6b'
+          if (value >= 20) return '#feca57'
+          return '#667eea'
+        },
+        borderWidth: 0,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: textColor, font: { size: 14 } } }
+      },
+      scales: {
+        x: { ticks: { color: textColor }, grid: { display: false } },
+        y: {
+          ticks: { color: textColor },
+          grid: { color: gridColor },
+          beginAtZero: true,
+          max: 50
+        }
+      }
+    }
+  })
+  chartInstances.push(chartInstance)
+}
+
+// 内容类型分布图表
+const createContentTypeChart = () => {
+  const ctx = chartContentType.value
+  if (!ctx) return
+
+  const existingChart = Chart.getChart(ctx)
+  if (existingChart) existingChart.destroy()
+
+  const textColor = darkMode.value ? '#fff' : '#333'
+  const gridColor = darkMode.value ? '#333' : '#ddd'
+
+  const chartInstance = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['萌娃日常', '才艺表演', '商业广告', '教育内容', '剧情演绎', '产品测评'],
+      datasets: [{
+        label: '内容占比',
+        data: [35, 25, 28, 8, 20, 22],
+        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+        borderColor: '#667eea',
+        borderWidth: 2,
+        pointBackgroundColor: '#667eea',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#667eea',
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: textColor, font: { size: 14 } } }
+      },
+      scales: {
+        r: {
+          angleLines: { color: gridColor },
+          grid: { color: gridColor },
+          pointLabels: { color: textColor, font: { size: 12 } },
+          ticks: {
+            color: textColor,
+            backdropColor: 'transparent',
+            beginAtZero: true
+          }
+        }
+      }
+    }
+  })
+  chartInstances.push(chartInstance)
+}
+
 const setTimelineRef = (el, index) => {
   if (el) {
     timelineRefs.value[index] = el
@@ -1164,6 +1475,26 @@ const setupScrollObserver = () => {
                 case 'digital':
                   createDigitalChart()
                   createdCharts.add('digital')
+                  break
+                case 'kids-registration':
+                  createKidsRegistrationChart()
+                  createdCharts.add('kids-registration')
+                  break
+                case 'kids-view-ranking':
+                  createKidsViewRankingChart()
+                  createdCharts.add('kids-view-ranking')
+                  break
+                case 'kids-type-ratio':
+                  createKidsTypeRatioChart()
+                  createdCharts.add('kids-type-ratio')
+                  break
+                case 'fans-age':
+                  createFansAgeChart()
+                  createdCharts.add('fans-age')
+                  break
+                case 'content-type':
+                  createContentTypeChart()
+                  createdCharts.add('content-type')
                   break
               }
             })
@@ -2199,6 +2530,7 @@ onMounted(() => {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
+  margin-bottom: 15px;
 }
 
 .glass-card::before {
@@ -2316,6 +2648,46 @@ onMounted(() => {
   display: block;
   max-height: 350px;
   border-radius: 12px;
+}
+
+/* 饼图容器 */
+.pie-chart-container {
+  width: 100%;
+  max-width: 700px;
+  height: 450px;
+  margin: 30px auto;
+  padding: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.pie-chart-container canvas {
+  flex: 1;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  max-height: 380px;
+}
+
+/* 图表包装器 */
+.chart-wrapper {
+  width: 100%;
+  max-width: 700px;
+  height: 450px;
+  margin: 30px auto;
+  padding: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-wrapper canvas {
+  flex: 1;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  max-height: 380px;
 }
 
 .chart-title {
