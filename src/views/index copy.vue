@@ -1,5 +1,5 @@
 <template>
-  <div class="digital-child-labor" :class="{ dark: darkMode }">
+  <div class="digital-child-labor">
     <!-- 导航栏 -->
     <nav class="nav-bar" :class="{ 'nav-visible': showNav }">
       <div class="nav-content">
@@ -9,9 +9,6 @@
             :class="{ active: currentChapter === index }" @click.prevent="scrollToChapter(index)">
             {{ chapter }}
           </a>
-        </div>
-        <div class="nav-actions">
-          <button class="mode-btn" @click="toggleDark">{{ darkMode ? '标准模式' : '暗黑模式' }}</button>
         </div>
         <div class="nav-progress">
           <div class="progress-bar" :style="{ width: scrollProgress + '%' }"></div>
@@ -578,34 +575,12 @@
         </div>
       </div>
     </section>
-
-    <!-- 结尾手机关闭动画 -->
-    <section class="section phone-close-section" ref="phoneCloseSection">
-      <div class="phone-close-container">
-        <div class="close-phone-screen" :class="{ 'screen-off': phoneScreenOff }">
-          <div class="close-phone-notch">
-            <div class="close-notch-camera"></div>
-            <div class="close-notch-speaker"></div>
-          </div>
-          <div class="close-btn-left close-volume-up"></div>
-          <div class="close-btn-left close-volume-down"></div>
-          <div class="close-btn-right close-power"></div>
-          <div class="close-screen-content">
-            <div class="close-text">再见 👋</div>
-          </div>
-        </div>
-        <div class="scroll-hint">继续向下滑动...</div>
-      </div>
-    </section>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import Chart from 'chart.js/auto'
-// 可选：加载 annotation 插件（如果项目中已安装 chartjs-plugin-annotation）
-// import annotationPlugin from 'chartjs-plugin-annotation'
-// Chart.register(annotationPlugin)
 
 // 导航数据
 const chapters = ['开始', '第一章', '第二章', '第三章', '第四章', '第五章']
@@ -675,15 +650,6 @@ const perspectiveOpen = ref(null)
 const viewedPerspectives = ref([])
 const postcardText = ref('')
 const showPostcard = ref(false)
-const phoneScreenOff = ref(false)
-const phoneCloseSection = ref(null)
-
-// 模式状态
-const darkMode = ref(false)
-
-const toggleDark = () => {
-  darkMode.value = !darkMode.value
-}
 
 const timelineEvents = ref([
   {
@@ -830,7 +796,6 @@ const createChart1 = () => {
   const ctx = chart1.value
   if (!ctx) return
 
-  const average = 22
   const chartInstance = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -842,7 +807,7 @@ const createChart1 = () => {
           backgroundColor: function (context) {
             const index = context.dataIndex
             const value = context.dataset.data[index]
-            return value >= average ? '#7c3aed' : '#3b82f6'
+            return value > 25 ? '#667eea' : '#666'
           }
         }
       ]
@@ -858,24 +823,6 @@ const createChart1 = () => {
           backgroundColor: 'rgba(0,0,0,0.8)',
           titleColor: '#fff',
           bodyColor: '#fff'
-        },
-        annotation: {
-          annotations: {
-            avgLine: {
-              type: 'line',
-              yMin: average,
-              yMax: average,
-              borderColor: '#f59e0b',
-              borderWidth: 2,
-              borderDash: [6, 6],
-              label: {
-                enabled: true,
-                content: '平均值',
-                backgroundColor: '#111',
-                color: '#f59e0b'
-              }
-            }
-          }
         }
       },
       scales: {
@@ -887,15 +834,6 @@ const createChart1 = () => {
           ticks: { color: '#fff' },
           grid: { color: '#333' }
         }
-      },
-      onClick: (evt, elements) => {
-        if (!elements.length) return
-        const el = elements[0]
-        const i = el.index
-        const ds = chartInstance.data.datasets[0]
-        const value = ds.data[i]
-        ds.data[i] = value >= average ? average - 3 : average + 3
-        chartInstance.update()
       }
     }
   })
@@ -1077,10 +1015,6 @@ const setupScrollObserver = () => {
               createDigitalChart()
             })
           }
-          // 检查 chart1 是否在可见区域
-          if (entry.target.querySelector('canvas[ref="chart1"]')) {
-            nextTick(() => createChart1())
-          }
         }
       })
     },
@@ -1145,17 +1079,6 @@ const setupScrollListener = () => {
           heartToMoney.value = true
         }
 
-        // 结尾手机关闭动画
-        if (phoneCloseSection.value) {
-          const rect = phoneCloseSection.value.getBoundingClientRect()
-          const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / windowHeight))
-          if (progress > 0.1) {
-            phoneScreenOff.value = true
-          } else {
-            phoneScreenOff.value = false
-          }
-        }
-
         ticking = false
       })
 
@@ -1190,91 +1113,6 @@ onMounted(() => {
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
-/* 标准模式（非 dark） */
-.digital-child-labor:not(.dark) {
-  background: linear-gradient(to bottom, #f3f4f6, #e5e7eb) !important;
-  color: #111 !important;
-}
-
-.digital-child-labor:not(.dark) .section {
-  background: transparent !important;
-  color: #111 !important;
-}
-
-.digital-child-labor:not(.dark) .gradient-text,
-.digital-child-labor:not(.dark) .ending-highlight {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.digital-child-labor:not(.dark) .question,
-.digital-child-labor:not(.dark) .question-big {
-  color: #667eea !important;
-}
-
-.digital-child-labor:not(.dark) .glass-card,
-.digital-child-labor:not(.dark) .chart-container,
-.digital-child-labor:not(.dark) .stat-card,
-.digital-child-labor:not(.dark) .platform-item,
-.digital-child-labor:not(.dark) .timeline-content,
-.digital-child-labor:not(.dark) .modal-content,
-.digital-child-labor:not(.dark) .postcard-design,
-.digital-child-labor:not(.dark) .perspective-item,
-.digital-child-labor:not(.dark) .data-item,
-.digital-child-labor:not(.dark) .chain-item,
-.digital-child-labor:not(.dark) .solution-card,
-.digital-child-labor:not(.dark) .law-content {
-  background: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(102, 126, 234, 0.2) !important;
-  color: #111 !important;
-}
-
-.digital-child-labor:not(.dark) .nav-bar {
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(18px) saturate(140%) !important;
-}
-
-.digital-child-labor:not(.dark) .nav-logo,
-.digital-child-labor:not(.dark) .nav-link {
-  color: #111 !important;
-}
-
-.digital-child-labor:not(.dark) .mode-btn {
-  color: #111 !important;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)) !important;
-  border-color: rgba(102, 126, 234, 0.3) !important;
-}
-
-
-/* 暗黑模式（默认） */
-.digital-child-labor.dark {
-  --primary: #8b5cf6;
-  --accent: #22d3ee;
-  --warning: #f59e0b;
-  background: #000 !important;
-}
-
-.digital-child-labor.dark .section {
-  background: transparent !important;
-}
-
-.digital-child-labor.dark .gradient-text,
-.digital-child-labor.dark .ending-highlight {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.digital-child-labor.dark .question,
-.digital-child-labor.dark .question-big,
-.digital-child-labor.dark .platform-users,
-.digital-child-labor.dark .stat-number,
-.digital-child-labor.dark .dist-percentage,
-.digital-child-labor.dark .growth-rate {
-  color: var(--accent);
-}
-
 /* 导航栏 */
 .nav-bar {
   position: fixed;
@@ -1282,9 +1120,9 @@ onMounted(() => {
   left: 0;
   right: 0;
   z-index: 999;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(18px) saturate(140%);
-  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transform: translateY(-100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1297,9 +1135,6 @@ onMounted(() => {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
 }
 
 .nav-logo {
@@ -1317,29 +1152,6 @@ onMounted(() => {
   padding: 15px 0;
   overflow-x: auto;
   scrollbar-width: none;
-  justify-content: center;
-}
-
-.nav-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.mode-btn {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-  color: #fff;
-  border: 1px solid rgba(102, 126, 234, 0.4);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mode-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
 }
 
 .nav-links::-webkit-scrollbar {
@@ -1347,49 +1159,23 @@ onMounted(() => {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   font-size: 14px;
   white-space: nowrap;
   padding: 8px 16px;
   border-radius: 20px;
   transition: all 0.3s;
-  position: relative;
 }
 
 .nav-link:hover {
   color: #fff;
-  background: rgba(102, 126, 234, 0.15);
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  transition: width 0.3s ease;
-  border-radius: 1px;
-}
-
-.nav-link:hover::after {
-  width: 60%;
+  background: rgba(102, 126, 234, 0.2);
 }
 
 .nav-link.active {
   color: #fff;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.5), rgba(118, 75, 162, 0.5));
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.6),
-    inset 0 0 10px rgba(102, 126, 234, 0.3);
-  font-weight: 600;
-  transform: scale(1.05);
-}
-
-.nav-link.active::after {
-  width: 80%;
+  background: rgba(102, 126, 234, 0.3);
 }
 
 .nav-progress {
@@ -1518,26 +1304,32 @@ onMounted(() => {
 
 .fade-in-up {
   animation: fadeInUp 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .slide-in {
   animation: slideIn 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .slide-in-left {
   animation: slideInLeft 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .slide-in-right {
   animation: slideInRight 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .grow-in {
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .scale-in {
   animation: scaleIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .pulse {
@@ -1546,6 +1338,7 @@ onMounted(() => {
 
 .hover-lift {
   animation: hoverLift 0.6s ease-out both;
+  animation-play-state: paused;
   transition: transform 0.3s;
 }
 
@@ -1555,6 +1348,7 @@ onMounted(() => {
 
 .fade-in {
   animation: fadeInUp 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 /* 开场动画 */
@@ -1919,6 +1713,7 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
   animation: fadeInUp 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .time-option::before {
@@ -1958,17 +1753,6 @@ onMounted(() => {
   padding: 40px;
   margin: 40px auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.chart-container canvas {
-  flex: 1;
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-  max-height: 350px;
 }
 
 .chart-title {
@@ -2019,6 +1803,7 @@ onMounted(() => {
   background: rgba(102, 126, 234, 0.1);
   border-radius: 16px;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
   transition: transform 0.3s;
 }
 
@@ -2097,6 +1882,7 @@ onMounted(() => {
   padding: 40px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .stat-number {
@@ -2180,17 +1966,6 @@ onMounted(() => {
   border-radius: 24px;
   padding: 40px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.pie-chart-container canvas {
-  flex: 1;
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-  max-height: 300px;
 }
 
 .definition-highlight {
@@ -2261,6 +2036,7 @@ onMounted(() => {
   padding: 40px;
   text-align: center;
   animation: slideInLeft 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .info-card:nth-child(2) {
@@ -2313,6 +2089,7 @@ onMounted(() => {
   padding: 30px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
   transition: all 0.3s;
 }
 
@@ -2528,6 +2305,7 @@ onMounted(() => {
   text-align: center;
   min-width: 300px;
   animation: growIn 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .comparison-label {
@@ -2681,17 +2459,7 @@ onMounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.1);
   height: 400px;
   animation: fadeInUp 0.8s ease-out both;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.chart-wrapper canvas {
-  flex: 1;
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-  max-height: 300px;
+  animation-play-state: paused;
 }
 
 .chart-label {
@@ -2738,6 +2506,7 @@ onMounted(() => {
   padding: 50px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .dist-title {
@@ -2774,6 +2543,7 @@ onMounted(() => {
   padding: 50px;
   text-align: center;
   animation: slideInLeft 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .growth-item:nth-child(2) {
@@ -2822,6 +2592,7 @@ onMounted(() => {
   padding: 40px 20px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
   transition: all 0.3s;
 }
 
@@ -2864,6 +2635,7 @@ onMounted(() => {
   padding: 50px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .stat-value {
@@ -2950,6 +2722,7 @@ onMounted(() => {
   padding: 60px 40px;
   text-align: center;
   animation: slideInLeft 0.8s ease-out both;
+  animation-play-state: paused;
 }
 
 .audience-card:nth-child(2) {
@@ -3345,6 +3118,7 @@ onMounted(() => {
   padding: 40px 20px;
   text-align: center;
   animation: growIn 0.6s ease-out both;
+  animation-play-state: paused;
   transition: all 0.3s;
 }
 
@@ -3425,6 +3199,7 @@ onMounted(() => {
   gap: 30px;
   align-items: flex-start;
   animation: slideIn 0.6s ease-out both;
+  animation-play-state: paused;
   transition: all 0.3s;
 }
 
@@ -3497,6 +3272,7 @@ onMounted(() => {
   position: relative;
   margin-bottom: 40px;
   animation: slideIn 0.6s ease-out both;
+  animation-play-state: paused;
 }
 
 .law-event::before {
@@ -3732,183 +3508,6 @@ onMounted(() => {
 
 .ending-footer p {
   margin: 10px 0;
-}
-
-/* 结尾手机关闭动画 */
-.phone-close-section {
-  min-height: 100vh;
-  background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, #000 80%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.phone-close-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
-
-.close-phone-screen {
-  width: 300px;
-  height: 600px;
-  background: linear-gradient(145deg, #1a1a1a 0%, #2a2a2a 60%, #1e1e1e 100%);
-  border-radius: 52px;
-  position: relative;
-  border: 2px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 30px 80px rgba(102, 126, 234, 0.35),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.03),
-    0 0 0 6px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.close-phone-screen.screen-off {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.01),
-    0 0 0 6px rgba(0, 0, 0, 0.9);
-}
-
-.close-phone-notch {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
-  height: 28px;
-  background: linear-gradient(180deg, #111, #000);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  z-index: 12;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.close-notch-speaker {
-  width: 60px;
-  height: 6px;
-  background: linear-gradient(180deg, #222, #111);
-  border-radius: 3px;
-}
-
-.close-notch-camera {
-  width: 10px;
-  height: 10px;
-  background: radial-gradient(circle at 30% 30%, #3af, #003);
-  border-radius: 50%;
-  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.2);
-  transition: all 1s ease;
-}
-
-.close-phone-screen.screen-off .close-notch-camera {
-  background: radial-gradient(circle at 30% 30%, #111, #000);
-  box-shadow: none;
-}
-
-.close-btn-right,
-.close-btn-left {
-  position: absolute;
-  width: 3px;
-  background: linear-gradient(180deg, #6c6c6c, #2e2e2e);
-  border-radius: 2px;
-  z-index: 11;
-}
-
-.close-btn-right.close-power {
-  right: -2px;
-  top: 110px;
-  height: 70px;
-}
-
-.close-btn-left.close-volume-up {
-  left: -2px;
-  top: 120px;
-  height: 55px;
-}
-
-.close-btn-left.close-volume-down {
-  left: -2px;
-  top: 185px;
-  height: 55px;
-}
-
-.close-screen-content {
-  position: absolute;
-  top: 60px;
-  left: 20px;
-  right: 20px;
-  bottom: 60px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
-  border-radius: 44px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  overflow: hidden;
-  position: relative;
-  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.close-phone-screen.screen-off .close-screen-content {
-  background: #000;
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 1);
-}
-
-.close-screen-content::after {
-  content: '';
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 4px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
-  border-radius: 2px;
-  opacity: 0.9;
-  transition: opacity 1s ease;
-}
-
-.close-phone-screen.screen-off .close-screen-content::after {
-  opacity: 0;
-}
-
-.close-text {
-  font-size: 32px;
-  text-align: center;
-  line-height: 1.6;
-  font-weight: 700;
-  text-shadow: 0 4px 30px rgba(255, 255, 255, 0.5);
-  transition: all 1.5s ease;
-  opacity: 1;
-}
-
-.close-phone-screen.screen-off .close-text {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.scroll-hint {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-  animation: fadeInOut 2s ease-in-out infinite;
-}
-
-@keyframes fadeInOut {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 1;
-  }
 }
 
 /* 响应式 */
