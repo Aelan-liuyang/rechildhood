@@ -1379,7 +1379,91 @@ onMounted(() => {
 .digital-child-labor.dark .chain-item,
 .digital-child-labor.dark .solution-card,
 .digital-child-labor.dark .law-content {
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border: 2px solid rgba(102, 126, 234, 0.6) !important;
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.3),
+    0 0 60px rgba(102, 126, 234, 0.15),
+    inset 0 0 20px rgba(102, 126, 234, 0.05) !important;
+}
+
+.digital-child-labor.dark .glass-card:hover,
+.digital-child-labor.dark .chart-container:hover,
+.digital-child-labor.dark .stat-card:hover,
+.digital-child-labor.dark .platform-item:hover,
+.digital-child-labor.dark .perspective-item:hover,
+.digital-child-labor.dark .data-item:hover,
+.digital-child-labor.dark .solution-card:hover {
+  border-color: rgba(102, 126, 234, 0.9) !important;
+  box-shadow: 0 0 50px rgba(102, 126, 234, 0.5),
+    0 0 100px rgba(102, 126, 234, 0.25),
+    inset 0 0 30px rgba(102, 126, 234, 0.1) !important;
+}
+
+.digital-child-labor.dark .time-option {
+  border: 2px solid rgba(102, 126, 234, 0.7) !important;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.2),
+    0 0 40px rgba(102, 126, 234, 0.1) !important;
+}
+
+.digital-child-labor.dark .time-option.selected {
+  border-color: rgba(102, 126, 234, 1) !important;
+  box-shadow: 0 0 40px rgba(102, 126, 234, 0.6),
+    0 0 80px rgba(102, 126, 234, 0.3),
+    inset 0 0 30px rgba(102, 126, 234, 0.15) !important;
+}
+
+.digital-child-labor.dark .type-card,
+.digital-child-labor.dark .impact-card,
+.digital-child-labor.dark .audience-card,
+.digital-child-labor.dark .chain-item {
+  border: 2px solid rgba(102, 126, 234, 0.6) !important;
+  box-shadow: 0 0 25px rgba(102, 126, 234, 0.25),
+    0 0 50px rgba(102, 126, 234, 0.12) !important;
+}
+
+.digital-child-labor.dark .type-card:hover,
+.digital-child-labor.dark .impact-card:hover,
+.digital-child-labor.dark .audience-card:hover,
+.digital-child-labor.dark .chain-item:hover {
+  border-color: rgba(102, 126, 234, 0.9) !important;
+  box-shadow: 0 0 40px rgba(102, 126, 234, 0.5),
+    0 0 80px rgba(102, 126, 234, 0.25) !important;
+}
+
+.digital-child-labor.dark .law-event {
+  border: 2px solid rgba(102, 126, 234, 0.5) !important;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.2) !important;
+}
+
+.digital-child-labor.dark .law-event:hover {
+  border-color: rgba(102, 126, 234, 0.8) !important;
+  box-shadow: 0 0 35px rgba(102, 126, 234, 0.4) !important;
+}
+
+.digital-child-labor.dark .phone-screen,
+.digital-child-labor.dark .close-phone-screen {
+  border: 3px solid rgba(102, 126, 234, 0.6) !important;
+  box-shadow: 0 30px 100px rgba(102, 126, 234, 0.6),
+    0 0 60px rgba(102, 126, 234, 0.4),
+    inset 0 0 0 3px rgba(102, 126, 234, 0.2),
+    0 0 0 8px rgba(102, 126, 234, 0.15) !important;
+}
+
+.digital-child-labor.dark .image-placeholder {
+  border: 2px solid rgba(102, 126, 234, 0.6) !important;
+  box-shadow: 0 0 25px rgba(102, 126, 234, 0.25) !important;
+}
+
+.digital-child-labor.dark .image-placeholder:hover {
+  border-color: rgba(102, 126, 234, 0.9) !important;
+  box-shadow: 0 0 40px rgba(102, 126, 234, 0.4),
+    0 0 80px rgba(102, 126, 234, 0.2) !important;
+}
+
+.digital-child-labor.dark .alert-text {
+  border: 3px solid rgba(255, 59, 48, 0.7) !important;
+  box-shadow: 0 0 80px rgba(255, 59, 48, 0.5),
+    0 0 120px rgba(255, 59, 48, 0.3),
+    0 8px 40px rgba(255, 59, 48, 0.3) !important;
 }
 
 .digital-child-labor.dark .gradient-text,
