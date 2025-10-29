@@ -1,7 +1,7 @@
 <template>
   <div class="rechildhood-container">
     <!-- 开场动画 -->
-    <section class="section opening-section" id="chapter0">
+    <section class="section opening-section fullscreen" id="chapter0">
       <div class="phone-screen" :class="{ 'phone-show': phoneVisible }">
         <!-- iPhone notch and side buttons -->
         <div class="phone-notch">
@@ -72,7 +72,8 @@
           </a>
         </div>
 
-        <div class="nav-toggle" @click="toggleMenu" :class="{ active: menuOpen }">
+        <div class="nav-toggle" @click="toggleMenu" :class="{ active: menuOpen }" :aria-expanded="menuOpen"
+          aria-label="打开导航" role="button" tabindex="0">
           <span></span>
           <span></span>
           <span></span>
@@ -85,14 +86,17 @@
 
     <!-- 开场部分 -->
     <section id="intro" class="section intro-section">
-      <h1 class="main-title fade-in">你每天有多少时间在和小小的手机屏幕接触？</h1>
+      <!-- 粒子背景 -->
+      <canvas ref="particleCanvas" class="particle-bg"></canvas>
+
+      <h1 class="main-title fade-in" data-parallax="0.3">你每天有多少时间在和小小的手机屏幕接触？</h1>
 
       <!-- 图表1：中国居民每日平均互联网使用时间 -->
-      <div class="chart-container" ref="chart1"></div>
+      <div class="chart-container" ref="chart1" data-parallax="0.15"></div>
       <p class="data-source">数据来源：国家统计局、中国互联网络信息中心（CNNIC）、QuestMobile</p>
 
       <!-- 图表：手机网民占比 -->
-      <div class="chart-container" ref="chartPhoneUsers"></div>
+      <div class="chart-container" ref="chartPhoneUsers" data-parallax="0.15"></div>
     </section>
 
     <!-- 短视频使用时间 -->
@@ -118,23 +122,27 @@
 
       <!-- 视频示例图片 -->
       <div class="video-examples">
-        <div class="video-card">
+        <div class="video-card floating-card">
           <img src="@/assets/images/1.png" alt="视频示例1" class="video-image" />
           <div class="video-info">
             <p class="video-likes">❤️ 123.4万</p>
           </div>
+          <div class="card-glow"></div>
         </div>
-        <div class="video-card">
+        <div class="video-card floating-card">
           <img src="@/assets/images/2.png" alt="视频示例2" class="video-image" />
           <div class="video-info">
             <p class="video-likes">❤️ 89.2万</p>
           </div>
+          <div class="card-glow"></div>
         </div>
       </div>
 
       <div class="choice-buttons">
-        <button class="choice-btn" @click="showChart = true" :class="{ selected: showChart }">有</button>
-        <button class="choice-btn" @click="showChart = true" :class="{ selected: showChart }">没有</button>
+        <button class="choice-btn" @click="selectChoice('yes')"
+          :class="{ selected: selectedChoice === 'yes' }">有</button>
+        <button class="choice-btn" @click="selectChoice('no')"
+          :class="{ selected: selectedChoice === 'no' }">没有</button>
       </div>
 
       <!-- 图表3：视频点赞平均数 - 点击后显示 -->
@@ -149,7 +157,7 @@
     </section>
 
     <!-- 数字劳工概念 -->
-    <section id="digital-labor" class="section concept-section">
+    <section id="digital-labor" class="section concept-section fullscreen">
       <h2 class="highlight-text anim-reveal">当你在刷手机时真的是在进行纯粹的娱乐吗？</h2>
       <p class="concept-intro">
         你有没有想过自己是在劳动，而屏幕那头的儿童或许在进行另一种看不见的劳动。
@@ -245,6 +253,7 @@
         <div class="timeline-item first-video-item" :class="{ 'timeline-visible': timelineVisible[0] }">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
+            <div class="step-badge">1</div>
             <h3>{{ timeline[0].title }}</h3>
             <div class="first-video-anim" ref="firstVideoAnim">
               <div class="video-frame">
@@ -266,6 +275,7 @@
           :class="{ 'timeline-visible': timelineVisible[index + 1] }">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
+            <div class="step-badge">{{ index + 2 }}</div>
             <h3>{{ item.title }}</h3>
             <img v-if="item.image" :src="item.image" :alt="item.title" class="timeline-image" />
             <p>{{ item.desc }}</p>
@@ -290,13 +300,13 @@
         <div v-for="(stage, index) in piagetStages" :key="index" class="piaget-stage" @mouseenter="currentStage = index"
           @mouseleave="currentStage = null">
           <div class="stage-figure" :style="{ height: stage.height }">
-            <div class="stage-label-top">{{ stage.name }}</div>
+            <!-- <div class="stage-label-top">{{ stage.name }}</div> -->
             <img v-if="stage.image" :src="stage.image" alt="阶段图片" class="stage-photo" />
             <div class="figure-icon" v-else>👶</div>
           </div>
           <div class="stage-info">
-            <h3 class="sr-only">{{ stage.name }}</h3>
             <p class="stage-age">{{ stage.age }}</p>
+            <h3 class="stage-name">{{ stage.name }}</h3>
           </div>
           <transition name="slide-up">
             <div v-if="currentStage === index" class="stage-detail">
@@ -320,7 +330,8 @@
         <div ref="rolesContainerEl" class="roles-container">
           <div v-for="role in roles" :key="role.id" class="role-item" :data-role="role.id"
             :data-tip="`点击查看${role.name}详情`" :class="{ active: selectedRole === role.id }" @click="selectRole(role.id)"
-            @mouseenter="highlightLine(role.id, true)" @mouseleave="highlightLine(role.id, false)">
+            @mouseenter="highlightLine(role.id, true)" @mouseleave="highlightLine(role.id, false)" tabindex="0"
+            @keydown="onRoleKey($event, role.id)">
             <div class="role-avatar">{{ role.icon }}</div>
             <div class="role-name">{{ role.name }}</div>
           </div>
@@ -332,7 +343,8 @@
     <!-- 角色详情弹窗 - 固定居中 -->
     <transition name="modal-fade">
       <div v-if="selectedRole" class="modal-overlay" @click="selectedRole = null">
-        <div class="modal-content" @click.stop>
+        <div class="modal-content" role="dialog" aria-modal="true" tabindex="0" @keydown.esc="selectedRole = null"
+          @click.stop>
           <button class="modal-close" @click="selectedRole = null">✕</button>
           <div class="modal-body" v-html="getRoleContent()"></div>
         </div>
@@ -370,15 +382,9 @@
       </div>
     </section>
 
-    <!-- 过渡动画：孩子缩小成点 -->
-    <div class="transition-animation" ref="transitionAnim">
-      <div class="child-shrink" :class="{ 'shrinking': isTransitioning }">
-        <span class="child-emoji">👶</span>
-      </div>
-    </div>
 
     <!-- 儿童影响 -->
-    <section id="impact" class="section impact-section">
+    <section id="impact" class="section impact-section fullscreen">
       <div class="impact-grid">
         <div class="impact-card" v-for="(impact, index) in impacts" :key="index">
           <div class="impact-number">{{ index + 1 }}</div>
@@ -453,7 +459,7 @@
     </section>
 
     <!-- 互动结尾 -->
-    <section class="section final-section">
+    <section class="section final-section fullscreen">
       <h2 class="final-question">如果这些"工作"时间被归还给孩子，他们本可以拥有多少自由玩耍的时光？</h2>
 
       <div class="savings-jar">
@@ -472,7 +478,8 @@
       </div>
 
       <p class="final-message" :class="{ show: candyCount >= 5 }">
-        守护童心，请为孩子的童年时光存入自由与快乐，而非流量与数据。
+        <span v-if="candyCount < 20">守护童心，请为孩子的童年时光存入自由与快乐，而非流量与数据。</span>
+        <span v-else class="jar-full-msg">🎉 储蓄罐已满！让我们一起守护每一个孩子的童年时光。</span>
       </p>
     </section>
 
@@ -482,14 +489,17 @@
       <div class="phone-shutdown">
         <div class="shutdown-text">📱</div>
       </div>
+      <button class="backtop restart-btn" @click="restart">再看一次</button>
     </div>
   </div>
+  <!-- 回到顶部按钮 -->
+  <button v-show="showBackTop" class="backtop" @click="goTop">↑</button>
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick, watch, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
-import 'echarts-wordcloud'
+const cleanupFns = []
 
 // 图表引用
 const chart1 = ref(null)
@@ -505,6 +515,7 @@ const chartAudienceAge = ref(null)
 const chartAudienceGender = ref(null)
 const chartAudienceRegion = ref(null)
 const chartWordCloud = ref(null)
+const particleCanvas = ref(null)
 
 // 模态内图表引用（运行时实例）
 let costMapChart = null
@@ -577,6 +588,7 @@ const experts = [
 const candyCount = ref(0)
 const screenOff = ref(false)
 const jarPulse = ref(false)
+const allowScreenOff = ref(false)
 
 // 开场动画和导航
 const openingComplete = ref(false)
@@ -588,6 +600,7 @@ const scrollProgress = ref(0)
 
 // 视频图表显示控制
 const showChart = ref(false)
+const selectedChoice = ref(null)
 
 // 开场动画控制
 const phoneVisible = ref(false)
@@ -606,6 +619,8 @@ const exampleImages = [
 // 过渡动画控制
 const isTransitioning = ref(false)
 const transitionAnim = ref(null)
+// 回到顶部
+const showBackTop = ref(false)
 
 // 皮亚杰理论阶段
 const currentStage = ref(null)
@@ -613,28 +628,28 @@ const piagetStages = [
   {
     name: '感知运动阶段',
     age: '0-2岁',
-    height: '100px',
+    height: '180px',
     detail: '婴儿通过看、摸、吃、抓来认识世界，就像"用手和嘴思考"。这个阶段的孩子连"藏猫猫"都难以理解，更无法理解网络的意义，他们的一切行为依赖即时反应。',
     image: new URL('@/assets/images/11.jpg', import.meta.url).href
   },
   {
     name: '前运算阶段',
     age: '2-7岁',
-    height: '180px',
+    height: '250px',
     detail: '孩子开始用语言和符号表达，但思维充满局限性：认为月亮会跟着自己走，无法理解他人视角。觉得玩具有生命，会和娃娃聊天。如果果汁从高杯倒进矮杯，他们会坚持矮杯"变少了"，无法理解守恒概念。',
     image: new URL('@/assets/images/12.jpg', import.meta.url).href
   },
   {
     name: '具体运算阶段',
     age: '7-11岁',
-    height: '250px',
+    height: '320px',
     detail: '孩子开始有逻辑，但必须依赖具体例子。能理解"A比B高，B比C高，所以A比C高"，但无法回答"如果人类不用吃饭会怎样"这种抽象假设。他们严格按规则行事，认为"规则不能变"。',
     image: new URL('@/assets/images/13.jpg', import.meta.url).href
   },
   {
     name: '形式运算阶段',
     age: '11岁以后',
-    height: '320px',
+    height: '390px',
     detail: '青少年逐渐能进行假设推理，比如讨论"如果地球没有重力"，但这类能力仍需教育引导才能成熟。此前，儿童对网络风险、长期后果缺乏预判力。',
     image: new URL('@/assets/images/14.jpg', import.meta.url).href
   }
@@ -666,9 +681,8 @@ const getRoleContent = () => {
               <span class="legend-item"><span class="legend-color" style="background: #de2d26"></span> 60-80万</span>
               <span class="legend-item"><span class="legend-color" style="background: #a50f15"></span> 80万以上</span>
             </div>
-            <div id="costMap" class="echarts-embed" style="width:100%;height:360px;background:#fff;border-radius:12px;"></div>
             <div style="width:100%;margin-top:12px;text-align:center;">
-              <img :src="costRefImg" alt="养育成本参考" style="max-width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);" />
+              <img src="${costRefImg}" alt="养育成本参考" style="max-width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);" />
             </div>
           </div>
         </div>
@@ -851,11 +865,10 @@ const toggleMenu = () => {
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)
   if (element) {
-    const offsetTop = element.offsetTop - 80 // 导航栏高度
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    })
+    const nav = document.querySelector('.navbar')
+    const offset = nav ? nav.offsetHeight : 0
+    const top = element.getBoundingClientRect().top + window.scrollY - offset
+    window.scrollTo({ top, behavior: 'smooth' })
     menuOpen.value = false
   }
 }
@@ -906,6 +919,8 @@ const setupFirstVideoAnimation = () => {
             likeTimer = null
           }
         }, 80)
+        // 最长两秒后结束点赞动画，避免长任务
+        setTimeout(() => { if (likeTimer) { clearInterval(likeTimer); likeTimer = null } }, 2000)
         // 3s 后显示金钱符号
         setTimeout(() => { moneyShow.value = true }, 3000)
         observer.unobserve(container)
@@ -987,10 +1002,16 @@ const updateScrollState = () => {
 
   // 滚动到底部触发黑屏
   const atBottom = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 2)
-  if (atBottom && !screenOff.value) {
+  if (atBottom && allowScreenOff.value && !screenOff.value) {
     // 略微延迟，避免滚动抖动
     setTimeout(() => { screenOff.value = true }, 300)
   }
+}
+
+// 统一滚动处理：状态与回顶
+const onScroll = () => {
+  updateScrollState()
+  showBackTop.value = window.scrollY > 600
 }
 
 // 初始化图表
@@ -1029,6 +1050,10 @@ onMounted(() => {
     setupChart3HighlightOnReveal()
     setupFirstVideoAnimation()
     drawNetworkLines()
+    setupParticles()
+    setupParallax()
+    setupMagneticEffect()
+    setupRevealAnimations()
     const onResizeThrottled = throttleFn(drawNetworkLines, 150)
     window.addEventListener('resize', onResizeThrottled)
     cleanupFns.push(() => window.removeEventListener('resize', onResizeThrottled))
@@ -1078,13 +1103,20 @@ const initCharts = () => {
   // 手机网民占比
   if (chartPhoneUsers.value) {
     const myChartPhone = echarts.init(chartPhoneUsers.value)
+    const w = chartPhoneUsers.value.clientWidth || 900
+    const isNarrow = w < 520
+    const percentFont = isNarrow ? 22 : 30
+    const centerSubSize = isNarrow ? 11 : 12
+    const labelFont = isNarrow ? 0 : 14
+    const radiusInner = isNarrow ? '46%' : '50%'
+    const radiusOuter = isNarrow ? '66%' : '72%'
     myChartPhone.setOption({
       title: {
         text: '截至2025年6月手机网民占比情况',
         subtext: '网民11.23亿 | 手机网民11.16亿 | 占99.4%',
         left: 'center',
-        textStyle: { fontSize: 20, fontWeight: 'bold' },
-        subtextStyle: { fontSize: 14, color: '#666' }
+        textStyle: { fontSize: 18, fontWeight: 'bold', },
+        subtextStyle: { fontSize: 12, color: '#666', }
       },
       tooltip: {
         trigger: 'item',
@@ -1092,14 +1124,14 @@ const initCharts = () => {
       },
       legend: { bottom: 10, left: 'center' },
       graphic: [
-        { type: 'text', left: 'center', top: '44%', style: { text: '99.4%', fontSize: 30, fontWeight: 800, fill: '#2c3e50' } },
-        { type: 'text', left: 'center', top: '56%', style: { text: '手机网民占比', fontSize: 12, fill: '#666' } }
+        { type: 'text', left: 'center', top: '44%', style: { text: '99.4%', fontSize: percentFont, fontWeight: 800, fill: '#2c3e50' } },
+        { type: 'text', left: 'center', top: '56%', style: { text: '手机网民占比', fontSize: centerSubSize, fill: '#666' } }
       ],
       series: [{
         type: 'pie',
-        radius: ['50%', '72%'],
+        radius: [radiusInner, radiusOuter],
         center: ['50%', '50%'],
-        startAngle: 90,
+        startAngle: 60,
         clockwise: true,
         avoidLabelOverlap: false,
         itemStyle: {
@@ -1107,13 +1139,13 @@ const initCharts = () => {
           borderColor: '#fff',
           borderWidth: 2
         },
+        labelLayout: { hideOverlap: true },
         label: {
-          show: true,
+          show: !isNarrow,
           formatter: function (params) {
-            return params.name + '\n' + params.value + '亿人\n(' + params.percent + '%)'
+            return params.name + '：' + params.value + '亿人\n(' + params.percent + '%)'
           },
-          fontSize: 14,
-          fontWeight: 'bold',
+          fontSize: labelFont || 12,
           color: '#2c3e50'
         },
         labelLine: { length: 12, length2: 10, lineStyle: { color: '#999' } },
@@ -1448,56 +1480,61 @@ const initCharts = () => {
     })
   }
 
-  // 观众地域分布（地图）
+  // 养育成本地域图（移出弹窗，随机示例数据）懒加载
   if (chartAudienceRegion.value) {
-    const myChartRegion = echarts.init(chartAudienceRegion.value)
-    fetch('/china.json')
-      .then(r => (r.ok ? r.json() : Promise.reject()))
-      .then((mapJson) => {
-        try { echarts.registerMap('china', mapJson) } catch (_) { }
-        const regionData = [
-          { name: '北京市', value: 85 }, { name: '天津市', value: 72 }, { name: '河北省', value: 66 },
-          { name: '山西省', value: 58 }, { name: '内蒙古自治区', value: 54 }, { name: '辽宁省', value: 92 },
-          { name: '吉林省', value: 61 }, { name: '黑龙江省', value: 55 }, { name: '上海市', value: 95 },
-          { name: '江苏省', value: 110 }, { name: '浙江省', value: 118 }, { name: '安徽省', value: 74 },
-          { name: '福建省', value: 88 }, { name: '江西省', value: 69 }, { name: '山东省', value: 104 },
-          { name: '河南省', value: 83 }, { name: '湖北省', value: 78 }, { name: '湖南省', value: 76 },
-          { name: '广东省', value: 130 }, { name: '广西壮族自治区', value: 70 }, { name: '海南省', value: 62 },
-          { name: '重庆市', value: 73 }, { name: '四川省', value: 97 }, { name: '贵州省', value: 60 },
-          { name: '云南省', value: 64 }, { name: '西藏自治区', value: 32 }, { name: '陕西省', value: 71 },
-          { name: '甘肃省', value: 45 }, { name: '青海省', value: 30 }, { name: '宁夏回族自治区', value: 36 },
-          { name: '新疆维吾尔自治区', value: 38 }
-        ]
-        myChartRegion.setOption({
-          title: { text: '观众地域热力图', left: 'center' },
-          tooltip: { trigger: 'item', formatter: '{b}<br/>热度指数：{c}' },
-          visualMap: {
-            min: 20, max: 140, left: 20, bottom: 20,
-            inRange: { color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4'] },
-            text: ['高', '低']
-          },
-          series: [{ type: 'map', map: 'china', roam: true, data: regionData }]
-        })
+    const el = chartAudienceRegion.value
+    let inited = false
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(async entry => {
+        if (entry.isIntersecting && !inited) {
+          inited = true
+          const myChartRegion = echarts.init(el)
+          const mapUrl = `${import.meta.env.BASE_URL}china.json`
+          try {
+            const res = await fetch(mapUrl)
+            if (!res.ok) throw new Error('map 404')
+            const mapJson = await res.json()
+            try { echarts.registerMap('china', mapJson) } catch (_) { }
+            const provs = ['北京市', '天津市', '河北省', '山西省', '内蒙古自治区', '辽宁省', '吉林省', '黑龙江省', '上海市', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区', '海南省', '重庆市', '四川省', '贵州省', '云南省', '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区', '新疆维吾尔自治区']
+            const normalize = (name) => {
+              return name
+                .replace('维吾尔自治区', '')
+                .replace('壮族自治区', '')
+                .replace('回族自治区', '')
+                .replace('自治区', '')
+                .replace('省', '')
+                .replace('市', '')
+            }
+            const regionData = provs.map(name => ({ name: normalize(name), value: Math.round(30 + Math.random() * 70) }))
+            myChartRegion.setOption({
+              title: { text: '各地0-17岁养育成本（示例）', left: 'center' },
+              tooltip: { trigger: 'item', formatter: '{b}<br/>成本：{c} 万元' },
+              visualMap: { min: 30, max: 100, left: 20, bottom: 20, inRange: { color: ['#fee5d9', '#fcae91', '#fb6a4a', '#de2d26', '#a50f15'] }, text: ['高', '低'] },
+              series: [{ type: 'map', map: 'china', roam: true, data: regionData }]
+            })
+          } catch {
+            const regionData = [{ name: '北京', value: 85 }, { name: '上海', value: 90 }, { name: '浙江', value: 78 }, { name: '广东', value: 82 }]
+            myChartRegion.setOption({
+              title: { text: '各地0-17岁养育成本（示例）', left: 'center' },
+              tooltip: { trigger: 'axis' },
+              grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+              xAxis: { type: 'category', data: regionData.map(i => i.name), axisLabel: { rotate: 30 } },
+              yAxis: { type: 'value', name: '万元' },
+              series: [{ type: 'bar', data: regionData.map(i => i.value), label: { show: true, position: 'top' } }]
+            })
+          }
+          io.unobserve(el)
+        }
       })
-      .catch(() => {
-        // fallback：柱状
-        const regionData = [
-          { name: '广东', value: 130 }, { name: '江苏', value: 110 }, { name: '浙江', value: 118 }, { name: '山东', value: 104 }, { name: '上海', value: 95 }
-        ]
-        myChartRegion.setOption({
-          title: { text: '观众地域热度指数（示例）', left: 'center' },
-          tooltip: { trigger: 'axis' },
-          grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
-          xAxis: { type: 'category', data: regionData.map(i => i.name), axisLabel: { rotate: 30 } },
-          yAxis: { type: 'value', name: '热度指数' },
-          series: [{ type: 'bar', data: regionData.map(i => i.value), label: { show: true, position: 'top' } }]
-        })
-      })
+    }, { threshold: .25 })
+    io.observe(el)
+    cleanupFns.push(() => io.disconnect())
   }
 
-  // 评论词云图
+  // 评论词云图（懒加载 + 动态引入插件）
   if (chartWordCloud.value) {
-    const myChartCloud = echarts.init(chartWordCloud.value)
+    const el = chartWordCloud.value
+    let inited = false
     const words = [
       { name: '可爱', value: 1000 },
       { name: '宝宝', value: 900 },
@@ -1525,73 +1562,31 @@ const initCharts = () => {
       { name: '离谱', value: 180 }
     ]
 
-    myChartCloud.setOption({
-      title: {
-        text: '评论区词云',
-        left: 'center',
-        top: 20
-      },
-      tooltip: { show: true },
-      series: [{
-        type: 'wordCloud',
-        gridSize: 15,
-        sizeRange: [14, 60],
-        rotationRange: [0, 0],
-        shape: 'circle',
-        width: '90%',
-        height: '90%',
-        drawOutOfBound: false,
-        textStyle: {
-          fontFamily: 'sans-serif',
-          fontWeight: 'bold',
-          color: function () {
-            const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
-            return colors[Math.floor(Math.random() * colors.length)]
-          }
-        },
-        emphasis: {
-          textStyle: {
-            shadowBlur: 10,
-            shadowColor: '#333'
-          }
-        },
-        data: words
-      }]
-    })
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(async entry => {
+        if (entry.isIntersecting && !inited) {
+          inited = true
+          try { await import('echarts-wordcloud') } catch (_) { }
+          const myChartCloud = echarts.init(el)
+          myChartCloud.setOption({
+            title: { text: '评论区词云', left: 'center', top: 20 },
+            tooltip: { show: true },
+            series: [{
+              type: 'wordCloud', gridSize: 15, sizeRange: [14, 60], rotationRange: [0, 0], shape: 'circle', width: '90%', height: '90%', drawOutOfBound: false,
+              textStyle: { fontFamily: 'sans-serif', fontWeight: 'bold', color: () => { const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']; return colors[Math.floor(Math.random() * colors.length)] } },
+              emphasis: { textStyle: { shadowBlur: 10, shadowColor: '#333' } },
+              data: words
+            }]
+          })
+          io.unobserve(el)
+        }
+      })
+    }, { threshold: .25 })
+    io.observe(el)
+    cleanupFns.push(() => io.disconnect())
   }
 
-  // 尝试将观众地域由柱状升级为地图（若存在 /public/china.json）
-  if (chartAudienceRegion.value) {
-    try {
-      fetch('/china.json').then(r => r.ok ? r.json() : Promise.reject()).then(mapJson => {
-        try {
-          echarts.registerMap('china', mapJson)
-          const inst = echarts.getInstanceByDom(chartAudienceRegion.value)
-          if (inst) {
-            const regionData = [
-              { name: '广东省', value: 120 },
-              { name: '浙江省', value: 98 },
-              { name: '江苏省', value: 92 },
-              { name: '山东省', value: 80 },
-              { name: '辽宁省', value: 78 },
-              { name: '四川省', value: 74 },
-              { name: '北京市', value: 70 }
-            ]
-            inst.setOption({
-              title: { text: '观众地域热力图', left: 'center' },
-              tooltip: { trigger: 'item', formatter: '{b}<br/>热度指数：{c}' },
-              visualMap: {
-                min: 0, max: 150, left: 20, bottom: 20,
-                inRange: { color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4'] },
-                text: ['高', '低']
-              },
-              series: [{ type: 'map', map: 'china', data: regionData }]
-            })
-          }
-        } catch (_) { }
-      }).catch(() => { })
-    } catch (_) { }
-  }
+  // 已将地域图用于养育成本展示，无需再次升级逻辑
 }
 
 // 设置滚动动画
@@ -1621,27 +1616,65 @@ const setupScrollAnimations = () => {
 
 // 设置导航栏滚动效果
 const setupNavScroll = () => {
-  window.addEventListener('scroll', updateScrollState)
-  updateScrollState() // 初始调用
+  window.addEventListener('scroll', onScroll)
+  onScroll() // 初始调用
 }
 
 // 设置过渡动画
 const setupTransitionAnimation = () => {
-  const observer = new IntersectionObserver((entries) => {
+  const exampleImagesEl = document.querySelector('.example-images')
+  if (!exampleImagesEl) return
+
+  let shrinkStarted = false
+
+  // 当图片网格进入视口后，启用基于滚动的缩放过渡（可逆）
+  const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && entry.target.classList.contains('example-images')) {
-        // 当用户看到4张图片后，触发过渡动画
-        setTimeout(() => {
-          isTransitioning.value = true
-        }, 2000) // 2秒后开始缩小
+      if (entry.isIntersecting && !shrinkStarted) {
+        shrinkStarted = true
+        const onScrollShrink = throttleFn(() => {
+          const rect = exampleImagesEl.getBoundingClientRect()
+          const viewportH = window.innerHeight
+
+          // 优化：只有当图片区域的底部进入视口后，才开始计算缩放
+          // 这样用户可以先完整看到所有图片
+          const containerBottom = rect.bottom
+          const shrinkTrigger = viewportH * 0.7 // 当底部距离视口顶部70%时开始
+
+          if (containerBottom > shrinkTrigger) {
+            // 图片还在可视区域，保持原状
+            exampleImagesEl.style.transform = 'scale(1)'
+            exampleImagesEl.style.opacity = '1'
+            isTransitioning.value = false
+            return
+          }
+
+          // 计算缩放进度：从触发点到完全离开视口
+          const shrinkDistance = viewportH * 1.2 // 缩放过程的距离
+          const traveled = Math.max(0, shrinkTrigger - containerBottom)
+          let p = traveled / shrinkDistance
+          p = Math.max(0, Math.min(1, p))
+
+          const scale = 1 - p * 0.95 // 保留5%避免完全消失
+          const opacity = 1 - p * 0.9
+          exampleImagesEl.style.transform = `scale(${scale})`
+          exampleImagesEl.style.opacity = String(opacity)
+
+          // 当缩小到一定程度时显示中心点动画
+          if (p >= 0.85) {
+            isTransitioning.value = true
+          } else {
+            isTransitioning.value = false // 向上滚动时恢复
+          }
+        }, 50)
+        window.addEventListener('scroll', onScrollShrink)
+        cleanupFns.push(() => window.removeEventListener('scroll', onScrollShrink))
       }
     })
-  }, { threshold: 0.8 })
+  }, { threshold: 0.3 })
 
-  const exampleImagesEl = document.querySelector('.example-images')
-  if (exampleImagesEl) {
-    observer.observe(exampleImagesEl)
-  }
+  io.observe(exampleImagesEl)
+  cleanupFns.push(() => io.disconnect())
 }
 
 // 设置时间轴动画
@@ -1669,12 +1702,18 @@ const setupTimelineAnimation = () => {
   }, 500)
 }
 
-// 添加糖果时检查是否显示结尾
+// 添加糖果时检查是否显示结尾（最多20个）
 const addCandy = () => {
-  if (candyCount.value < 10) {
+  if (candyCount.value < 20) {
     candyCount.value++
     jarPulse.value = true
     setTimeout(() => { jarPulse.value = false }, 600)
+    // 允许到达底部后触发息屏
+    allowScreenOff.value = true
+  } else {
+    // 已满，显示震动反馈
+    jarPulse.value = true
+    setTimeout(() => { jarPulse.value = false }, 300)
   }
 }
 
@@ -1704,6 +1743,36 @@ watch(showChart, async (v) => {
   })
 })
 
+// 选择视频喜好并显示图表
+const selectChoice = (v) => {
+  selectedChoice.value = v
+  showChart.value = true
+}
+
+// 角色项键盘可用
+const onRoleKey = (e, id) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault()
+    selectRole(id)
+  }
+}
+
+// 重新开始（黑屏结束）
+const restart = () => {
+  screenOff.value = false
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// 回到顶部
+const goTop = () => {
+  try {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } catch (_) {
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }
+}
+
 // 初始化父母养育成本地图（若无 china.json 则用柱状图兜底）
 const initCostMapChart = async () => {
   const el = document.getElementById('costMap')
@@ -1711,7 +1780,8 @@ const initCostMapChart = async () => {
   costMapChart?.dispose?.()
   costMapChart = echarts.init(el)
   try {
-    const res = await fetch('/china.json')
+    const mapUrl = `${import.meta.env.BASE_URL}china.json`
+    const res = await fetch(mapUrl)
     if (res.ok) {
       const mapJson = await res.json()
       echarts.registerMap('china', mapJson)
@@ -1768,9 +1838,9 @@ const initMcnSignupChart = () => {
 
 // 监听角色选择，初始化/清理模态内图表与动效
 watch(selectedRole, async (role) => {
+  document.body.style.overflow = role ? 'hidden' : ''
   if (role === 'parents') {
-    await nextTick()
-    initCostMapChart()
+    // 已将养育成本地图移至页面主体，不再在弹窗中初始化
   }
   if (role === 'mcn') {
     await nextTick()
@@ -1798,14 +1868,140 @@ watch(selectedRole, async (role) => {
   }
 })
 
+// 粒子背景动画
+let particleAnimId = null
+const setupParticles = () => {
+  if (!particleCanvas.value) return
+  const canvas = particleCanvas.value
+  const ctx = canvas.getContext('2d')
+
+  const resize = () => {
+    canvas.width = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+  }
+  resize()
+  window.addEventListener('resize', resize)
+  cleanupFns.push(() => window.removeEventListener('resize', resize))
+
+  const particles = []
+  const particleCount = 50
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      radius: Math.random() * 2 + 1
+    })
+  }
+
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(102, 126, 234, 0.6)'
+    ctx.strokeStyle = 'rgba(102, 126, 234, 0.2)'
+
+    particles.forEach((p, i) => {
+      p.x += p.vx
+      p.y += p.vy
+
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
+      ctx.fill()
+
+      // 连线
+      particles.slice(i + 1).forEach(p2 => {
+        const dx = p.x - p2.x
+        const dy = p.y - p2.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (dist < 120) {
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(p2.x, p2.y)
+          ctx.globalAlpha = 1 - dist / 120
+          ctx.stroke()
+          ctx.globalAlpha = 1
+        }
+      })
+    })
+
+    particleAnimId = requestAnimationFrame(animate)
+  }
+  animate()
+  cleanupFns.push(() => { if (particleAnimId) cancelAnimationFrame(particleAnimId) })
+}
+
+// 视差滚动效果
+const setupParallax = () => {
+  const elements = document.querySelectorAll('[data-parallax]')
+  const onScroll = throttleFn(() => {
+    elements.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax'))
+      const rect = el.getBoundingClientRect()
+      const scrolled = window.scrollY
+      const yPos = -(scrolled * speed)
+      el.style.transform = `translateY(${yPos}px)`
+    })
+  }, 20)
+  window.addEventListener('scroll', onScroll)
+  cleanupFns.push(() => window.removeEventListener('scroll', onScroll))
+}
+
+// 磁性悬停效果
+const setupMagneticEffect = () => {
+  const items = document.querySelectorAll('.magnetic-item')
+  items.forEach(item => {
+    const onMove = (e) => {
+      const rect = item.getBoundingClientRect()
+      const x = e.clientX - rect.left - rect.width / 2
+      const y = e.clientY - rect.top - rect.height / 2
+      const moveX = x * 0.1
+      const moveY = y * 0.1
+      item.style.transform = `translate(${moveX}px, ${moveY}px)`
+    }
+    const onLeave = () => {
+      item.style.transform = 'translate(0, 0)'
+    }
+    item.addEventListener('mousemove', onMove)
+    item.addEventListener('mouseleave', onLeave)
+    cleanupFns.push(() => {
+      item.removeEventListener('mousemove', onMove)
+      item.removeEventListener('mouseleave', onLeave)
+    })
+  })
+}
+
+// 元素进入视口时的渐显动画
+const setupRevealAnimations = () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('reveal-active')
+        }, index * 100)
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('.chart-container, .video-card, .expert-card, .impact-card').forEach(el => {
+    el.classList.add('reveal-item')
+    observer.observe(el)
+  })
+  cleanupFns.push(() => observer.disconnect())
+}
+
 // 资源清理
 onUnmounted(() => {
-  window.removeEventListener('scroll', updateScrollState)
+  window.removeEventListener('scroll', onScroll)
   costMapChart?.dispose?.(); costMapChart = null
   mcnSignupChart?.dispose?.(); mcnSignupChart = null
   if (mcnPenaltyTimer) { clearInterval(mcnPenaltyTimer); mcnPenaltyTimer = null }
   ;[chart1, chartPhoneUsers, chart2, chart3, chart4, chart5, chart6, chart7, chart8, chartAudienceAge, chartAudienceGender, chartAudienceRegion, chartWordCloud]
     .forEach(r => { if (r?.value) echarts.getInstanceByDom(r.value)?.dispose() })
+  cleanupFns.forEach(fn => { try { fn() } catch (_) { } })
 })
 
 // 思维导图初始化
@@ -1822,7 +2018,7 @@ watch(showMindmap, async (v) => {
   inst.setOption({
     tooltip: {
       formatter: (params) => {
-        return `<strong>${params.name}</strong><br/>点击查看详情`
+        return `<strong>${params.name}</strong><br/>`
       }
     },
     series: [{
@@ -1834,7 +2030,7 @@ watch(showMindmap, async (v) => {
         show: true,
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#2c3e50'
       },
       labelLayout: {
         hideOverlap: true
@@ -1895,6 +2091,45 @@ watch(showMindmap, async (v) => {
   min-height: 100vh;
   background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
   overflow-x: hidden;
+}
+
+/* 粒子背景 */
+.particle-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.intro-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-section>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* 磁性悬停效果 */
+.magnetic-item {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* 渐显动画 */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.reveal-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* 开场部分 */
@@ -2112,6 +2347,30 @@ watch(showMindmap, async (v) => {
   }
 }
 
+@keyframes titleGlow {
+
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.15);
+  }
+
+  50% {
+    text-shadow: 0 0 24px rgba(118, 75, 162, 0.25), 0 0 36px rgba(240, 147, 251, 0.18);
+  }
+}
+
+@keyframes metricPulse {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(243, 156, 18, 0));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgba(243, 156, 18, 0.5));
+  }
+}
+
 /* 导航栏 */
 .navbar {
   position: fixed;
@@ -2307,7 +2566,7 @@ watch(showMindmap, async (v) => {
 }
 
 .section {
-  min-height: 100vh;
+  min-height: auto;
   padding: 80px 20px;
   display: flex;
   flex-direction: column;
@@ -2316,6 +2575,10 @@ watch(showMindmap, async (v) => {
   opacity: 0;
   transform: translateY(50px);
   transition: all 1s ease-out;
+}
+
+.section.fullscreen {
+  min-height: 100vh;
 }
 
 .section.visible {
@@ -2330,6 +2593,7 @@ watch(showMindmap, async (v) => {
   margin-bottom: 60px;
   color: #2c3e50;
   line-height: 1.4;
+  animation: titleGlow 6s ease-in-out infinite;
 }
 
 .section-title {
@@ -2338,6 +2602,7 @@ watch(showMindmap, async (v) => {
   text-align: center;
   margin-bottom: 40px;
   color: #34495e;
+  animation: titleGlow 8s ease-in-out infinite;
 }
 
 .section-title.white {
@@ -2430,12 +2695,59 @@ watch(showMindmap, async (v) => {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
 }
 
 .video-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+}
+
+.card-glow {
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  border-radius: 20px;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(20px);
+  transition: opacity 0.5s;
+}
+
+.video-card:hover .card-glow {
+  opacity: 0.6;
+  animation: rotateBorder 3s linear infinite;
+}
+
+@keyframes rotateBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.floating-card {
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+.floating-card:nth-child(2) {
+  animation-delay: -3s;
+}
+
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 .video-placeholder {
@@ -2510,6 +2822,7 @@ watch(showMindmap, async (v) => {
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
 
 .choice-btn::before {
@@ -2520,21 +2833,51 @@ watch(showMindmap, async (v) => {
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: #3498db;
-  transition: all 0.5s;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform: translate(-50%, -50%);
   z-index: 0;
 }
 
+.choice-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #3498db, #2980b9, #3498db);
+  border-radius: 50px;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .choice-btn:hover::before {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
+}
+
+.choice-btn:hover::after {
+  opacity: 0.8;
 }
 
 .choice-btn:hover {
   color: white;
-  transform: scale(1.08);
-  box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.5);
+  border-color: transparent;
 }
 
 .choice-btn.selected {
@@ -2636,6 +2979,7 @@ watch(showMindmap, async (v) => {
   font-size: 2rem;
   font-weight: bold;
   color: #ffd700;
+  animation: metricPulse 4s ease-in-out infinite;
 }
 
 .dark-section {
@@ -2694,6 +3038,7 @@ watch(showMindmap, async (v) => {
   font-weight: bold;
   color: #f39c12;
   margin: 0 10px;
+  animation: metricPulse 4s ease-in-out infinite;
 }
 
 .section-intro {
@@ -2757,6 +3102,22 @@ watch(showMindmap, async (v) => {
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+
+.step-badge {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
 }
 
 .timeline-item:nth-child(odd) .timeline-content {
@@ -2827,10 +3188,10 @@ watch(showMindmap, async (v) => {
 }
 
 .piaget-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 40px;
-  justify-content: center;
-  align-items: flex-end;
+  align-items: end;
   max-width: 1200px;
   margin: 50px auto;
   padding: 40px 20px;
@@ -2838,7 +3199,7 @@ watch(showMindmap, async (v) => {
 
 .piaget-stage {
   flex: 1;
-  max-width: 250px;
+  max-width: 360px;
   position: relative;
   cursor: pointer;
   transition: transform 0.3s;
@@ -2859,14 +3220,21 @@ watch(showMindmap, async (v) => {
   position: relative;
 }
 
+.piaget-stage:hover .stage-figure {
+  box-shadow: 0 14px 40px rgba(102, 126, 234, 0.45);
+  transform: translateZ(0) scale(1.03);
+}
+
 .stage-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center bottom;
   border-radius: 50% 50% 20px 20px;
   opacity: .9;
+  padding: 10px;
 }
 
 .stage-label-top {
@@ -2882,17 +3250,6 @@ watch(showMindmap, async (v) => {
   font-size: .9rem;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
 
 .figure-icon {
   font-size: 3rem;
@@ -2908,16 +3265,18 @@ watch(showMindmap, async (v) => {
   text-align: center;
 }
 
-.stage-info h3 {
-  font-size: 1.2rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+.stage-age {
+  font-size: 1.1rem;
+  color: #667eea;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-.stage-age {
-  font-size: 1rem;
-  color: #7f8c8d;
-  font-weight: bold;
+.stage-name {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
 }
 
 .stage-detail {
@@ -2996,6 +3355,7 @@ watch(showMindmap, async (v) => {
   max-width: 1200px;
   margin: 50px auto;
   padding: 0 20px;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .example-image-card {
@@ -3003,16 +3363,60 @@ watch(showMindmap, async (v) => {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  animation: imageCardReveal 0.8s ease-out backwards;
+}
+
+.example-image-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.example-image-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.example-image-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.example-image-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes imageCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotateX(15deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+.example-image-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 1;
+}
+
+.example-image-card:hover::before {
+  opacity: 1;
 }
 
 .example-image-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  transform: translateY(-15px) scale(1.05) rotateZ(2deg);
+  box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
 }
 
 .example-image-card img {
@@ -3022,42 +3426,6 @@ watch(showMindmap, async (v) => {
   display: block;
 }
 
-/* 过渡动画 */
-.transition-animation {
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #e3ffe7 0%, #ffffff 100%);
-}
-
-.child-shrink {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
-}
-
-.child-shrink.shrinking {
-  width: 20px;
-  height: 20px;
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.6);
-}
-
-.child-emoji {
-  font-size: 5rem;
-  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.child-shrink.shrinking .child-emoji {
-  font-size: 0;
-  opacity: 0;
-}
 
 .circle-interaction {
   position: relative;
@@ -3622,6 +3990,27 @@ watch(showMindmap, async (v) => {
   opacity: 1;
 }
 
+.jar-full-msg {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  animation: jarFullGlow 2s ease-in-out infinite;
+}
+
+@keyframes jarFullGlow {
+
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+
+  50% {
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.6);
+  }
+}
+
 .first-video-anim {
   width: 100%;
   margin: 20px 0;
@@ -3895,6 +4284,35 @@ watch(showMindmap, async (v) => {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* 回到顶部与重播按钮 */
+.backtop {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1100;
+}
+
+.restart-btn {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
 }
 
 /* 响应式设计 */

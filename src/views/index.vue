@@ -86,14 +86,17 @@
 
     <!-- 开场部分 -->
     <section id="intro" class="section intro-section">
-      <h1 class="main-title fade-in">你每天有多少时间在和小小的手机屏幕接触？</h1>
+      <!-- 粒子背景 -->
+      <canvas ref="particleCanvas" class="particle-bg"></canvas>
+
+      <h1 class="main-title fade-in" data-parallax="0.3">你每天有多少时间在和小小的手机屏幕接触？</h1>
 
       <!-- 图表1：中国居民每日平均互联网使用时间 -->
-      <div class="chart-container" ref="chart1"></div>
+      <div class="chart-container" ref="chart1" data-parallax="0.15"></div>
       <p class="data-source">数据来源：国家统计局、中国互联网络信息中心（CNNIC）、QuestMobile</p>
 
       <!-- 图表：手机网民占比 -->
-      <div class="chart-container" ref="chartPhoneUsers"></div>
+      <div class="chart-container" ref="chartPhoneUsers" data-parallax="0.15"></div>
     </section>
 
     <!-- 短视频使用时间 -->
@@ -119,17 +122,19 @@
 
       <!-- 视频示例图片 -->
       <div class="video-examples">
-        <div class="video-card">
+        <div class="video-card floating-card">
           <img src="@/assets/images/1.png" alt="视频示例1" class="video-image" />
           <div class="video-info">
             <p class="video-likes">❤️ 123.4万</p>
           </div>
+          <div class="card-glow"></div>
         </div>
-        <div class="video-card">
+        <div class="video-card floating-card">
           <img src="@/assets/images/2.png" alt="视频示例2" class="video-image" />
           <div class="video-info">
             <p class="video-likes">❤️ 89.2万</p>
           </div>
+          <div class="card-glow"></div>
         </div>
       </div>
 
@@ -295,13 +300,13 @@
         <div v-for="(stage, index) in piagetStages" :key="index" class="piaget-stage" @mouseenter="currentStage = index"
           @mouseleave="currentStage = null">
           <div class="stage-figure" :style="{ height: stage.height }">
-            <div class="stage-label-top">{{ stage.name }}</div>
+            <!-- <div class="stage-label-top">{{ stage.name }}</div> -->
             <img v-if="stage.image" :src="stage.image" alt="阶段图片" class="stage-photo" />
             <div class="figure-icon" v-else>👶</div>
           </div>
           <div class="stage-info">
-            <h3 class="sr-only">{{ stage.name }}</h3>
             <p class="stage-age">{{ stage.age }}</p>
+            <h3 class="stage-name">{{ stage.name }}</h3>
           </div>
           <transition name="slide-up">
             <div v-if="currentStage === index" class="stage-detail">
@@ -377,12 +382,6 @@
       </div>
     </section>
 
-    <!-- 过渡动画：孩子缩小成点 -->
-    <div class="transition-animation" ref="transitionAnim">
-      <div class="child-shrink" :class="{ 'shrinking': isTransitioning }">
-        <span class="child-emoji">👶</span>
-      </div>
-    </div>
 
     <!-- 儿童影响 -->
     <section id="impact" class="section impact-section fullscreen">
@@ -479,7 +478,8 @@
       </div>
 
       <p class="final-message" :class="{ show: candyCount >= 5 }">
-        守护童心，请为孩子的童年时光存入自由与快乐，而非流量与数据。
+        <span v-if="candyCount < 20">守护童心，请为孩子的童年时光存入自由与快乐，而非流量与数据。</span>
+        <span v-else class="jar-full-msg">🎉 储蓄罐已满！让我们一起守护每一个孩子的童年时光。</span>
       </p>
     </section>
 
@@ -515,6 +515,7 @@ const chartAudienceAge = ref(null)
 const chartAudienceGender = ref(null)
 const chartAudienceRegion = ref(null)
 const chartWordCloud = ref(null)
+const particleCanvas = ref(null)
 
 // 模态内图表引用（运行时实例）
 let costMapChart = null
@@ -587,6 +588,7 @@ const experts = [
 const candyCount = ref(0)
 const screenOff = ref(false)
 const jarPulse = ref(false)
+const allowScreenOff = ref(false)
 
 // 开场动画和导航
 const openingComplete = ref(false)
@@ -626,28 +628,28 @@ const piagetStages = [
   {
     name: '感知运动阶段',
     age: '0-2岁',
-    height: '100px',
+    height: '180px',
     detail: '婴儿通过看、摸、吃、抓来认识世界，就像"用手和嘴思考"。这个阶段的孩子连"藏猫猫"都难以理解，更无法理解网络的意义，他们的一切行为依赖即时反应。',
     image: new URL('@/assets/images/11.jpg', import.meta.url).href
   },
   {
     name: '前运算阶段',
     age: '2-7岁',
-    height: '180px',
+    height: '250px',
     detail: '孩子开始用语言和符号表达，但思维充满局限性：认为月亮会跟着自己走，无法理解他人视角。觉得玩具有生命，会和娃娃聊天。如果果汁从高杯倒进矮杯，他们会坚持矮杯"变少了"，无法理解守恒概念。',
     image: new URL('@/assets/images/12.jpg', import.meta.url).href
   },
   {
     name: '具体运算阶段',
     age: '7-11岁',
-    height: '250px',
+    height: '320px',
     detail: '孩子开始有逻辑，但必须依赖具体例子。能理解"A比B高，B比C高，所以A比C高"，但无法回答"如果人类不用吃饭会怎样"这种抽象假设。他们严格按规则行事，认为"规则不能变"。',
     image: new URL('@/assets/images/13.jpg', import.meta.url).href
   },
   {
     name: '形式运算阶段',
     age: '11岁以后',
-    height: '320px',
+    height: '390px',
     detail: '青少年逐渐能进行假设推理，比如讨论"如果地球没有重力"，但这类能力仍需教育引导才能成熟。此前，儿童对网络风险、长期后果缺乏预判力。',
     image: new URL('@/assets/images/14.jpg', import.meta.url).href
   }
@@ -1000,7 +1002,7 @@ const updateScrollState = () => {
 
   // 滚动到底部触发黑屏
   const atBottom = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 2)
-  if (atBottom && !screenOff.value) {
+  if (atBottom && allowScreenOff.value && !screenOff.value) {
     // 略微延迟，避免滚动抖动
     setTimeout(() => { screenOff.value = true }, 300)
   }
@@ -1048,6 +1050,10 @@ onMounted(() => {
     setupChart3HighlightOnReveal()
     setupFirstVideoAnimation()
     drawNetworkLines()
+    setupParticles()
+    setupParallax()
+    setupMagneticEffect()
+    setupRevealAnimations()
     const onResizeThrottled = throttleFn(drawNetworkLines, 150)
     window.addEventListener('resize', onResizeThrottled)
     cleanupFns.push(() => window.removeEventListener('resize', onResizeThrottled))
@@ -1616,21 +1622,59 @@ const setupNavScroll = () => {
 
 // 设置过渡动画
 const setupTransitionAnimation = () => {
-  const observer = new IntersectionObserver((entries) => {
+  const exampleImagesEl = document.querySelector('.example-images')
+  if (!exampleImagesEl) return
+
+  let shrinkStarted = false
+
+  // 当图片网格进入视口后，启用基于滚动的缩放过渡（可逆）
+  const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && entry.target.classList.contains('example-images')) {
-        // 当用户看到4张图片后，触发过渡动画
-        setTimeout(() => {
-          isTransitioning.value = true
-        }, 2000) // 2秒后开始缩小
+      if (entry.isIntersecting && !shrinkStarted) {
+        shrinkStarted = true
+        const onScrollShrink = throttleFn(() => {
+          const rect = exampleImagesEl.getBoundingClientRect()
+          const viewportH = window.innerHeight
+
+          // 优化：只有当图片区域的底部进入视口后，才开始计算缩放
+          // 这样用户可以先完整看到所有图片
+          const containerBottom = rect.bottom
+          const shrinkTrigger = viewportH * 0.7 // 当底部距离视口顶部70%时开始
+
+          if (containerBottom > shrinkTrigger) {
+            // 图片还在可视区域，保持原状
+            exampleImagesEl.style.transform = 'scale(1)'
+            exampleImagesEl.style.opacity = '1'
+            isTransitioning.value = false
+            return
+          }
+
+          // 计算缩放进度：从触发点到完全离开视口
+          const shrinkDistance = viewportH * 1.2 // 缩放过程的距离
+          const traveled = Math.max(0, shrinkTrigger - containerBottom)
+          let p = traveled / shrinkDistance
+          p = Math.max(0, Math.min(1, p))
+
+          const scale = 1 - p * 0.95 // 保留5%避免完全消失
+          const opacity = 1 - p * 0.9
+          exampleImagesEl.style.transform = `scale(${scale})`
+          exampleImagesEl.style.opacity = String(opacity)
+
+          // 当缩小到一定程度时显示中心点动画
+          if (p >= 0.85) {
+            isTransitioning.value = true
+          } else {
+            isTransitioning.value = false // 向上滚动时恢复
+          }
+        }, 50)
+        window.addEventListener('scroll', onScrollShrink)
+        cleanupFns.push(() => window.removeEventListener('scroll', onScrollShrink))
       }
     })
-  }, { threshold: 0.8 })
+  }, { threshold: 0.3 })
 
-  const exampleImagesEl = document.querySelector('.example-images')
-  if (exampleImagesEl) {
-    observer.observe(exampleImagesEl)
-  }
+  io.observe(exampleImagesEl)
+  cleanupFns.push(() => io.disconnect())
 }
 
 // 设置时间轴动画
@@ -1658,12 +1702,18 @@ const setupTimelineAnimation = () => {
   }, 500)
 }
 
-// 添加糖果时检查是否显示结尾
+// 添加糖果时检查是否显示结尾（最多20个）
 const addCandy = () => {
-  if (candyCount.value < 10) {
+  if (candyCount.value < 20) {
     candyCount.value++
     jarPulse.value = true
     setTimeout(() => { jarPulse.value = false }, 600)
+    // 允许到达底部后触发息屏
+    allowScreenOff.value = true
+  } else {
+    // 已满，显示震动反馈
+    jarPulse.value = true
+    setTimeout(() => { jarPulse.value = false }, 300)
   }
 }
 
@@ -1818,6 +1868,131 @@ watch(selectedRole, async (role) => {
   }
 })
 
+// 粒子背景动画
+let particleAnimId = null
+const setupParticles = () => {
+  if (!particleCanvas.value) return
+  const canvas = particleCanvas.value
+  const ctx = canvas.getContext('2d')
+
+  const resize = () => {
+    canvas.width = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+  }
+  resize()
+  window.addEventListener('resize', resize)
+  cleanupFns.push(() => window.removeEventListener('resize', resize))
+
+  const particles = []
+  const particleCount = 50
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      radius: Math.random() * 2 + 1
+    })
+  }
+
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = 'rgba(102, 126, 234, 0.6)'
+    ctx.strokeStyle = 'rgba(102, 126, 234, 0.2)'
+
+    particles.forEach((p, i) => {
+      p.x += p.vx
+      p.y += p.vy
+
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
+      ctx.fill()
+
+      // 连线
+      particles.slice(i + 1).forEach(p2 => {
+        const dx = p.x - p2.x
+        const dy = p.y - p2.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        if (dist < 120) {
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(p2.x, p2.y)
+          ctx.globalAlpha = 1 - dist / 120
+          ctx.stroke()
+          ctx.globalAlpha = 1
+        }
+      })
+    })
+
+    particleAnimId = requestAnimationFrame(animate)
+  }
+  animate()
+  cleanupFns.push(() => { if (particleAnimId) cancelAnimationFrame(particleAnimId) })
+}
+
+// 视差滚动效果
+const setupParallax = () => {
+  const elements = document.querySelectorAll('[data-parallax]')
+  const onScroll = throttleFn(() => {
+    elements.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax'))
+      const rect = el.getBoundingClientRect()
+      const scrolled = window.scrollY
+      const yPos = -(scrolled * speed)
+      el.style.transform = `translateY(${yPos}px)`
+    })
+  }, 20)
+  window.addEventListener('scroll', onScroll)
+  cleanupFns.push(() => window.removeEventListener('scroll', onScroll))
+}
+
+// 磁性悬停效果
+const setupMagneticEffect = () => {
+  const items = document.querySelectorAll('.magnetic-item')
+  items.forEach(item => {
+    const onMove = (e) => {
+      const rect = item.getBoundingClientRect()
+      const x = e.clientX - rect.left - rect.width / 2
+      const y = e.clientY - rect.top - rect.height / 2
+      const moveX = x * 0.1
+      const moveY = y * 0.1
+      item.style.transform = `translate(${moveX}px, ${moveY}px)`
+    }
+    const onLeave = () => {
+      item.style.transform = 'translate(0, 0)'
+    }
+    item.addEventListener('mousemove', onMove)
+    item.addEventListener('mouseleave', onLeave)
+    cleanupFns.push(() => {
+      item.removeEventListener('mousemove', onMove)
+      item.removeEventListener('mouseleave', onLeave)
+    })
+  })
+}
+
+// 元素进入视口时的渐显动画
+const setupRevealAnimations = () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('reveal-active')
+        }, index * 100)
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('.chart-container, .video-card, .expert-card, .impact-card').forEach(el => {
+    el.classList.add('reveal-item')
+    observer.observe(el)
+  })
+  cleanupFns.push(() => observer.disconnect())
+}
+
 // 资源清理
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
@@ -1916,6 +2091,45 @@ watch(showMindmap, async (v) => {
   min-height: 100vh;
   background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
   overflow-x: hidden;
+}
+
+/* 粒子背景 */
+.particle-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.intro-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-section>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* 磁性悬停效果 */
+.magnetic-item {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* 渐显动画 */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.reveal-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* 开场部分 */
@@ -2481,12 +2695,59 @@ watch(showMindmap, async (v) => {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
 }
 
 .video-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+}
+
+.card-glow {
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  border-radius: 20px;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(20px);
+  transition: opacity 0.5s;
+}
+
+.video-card:hover .card-glow {
+  opacity: 0.6;
+  animation: rotateBorder 3s linear infinite;
+}
+
+@keyframes rotateBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.floating-card {
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+.floating-card:nth-child(2) {
+  animation-delay: -3s;
+}
+
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 .video-placeholder {
@@ -2561,6 +2822,7 @@ watch(showMindmap, async (v) => {
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
 
 .choice-btn::before {
@@ -2571,21 +2833,51 @@ watch(showMindmap, async (v) => {
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: #3498db;
-  transition: all 0.5s;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform: translate(-50%, -50%);
   z-index: 0;
 }
 
+.choice-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #3498db, #2980b9, #3498db);
+  border-radius: 50px;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .choice-btn:hover::before {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
+}
+
+.choice-btn:hover::after {
+  opacity: 0.8;
 }
 
 .choice-btn:hover {
   color: white;
-  transform: scale(1.08);
-  box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.5);
+  border-color: transparent;
 }
 
 .choice-btn.selected {
@@ -2896,10 +3188,10 @@ watch(showMindmap, async (v) => {
 }
 
 .piaget-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 40px;
-  justify-content: center;
-  align-items: flex-end;
+  align-items: end;
   max-width: 1200px;
   margin: 50px auto;
   padding: 40px 20px;
@@ -2907,7 +3199,7 @@ watch(showMindmap, async (v) => {
 
 .piaget-stage {
   flex: 1;
-  max-width: 250px;
+  max-width: 360px;
   position: relative;
   cursor: pointer;
   transition: transform 0.3s;
@@ -2938,9 +3230,11 @@ watch(showMindmap, async (v) => {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center bottom;
   border-radius: 50% 50% 20px 20px;
   opacity: .9;
+  padding: 10px;
 }
 
 .stage-label-top {
@@ -2956,17 +3250,6 @@ watch(showMindmap, async (v) => {
   font-size: .9rem;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
 
 .figure-icon {
   font-size: 3rem;
@@ -2982,16 +3265,18 @@ watch(showMindmap, async (v) => {
   text-align: center;
 }
 
-.stage-info h3 {
-  font-size: 1.2rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+.stage-age {
+  font-size: 1.1rem;
+  color: #667eea;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-.stage-age {
-  font-size: 1rem;
-  color: #7f8c8d;
-  font-weight: bold;
+.stage-name {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
 }
 
 .stage-detail {
@@ -3070,6 +3355,7 @@ watch(showMindmap, async (v) => {
   max-width: 1200px;
   margin: 50px auto;
   padding: 0 20px;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .example-image-card {
@@ -3077,16 +3363,60 @@ watch(showMindmap, async (v) => {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  animation: imageCardReveal 0.8s ease-out backwards;
+}
+
+.example-image-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.example-image-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.example-image-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.example-image-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes imageCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotateX(15deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+.example-image-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 1;
+}
+
+.example-image-card:hover::before {
+  opacity: 1;
 }
 
 .example-image-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  transform: translateY(-15px) scale(1.05) rotateZ(2deg);
+  box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
 }
 
 .example-image-card img {
@@ -3096,42 +3426,6 @@ watch(showMindmap, async (v) => {
   display: block;
 }
 
-/* 过渡动画 */
-.transition-animation {
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #e3ffe7 0%, #ffffff 100%);
-}
-
-.child-shrink {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
-}
-
-.child-shrink.shrinking {
-  width: 20px;
-  height: 20px;
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.6);
-}
-
-.child-emoji {
-  font-size: 5rem;
-  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.child-shrink.shrinking .child-emoji {
-  font-size: 0;
-  opacity: 0;
-}
 
 .circle-interaction {
   position: relative;
@@ -3694,6 +3988,27 @@ watch(showMindmap, async (v) => {
 
 .final-message.show {
   opacity: 1;
+}
+
+.jar-full-msg {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  animation: jarFullGlow 2s ease-in-out infinite;
+}
+
+@keyframes jarFullGlow {
+
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+
+  50% {
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.6);
+  }
 }
 
 .first-video-anim {
