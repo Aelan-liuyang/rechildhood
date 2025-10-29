@@ -150,7 +150,7 @@
 
     <!-- 数字劳工概念 -->
     <section id="digital-labor" class="section concept-section">
-      <h2 class="highlight-text">当你在刷手机时真的是在进行纯粹的娱乐吗？</h2>
+      <h2 class="highlight-text anim-reveal">当你在刷手机时真的是在进行纯粹的娱乐吗？</h2>
       <p class="concept-intro">
         你有没有想过自己是在劳动，而屏幕那头的儿童或许在进行另一种看不见的劳动。
       </p>
@@ -196,7 +196,7 @@
 
       <div class="childlabor-types">
         <div class="type-card">
-          <h3>�介接触型</h3>
+          <h3>媒介接触型</h3>
           <p>以短视频的浏览为主要形式，由监护人拍摄发布或自主生产内容</p>
         </div>
         <div class="type-card">
@@ -241,11 +241,33 @@
       <h1 class="main-title">一个"网红儿童"的诞生</h1>
 
       <div class="timeline">
-        <div class="timeline-item" v-for="(item, index) in timeline" :key="index"
-          :class="{ 'timeline-visible': timelineVisible[index] }">
+        <!-- 首条视频（特殊处理，包含动画） -->
+        <div class="timeline-item first-video-item" :class="{ 'timeline-visible': timelineVisible[0] }">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>{{ timeline[0].title }}</h3>
+            <div class="first-video-anim" ref="firstVideoAnim">
+              <div class="video-frame">
+                <img :src="firstVideoSrc" alt="首条视频" class="timeline-video-img" />
+                <div class="like-counter">❤️ {{ likeCount.toLocaleString() }}</div>
+                <div class="hearts">
+                  <span v-for="n in 28" :key="n" class="heart">❤️</span>
+                </div>
+                <div class="money" :class="{ show: moneyShow }">💰</div>
+              </div>
+            </div>
+            <p>{{ timeline[0].desc }}</p>
+            <div class="timeline-icon">{{ timeline[0].icon }}</div>
+          </div>
+        </div>
+
+        <!-- 其他时间线项 -->
+        <div v-for="(item, index) in timeline.slice(1)" :key="index + 1" class="timeline-item"
+          :class="{ 'timeline-visible': timelineVisible[index + 1] }">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3>{{ item.title }}</h3>
+            <img v-if="item.image" :src="item.image" :alt="item.title" class="timeline-image" />
             <p>{{ item.desc }}</p>
             <div class="timeline-icon">{{ item.icon }}</div>
           </div>
@@ -268,10 +290,12 @@
         <div v-for="(stage, index) in piagetStages" :key="index" class="piaget-stage" @mouseenter="currentStage = index"
           @mouseleave="currentStage = null">
           <div class="stage-figure" :style="{ height: stage.height }">
-            <div class="figure-icon">👶</div>
+            <div class="stage-label-top">{{ stage.name }}</div>
+            <img v-if="stage.image" :src="stage.image" alt="阶段图片" class="stage-photo" />
+            <div class="figure-icon" v-else>👶</div>
           </div>
           <div class="stage-info">
-            <h3>{{ stage.name }}</h3>
+            <h3 class="sr-only">{{ stage.name }}</h3>
             <p class="stage-age">{{ stage.age }}</p>
           </div>
           <transition name="slide-up">
@@ -288,13 +312,15 @@
       <h2 class="section-title">屏幕背后的利益网络</h2>
 
       <div class="circle-interaction">
-        <div class="center-child" :class="{ shrink: selectedRole }">
+        <svg ref="networkSvg" class="network-lines"></svg>
+        <div ref="centerChildEl" class="center-child" :class="{ shrink: selectedRole }">
           <div class="child-icon">👶</div>
         </div>
 
-        <div class="roles-container">
-          <div v-for="role in roles" :key="role.id" class="role-item" :class="{ active: selectedRole === role.id }"
-            @click="selectRole(role.id)">
+        <div ref="rolesContainerEl" class="roles-container">
+          <div v-for="role in roles" :key="role.id" class="role-item" :data-role="role.id"
+            :data-tip="`点击查看${role.name}详情`" :class="{ active: selectedRole === role.id }" @click="selectRole(role.id)"
+            @mouseenter="highlightLine(role.id, true)" @mouseleave="highlightLine(role.id, false)">
             <div class="role-avatar">{{ role.icon }}</div>
             <div class="role-name">{{ role.name }}</div>
           </div>
@@ -323,13 +349,16 @@
 
         <!-- 性别分布图 -->
         <div class="chart-container" ref="chartAudienceGender"></div>
+
+        <!-- 地域分布图 -->
+        <div class="chart-container region" ref="chartAudienceRegion"></div>
       </div>
 
       <!-- 评论词云 -->
       <h3 class="subsection-title">评论区的声音</h3>
       <div class="chart-container large" ref="chartWordCloud"></div>
 
-      <p class="insight-text">
+      <p class="insight-text anim-reveal">
         萌娃的天然流量优势再加之粉丝追捧，"晒娃"行为在相关平台越烧越旺。某千万级网红父母为其新生儿"光速"注册账号，仅1条视频，抖音吸粉十几万，点赞超30万。
       </p>
 
@@ -392,11 +421,25 @@
       <p class="insight-text">
         记录成长本无对错，但问题在于尺度与动机。"晒娃"行为本身是一个复杂的罗生门。其性质是温暖的记录还是功利的消费，取决于爱、利益与压力三方博弈的结果。
       </p>
+      <div style="margin-top:20px;">
+        <button class="add-candy-btn" @click="showMindmap = true">查看思维导图</button>
+      </div>
     </section>
+
+    <!-- 思维导图弹窗 -->
+    <transition name="modal-fade">
+      <div v-if="showMindmap" class="modal-overlay" @click="showMindmap = false">
+        <div class="modal-content" @click.stop>
+          <button class="modal-close" @click="showMindmap = false">✕</button>
+          <h3 style="margin:0 0 10px 0;">动机溯源思维导图</h3>
+          <div class="chart-container" ref="chartMindMap" style="height:500px;"></div>
+        </div>
+      </div>
+    </transition>
 
     <!-- 专家建议 -->
     <section id="solution" class="section expert-section">
-      <h1 class="main-title">把童年还给孩子，让爱回到现实</h1>
+      <h1 class="main-title anim-reveal">把童年还给孩子，让爱回到现实</h1>
 
       <p class="section-intro">要整治"网红儿童"背后的流量牟利乱象，必须多方协同发力。</p>
 
@@ -415,7 +458,7 @@
 
       <div class="savings-jar">
         <div class="jar-container">
-          <div class="jar">
+          <div class="jar" :class="{ pulse: jarPulse }">
             <div class="candies">
               <span v-for="n in candyCount" :key="n" class="candy">🍭</span>
             </div>
@@ -435,6 +478,7 @@
 
     <!-- 全屏息屏效果 -->
     <div class="screen-off" :class="{ active: screenOff }">
+      <div class="tv-off-bar"></div>
       <div class="phone-shutdown">
         <div class="shutdown-text">📱</div>
       </div>
@@ -443,7 +487,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
 
@@ -459,17 +503,33 @@ const chart7 = ref(null)
 const chart8 = ref(null)
 const chartAudienceAge = ref(null)
 const chartAudienceGender = ref(null)
+const chartAudienceRegion = ref(null)
 const chartWordCloud = ref(null)
+
+// 模态内图表引用（运行时实例）
+let costMapChart = null
+let mcnSignupChart = null
+let mcnPenaltyTimer = null
+
+// 首条视频动画控制
+const firstVideoAnim = ref(null)
+const moneyShow = ref(false)
+const likeCount = ref(100)
+let likeTimer = null
+const costRefImg = new URL('@/assets/images/9.png', import.meta.url).href
+const firstVideoSrc = new URL('@/assets/images/7.png', import.meta.url).href
+const liveStreamImg = new URL('@/assets/images/8.png', import.meta.url).href
+const showMindmap = ref(false)
+const chartMindMap = ref(null)
 
 // 时间轴数据
 const timeline = [
-  { title: '第一条视频发布', desc: '开始分享日常', icon: '📱' },
-  { title: '当流量涌入', desc: '点赞数暴涨，关注度提升', icon: '❤️' },
-  { title: '当直播变现', desc: '开启直播带货', icon: '💰' },
-  { title: '当商业合作接踵而至', desc: '第一个广告来了', icon: '📢' },
-  { title: '当MCN抛出橄榄枝', desc: '签约MCN机构', icon: '🤝' }
+  { title: '短视频第一条视频发布', desc: '当流量涌入', icon: '📱', image: firstVideoSrc },
+  { title: '直播变现', desc: '开启直播带货', icon: '💰', image: liveStreamImg },
+  { title: '商业合作接踵而至', desc: '第一个广告来了', icon: '📢' },
+  { title: 'MCN抛出橄榄枝', desc: '签约MCN机构', icon: '🤝' }
 ]
-const timelineVisible = ref([false, false, false, false, false])
+const timelineVisible = ref([false, false, false, false])
 
 // 四方角色数据
 const roles = [
@@ -480,6 +540,9 @@ const roles = [
 ]
 
 const selectedRole = ref(null)
+const rolesContainerEl = ref(null)
+const centerChildEl = ref(null)
+const networkSvg = ref(null)
 
 // 影响数据
 const impacts = [
@@ -513,6 +576,7 @@ const experts = [
 // 糖果计数
 const candyCount = ref(0)
 const screenOff = ref(false)
+const jarPulse = ref(false)
 
 // 开场动画和导航
 const openingComplete = ref(false)
@@ -550,25 +614,29 @@ const piagetStages = [
     name: '感知运动阶段',
     age: '0-2岁',
     height: '100px',
-    detail: '婴儿通过看、摸、吃、抓来认识世界，就像"用手和嘴思考"。这个阶段的孩子连"藏猫猫"都难以理解，更无法理解网络的意义，他们的一切行为依赖即时反应。'
+    detail: '婴儿通过看、摸、吃、抓来认识世界，就像"用手和嘴思考"。这个阶段的孩子连"藏猫猫"都难以理解，更无法理解网络的意义，他们的一切行为依赖即时反应。',
+    image: new URL('@/assets/images/11.jpg', import.meta.url).href
   },
   {
     name: '前运算阶段',
     age: '2-7岁',
     height: '180px',
-    detail: '孩子开始用语言和符号表达，但思维充满局限性：认为月亮会跟着自己走，无法理解他人视角。觉得玩具有生命，会和娃娃聊天。如果果汁从高杯倒进矮杯，他们会坚持矮杯"变少了"，无法理解守恒概念。'
+    detail: '孩子开始用语言和符号表达，但思维充满局限性：认为月亮会跟着自己走，无法理解他人视角。觉得玩具有生命，会和娃娃聊天。如果果汁从高杯倒进矮杯，他们会坚持矮杯"变少了"，无法理解守恒概念。',
+    image: new URL('@/assets/images/12.jpg', import.meta.url).href
   },
   {
     name: '具体运算阶段',
     age: '7-11岁',
     height: '250px',
-    detail: '孩子开始有逻辑，但必须依赖具体例子。能理解"A比B高，B比C高，所以A比C高"，但无法回答"如果人类不用吃饭会怎样"这种抽象假设。他们严格按规则行事，认为"规则不能变"。'
+    detail: '孩子开始有逻辑，但必须依赖具体例子。能理解"A比B高，B比C高，所以A比C高"，但无法回答"如果人类不用吃饭会怎样"这种抽象假设。他们严格按规则行事，认为"规则不能变"。',
+    image: new URL('@/assets/images/13.jpg', import.meta.url).href
   },
   {
     name: '形式运算阶段',
     age: '11岁以后',
     height: '320px',
-    detail: '青少年逐渐能进行假设推理，比如讨论"如果地球没有重力"，但这类能力仍需教育引导才能成熟。此前，儿童对网络风险、长期后果缺乏预判力。'
+    detail: '青少年逐渐能进行假设推理，比如讨论"如果地球没有重力"，但这类能力仍需教育引导才能成熟。此前，儿童对网络风险、长期后果缺乏预判力。',
+    image: new URL('@/assets/images/14.jpg', import.meta.url).href
   }
 ]
 
@@ -597,6 +665,10 @@ const getRoleContent = () => {
               <span class="legend-item"><span class="legend-color" style="background: #fb6a4a"></span> 50-60万</span>
               <span class="legend-item"><span class="legend-color" style="background: #de2d26"></span> 60-80万</span>
               <span class="legend-item"><span class="legend-color" style="background: #a50f15"></span> 80万以上</span>
+            </div>
+            <div id="costMap" class="echarts-embed" style="width:100%;height:360px;background:#fff;border-radius:12px;"></div>
+            <div style="width:100%;margin-top:12px;text-align:center;">
+              <img :src="costRefImg" alt="养育成本参考" style="max-width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);" />
             </div>
           </div>
         </div>
@@ -729,6 +801,9 @@ const getRoleContent = () => {
         </div>
       </div>
 
+      <h4 style="margin-top: 20px; color: #2c3e50; font-size: 1.4rem;">MCN签约比例（抖查查）</h4>
+      <div id="mcnSignupChart" style="width:100%;height:320px;background:#fff;border-radius:16px;"></div>
+
       <p class="warning">但是MCN资质参差不齐，签约后伴随着的是：</p>
       <ul>
         <li>高频率的视频发表（亲子类头部达人月发布视频最高达96条）</li>
@@ -785,6 +860,107 @@ const scrollToSection = (sectionId) => {
   }
 }
 
+// 进入可视区域后高亮 chart3 的“亲子”条目并渐显说明
+const setupChart3HighlightOnReveal = () => {
+  if (!chart3.value) return
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const inst = echarts.getInstanceByDom(chart3.value)
+        if (inst) {
+          try {
+            const opt = inst.getOption()
+            const cats = (opt?.yAxis?.[0]?.data) || []
+            const idx = cats.indexOf('亲子')
+            if (idx >= 0) {
+              inst.dispatchAction({ type: 'highlight', seriesIndex: 0, dataIndex: idx })
+              inst.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: idx })
+            }
+          } catch (e) { /* noop */ }
+        }
+        const note = document.querySelector('.data-note')
+        if (note) note.classList.add('emerge')
+        observer.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.6 })
+  observer.observe(chart3.value)
+}
+
+// 首条视频动画：进入视口后爱心从右侧不断涌出并放大覆盖，随后变成金钱符号
+const setupFirstVideoAnimation = () => {
+  if (!firstVideoAnim.value) return
+  const container = firstVideoAnim.value
+  const heartsEl = container.querySelector('.hearts')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        container.classList.add('run')
+        // 点赞数上升动画
+        likeTimer && clearInterval(likeTimer)
+        likeCount.value = 100
+        likeTimer = setInterval(() => {
+          likeCount.value += Math.floor(50 + Math.random() * 150)
+          if (likeCount.value >= 5000) {
+            clearInterval(likeTimer)
+            likeTimer = null
+          }
+        }, 80)
+        // 3s 后显示金钱符号
+        setTimeout(() => { moneyShow.value = true }, 3000)
+        observer.unobserve(container)
+      }
+    })
+  }, { threshold: 0.6 })
+  observer.observe(container)
+}
+
+// 画出角色与中心的连线
+const drawNetworkLines = () => {
+  const svg = networkSvg.value
+  const center = centerChildEl.value
+  const rolesWrap = rolesContainerEl.value
+  if (!svg || !center || !rolesWrap) return
+  const containerRect = svg.parentElement.getBoundingClientRect()
+  const centerRect = center.getBoundingClientRect()
+  const cx = centerRect.left + centerRect.width / 2 - containerRect.left
+  const cy = centerRect.top + centerRect.height / 2 - containerRect.top
+  const roles = rolesWrap.querySelectorAll('.role-item')
+  const lines = []
+  roles.forEach((el) => {
+    const r = el.getBoundingClientRect()
+    const rx = r.left + r.width / 2 - containerRect.left
+    const ry = r.top + r.height / 2 - containerRect.top
+    const roleId = el.getAttribute('data-role') || ''
+    lines.push(`<line x1="${cx}" y1="${cy}" x2="${rx}" y2="${ry}" data-role="${roleId}" class="net-line" />`)
+  })
+  svg.setAttribute('width', String(containerRect.width))
+  svg.setAttribute('height', String(containerRect.height))
+  svg.innerHTML = lines.join('')
+}
+
+const highlightLine = (roleId, on) => {
+  const svg = networkSvg.value
+  if (!svg) return
+  const line = svg.querySelector(`.net-line[data-role="${roleId}"]`)
+  if (line) {
+    if (on) line.classList.add('highlight')
+    else line.classList.remove('highlight')
+  }
+}
+
+// 简单节流函数（用于 resize）
+const throttleFn = (fn, limit = 150) => {
+  let inThrottle = false
+  return (...args) => {
+    if (!inThrottle) {
+      fn(...args)
+      inThrottle = true
+      setTimeout(() => { inThrottle = false }, limit)
+    }
+  }
+}
+
 // 更新活动section和滚动进度
 const updateScrollState = () => {
   const scrollTop = window.scrollY
@@ -807,6 +983,13 @@ const updateScrollState = () => {
         break
       }
     }
+  }
+
+  // 滚动到底部触发黑屏
+  const atBottom = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 2)
+  if (atBottom && !screenOff.value) {
+    // 略微延迟，避免滚动抖动
+    setTimeout(() => { screenOff.value = true }, 300)
   }
 }
 
@@ -843,6 +1026,12 @@ onMounted(() => {
     setupNavScroll()
     setupTransitionAnimation()
     setupTimelineAnimation()
+    setupChart3HighlightOnReveal()
+    setupFirstVideoAnimation()
+    drawNetworkLines()
+    const onResizeThrottled = throttleFn(drawNetworkLines, 150)
+    window.addEventListener('resize', onResizeThrottled)
+    cleanupFns.push(() => window.removeEventListener('resize', onResizeThrottled))
   })
 })
 
@@ -892,14 +1081,26 @@ const initCharts = () => {
     myChartPhone.setOption({
       title: {
         text: '截至2025年6月手机网民占比情况',
+        subtext: '网民11.23亿 | 手机网民11.16亿 | 占99.4%',
         left: 'center',
-        textStyle: { fontSize: 20, fontWeight: 'bold' }
+        textStyle: { fontSize: 20, fontWeight: 'bold' },
+        subtextStyle: { fontSize: 14, color: '#666' }
       },
-      tooltip: { trigger: 'item' },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b}: {c}亿人 ({d}%)'
+      },
       legend: { bottom: 10, left: 'center' },
+      graphic: [
+        { type: 'text', left: 'center', top: '44%', style: { text: '99.4%', fontSize: 30, fontWeight: 800, fill: '#2c3e50' } },
+        { type: 'text', left: 'center', top: '56%', style: { text: '手机网民占比', fontSize: 12, fill: '#666' } }
+      ],
       series: [{
         type: 'pie',
-        radius: ['40%', '70%'],
+        radius: ['50%', '72%'],
+        center: ['50%', '50%'],
+        startAngle: 90,
+        clockwise: true,
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
@@ -908,14 +1109,24 @@ const initCharts = () => {
         },
         label: {
           show: true,
-          formatter: '{b}: {d}%\n{c}亿人',
-          fontSize: 14
+          formatter: function (params) {
+            return params.name + '\n' + params.value + '亿人\n(' + params.percent + '%)'
+          },
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#2c3e50'
         },
+        labelLine: { length: 12, length2: 10, lineStyle: { color: '#999' } },
         emphasis: {
-          label: { show: true, fontSize: 16, fontWeight: 'bold' }
+          label: { show: true, fontSize: 16, fontWeight: 'bold' },
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
         },
         data: [
-          { value: 11.16, name: '手机网民', itemStyle: { color: '#5470c6' } },
+          { value: 11.16, name: '手机网民', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#667eea' }, { offset: 1, color: '#764ba2' }]) } },
           { value: 0.07, name: '非手机网民', itemStyle: { color: '#e0e0e0' } }
         ]
       }]
@@ -1237,6 +1448,53 @@ const initCharts = () => {
     })
   }
 
+  // 观众地域分布（地图）
+  if (chartAudienceRegion.value) {
+    const myChartRegion = echarts.init(chartAudienceRegion.value)
+    fetch('/china.json')
+      .then(r => (r.ok ? r.json() : Promise.reject()))
+      .then((mapJson) => {
+        try { echarts.registerMap('china', mapJson) } catch (_) { }
+        const regionData = [
+          { name: '北京市', value: 85 }, { name: '天津市', value: 72 }, { name: '河北省', value: 66 },
+          { name: '山西省', value: 58 }, { name: '内蒙古自治区', value: 54 }, { name: '辽宁省', value: 92 },
+          { name: '吉林省', value: 61 }, { name: '黑龙江省', value: 55 }, { name: '上海市', value: 95 },
+          { name: '江苏省', value: 110 }, { name: '浙江省', value: 118 }, { name: '安徽省', value: 74 },
+          { name: '福建省', value: 88 }, { name: '江西省', value: 69 }, { name: '山东省', value: 104 },
+          { name: '河南省', value: 83 }, { name: '湖北省', value: 78 }, { name: '湖南省', value: 76 },
+          { name: '广东省', value: 130 }, { name: '广西壮族自治区', value: 70 }, { name: '海南省', value: 62 },
+          { name: '重庆市', value: 73 }, { name: '四川省', value: 97 }, { name: '贵州省', value: 60 },
+          { name: '云南省', value: 64 }, { name: '西藏自治区', value: 32 }, { name: '陕西省', value: 71 },
+          { name: '甘肃省', value: 45 }, { name: '青海省', value: 30 }, { name: '宁夏回族自治区', value: 36 },
+          { name: '新疆维吾尔自治区', value: 38 }
+        ]
+        myChartRegion.setOption({
+          title: { text: '观众地域热力图', left: 'center' },
+          tooltip: { trigger: 'item', formatter: '{b}<br/>热度指数：{c}' },
+          visualMap: {
+            min: 20, max: 140, left: 20, bottom: 20,
+            inRange: { color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4'] },
+            text: ['高', '低']
+          },
+          series: [{ type: 'map', map: 'china', roam: true, data: regionData }]
+        })
+      })
+      .catch(() => {
+        // fallback：柱状
+        const regionData = [
+          { name: '广东', value: 130 }, { name: '江苏', value: 110 }, { name: '浙江', value: 118 }, { name: '山东', value: 104 }, { name: '上海', value: 95 }
+        ]
+        myChartRegion.setOption({
+          title: { text: '观众地域热度指数（示例）', left: 'center' },
+          tooltip: { trigger: 'axis' },
+          grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+          xAxis: { type: 'category', data: regionData.map(i => i.name), axisLabel: { rotate: 30 } },
+          yAxis: { type: 'value', name: '热度指数' },
+          series: [{ type: 'bar', data: regionData.map(i => i.value), label: { show: true, position: 'top' } }]
+        })
+      })
+  }
+
   // 评论词云图
   if (chartWordCloud.value) {
     const myChartCloud = echarts.init(chartWordCloud.value)
@@ -1301,6 +1559,39 @@ const initCharts = () => {
       }]
     })
   }
+
+  // 尝试将观众地域由柱状升级为地图（若存在 /public/china.json）
+  if (chartAudienceRegion.value) {
+    try {
+      fetch('/china.json').then(r => r.ok ? r.json() : Promise.reject()).then(mapJson => {
+        try {
+          echarts.registerMap('china', mapJson)
+          const inst = echarts.getInstanceByDom(chartAudienceRegion.value)
+          if (inst) {
+            const regionData = [
+              { name: '广东省', value: 120 },
+              { name: '浙江省', value: 98 },
+              { name: '江苏省', value: 92 },
+              { name: '山东省', value: 80 },
+              { name: '辽宁省', value: 78 },
+              { name: '四川省', value: 74 },
+              { name: '北京市', value: 70 }
+            ]
+            inst.setOption({
+              title: { text: '观众地域热力图', left: 'center' },
+              tooltip: { trigger: 'item', formatter: '{b}<br/>热度指数：{c}' },
+              visualMap: {
+                min: 0, max: 150, left: 20, bottom: 20,
+                inRange: { color: ['#e0f3f8', '#abd9e9', '#74add1', '#4575b4'] },
+                text: ['高', '低']
+              },
+              series: [{ type: 'map', map: 'china', data: regionData }]
+            })
+          }
+        } catch (_) { }
+      }).catch(() => { })
+    } catch (_) { }
+  }
 }
 
 // 设置滚动动画
@@ -1316,6 +1607,16 @@ const setupScrollAnimations = () => {
   document.querySelectorAll('.section').forEach(section => {
     observer.observe(section)
   })
+
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('anim-show')
+        animObserver.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.35 })
+  document.querySelectorAll('.anim-reveal').forEach(el => animObserver.observe(el))
 }
 
 // 设置导航栏滚动效果
@@ -1372,14 +1673,220 @@ const setupTimelineAnimation = () => {
 const addCandy = () => {
   if (candyCount.value < 10) {
     candyCount.value++
-    if (candyCount.value >= 5) {
-      // 当糖果够5个时，2秒后触发息屏
-      setTimeout(() => {
-        screenOff.value = true
-      }, 2000)
-    }
+    jarPulse.value = true
+    setTimeout(() => { jarPulse.value = false }, 600)
   }
 }
+
+// 取消与糖果联动的息屏逻辑（改为滚动至底部触发）
+
+// 修复：点击“有/没有”后再初始化 chart3，避免 v-if 导致容器不存在而空白
+watch(showChart, async (v) => {
+  if (!v) return
+  await nextTick()
+  if (!chart3.value) return
+  const exists = echarts.getInstanceByDom(chart3.value)
+  if (exists) { exists.resize(); return }
+  const myChart3 = echarts.init(chart3.value)
+  const categories = ['随拍', '剧情', '明星八卦', '舞蹈', '游戏', '亲子', '音乐', '颜值', '时政社会', '校园教育', '美食', '医疗健康', '财经', '休闲']
+  const values = [108045.7, 37819.9, 34845.9, 27364.2, 19072.4, 13513.8, 13518.6, 10068.6, 5773.9, 4761.7, 4761.7, 2337.6, 2149.5, 1772.5]
+  myChart3.setOption({
+    title: { text: '各类型视频平均点赞数', subtext: '截至2025年10月23日', left: 'center' },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    xAxis: { type: 'value', axisLabel: { formatter: '{value}' } },
+    yAxis: { type: 'category', data: categories, axisLabel: { fontSize: 12 } },
+    series: [{
+      data: values,
+      type: 'bar',
+      itemStyle: { color: (params) => { const colors = ['#ee6666', '#fc8452', '#fac858', '#91cc75', '#73c0de', '#3ba272', '#5470c6', '#9a60b4', '#ea7ccc']; return colors[params.dataIndex % colors.length] } },
+      label: { show: true, position: 'right', formatter: '{c}' }
+    }]
+  })
+})
+
+// 初始化父母养育成本地图（若无 china.json 则用柱状图兜底）
+const initCostMapChart = async () => {
+  const el = document.getElementById('costMap')
+  if (!el) return
+  costMapChart?.dispose?.()
+  costMapChart = echarts.init(el)
+  try {
+    const res = await fetch('/china.json')
+    if (res.ok) {
+      const mapJson = await res.json()
+      echarts.registerMap('china', mapJson)
+      costMapChart.setOption({
+        title: { text: '各地0-17岁养育成本（示例）', left: 'center' },
+        tooltip: { trigger: 'item', formatter: '{b}<br/>成本：{c} 万元' },
+        visualMap: {
+          min: 30, max: 100, left: 20, bottom: 20,
+          inRange: { color: ['#fee5d9', '#fcae91', '#fb6a4a', '#de2d26', '#a50f15'] },
+          text: ['高', '低']
+        },
+        series: [{
+          type: 'map', map: 'china', data: [
+            { name: '北京市', value: 85 },
+            { name: '上海市', value: 90 },
+            { name: '浙江省', value: 78 },
+            { name: '广东省', value: 82 }
+          ]
+        }]
+      })
+      return
+    }
+  } catch (_) { }
+  // 兜底柱状
+  costMapChart.setOption({
+    title: { text: '各地0-17岁养育成本（示例）', left: 'center' },
+    tooltip: { trigger: 'axis' },
+    xAxis: { type: 'category', data: ['北京', '上海', '浙江', '广东'] },
+    yAxis: { type: 'value', name: '万元' },
+    series: [{ type: 'bar', data: [85, 90, 78, 82], itemStyle: { color: '#de2d26' } }]
+  })
+}
+
+// 初始化 MCN 签约比例饼图
+const initMcnSignupChart = () => {
+  const el = document.getElementById('mcnSignupChart')
+  if (!el) return
+  mcnSignupChart?.dispose?.()
+  mcnSignupChart = echarts.init(el)
+  mcnSignupChart.setOption({
+    title: { text: '签约 vs 未签约', left: 'center' },
+    tooltip: { trigger: 'item' },
+    legend: { bottom: 10, left: 'center' },
+    series: [{
+      type: 'pie', radius: ['40%', '70%'],
+      label: { formatter: '{b}：{c}（{d}%）' },
+      data: [
+        { value: 286, name: '签约', itemStyle: { color: '#667eea' } },
+        { value: 235, name: '未签约', itemStyle: { color: '#e0e0e0' } }
+      ]
+    }]
+  })
+}
+
+// 监听角色选择，初始化/清理模态内图表与动效
+watch(selectedRole, async (role) => {
+  if (role === 'parents') {
+    await nextTick()
+    initCostMapChart()
+  }
+  if (role === 'mcn') {
+    await nextTick()
+    initMcnSignupChart()
+    // 违约条款循环高亮
+    const items = document.querySelectorAll('.penalty-list li')
+    let i = 0
+    const tick = () => {
+      items.forEach(el => el.classList.remove('active'))
+      items[i]?.classList.add('active')
+      i = (i + 1) % items.length
+    }
+    tick()
+    mcnPenaltyTimer && clearInterval(mcnPenaltyTimer)
+    mcnPenaltyTimer = setInterval(tick, 1800)
+    // 分成条动画
+    document.querySelector('.modal-content')?.classList.add('animate')
+  }
+  if (!role) {
+    // 关闭弹窗时清理
+    costMapChart?.dispose?.(); costMapChart = null
+    mcnSignupChart?.dispose?.(); mcnSignupChart = null
+    if (mcnPenaltyTimer) { clearInterval(mcnPenaltyTimer); mcnPenaltyTimer = null }
+    document.querySelector('.modal-content')?.classList.remove('animate')
+  }
+})
+
+// 资源清理
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateScrollState)
+  costMapChart?.dispose?.(); costMapChart = null
+  mcnSignupChart?.dispose?.(); mcnSignupChart = null
+  if (mcnPenaltyTimer) { clearInterval(mcnPenaltyTimer); mcnPenaltyTimer = null }
+  ;[chart1, chartPhoneUsers, chart2, chart3, chart4, chart5, chart6, chart7, chart8, chartAudienceAge, chartAudienceGender, chartAudienceRegion, chartWordCloud]
+    .forEach(r => { if (r?.value) echarts.getInstanceByDom(r.value)?.dispose() })
+})
+
+// 思维导图初始化
+watch(showMindmap, async (v) => {
+  if (!v) {
+    if (chartMindMap.value) {
+      echarts.getInstanceByDom(chartMindMap.value)?.dispose()
+    }
+    return
+  }
+  await nextTick()
+  if (!chartMindMap.value) return
+  const inst = echarts.init(chartMindMap.value)
+  inst.setOption({
+    tooltip: {
+      formatter: (params) => {
+        return `<strong>${params.name}</strong><br/>点击查看详情`
+      }
+    },
+    series: [{
+      type: 'graph',
+      layout: 'force',
+      roam: true,
+      draggable: true,
+      label: {
+        show: true,
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#fff'
+      },
+      labelLayout: {
+        hideOverlap: true
+      },
+      force: {
+        repulsion: 300,
+        edgeLength: [80, 150],
+        gravity: 0.1
+      },
+      lineStyle: {
+        color: 'source',
+        curveness: 0.3,
+        width: 2
+      },
+      emphasis: {
+        focus: 'adjacency',
+        lineStyle: {
+          width: 4,
+          shadowBlur: 10,
+          shadowColor: 'rgba(0,0,0,0.3)'
+        },
+        itemStyle: {
+          shadowBlur: 15,
+          shadowColor: 'rgba(0,0,0,0.4)'
+        }
+      },
+      data: [
+        { name: '晒娃动机', symbolSize: 60, itemStyle: { color: '#667eea', shadowBlur: 10, shadowColor: 'rgba(102,126,234,0.5)' } },
+        { name: '家长心理', symbolSize: 45, itemStyle: { color: '#91cc75' } },
+        { name: '儿童意愿', symbolSize: 45, itemStyle: { color: '#fac858' } },
+        { name: '社会压力', symbolSize: 45, itemStyle: { color: '#ee6666' } },
+        { name: '记录成长', symbolSize: 35, itemStyle: { color: '#5cb87a' } },
+        { name: '自我表达', symbolSize: 35, itemStyle: { color: '#5cb87a' } },
+        { name: '亲子陪伴', symbolSize: 35, itemStyle: { color: '#5cb87a' } },
+        { name: '经济压力', symbolSize: 35, itemStyle: { color: '#e67e7e' } },
+        { name: '平台机制', symbolSize: 35, itemStyle: { color: '#e67e7e' } },
+        { name: 'MCN影响', symbolSize: 35, itemStyle: { color: '#e67e7e' } }
+      ],
+      edges: [
+        { source: '晒娃动机', target: '家长心理' },
+        { source: '晒娃动机', target: '儿童意愿' },
+        { source: '晒娃动机', target: '社会压力' },
+        { source: '家长心理', target: '记录成长' },
+        { source: '家长心理', target: '自我表达' },
+        { source: '家长心理', target: '亲子陪伴' },
+        { source: '社会压力', target: '经济压力' },
+        { source: '社会压力', target: '平台机制' },
+        { source: '社会压力', target: 'MCN影响' }
+      ]
+    }]
+  })
+})
 </script>
 
 <style scoped>
@@ -1723,7 +2230,23 @@ const addCandy = () => {
 .nav-link.active {
   color: white;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4),
+    0 0 0 2px rgba(102, 126, 234, 0.15) inset;
+  animation: navGlow 2s ease-in-out infinite;
+}
+
+@keyframes navGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4),
+      0 0 0 2px rgba(102, 126, 234, 0.15) inset;
+  }
+
+  50% {
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6),
+      0 0 0 2px rgba(102, 126, 234, 0.3) inset;
+  }
 }
 
 .nav-link.active::before {
@@ -1836,6 +2359,11 @@ const addCandy = () => {
   height: 700px;
 }
 
+.chart-container.region {
+  height: 560px;
+  grid-column: 1 / -1;
+}
+
 .data-source,
 .data-note {
   text-align: center;
@@ -1849,6 +2377,10 @@ const addCandy = () => {
   font-size: 0.95rem;
   line-height: 1.8;
   color: #555;
+}
+
+.data-note.emerge {
+  opacity: 1 !important;
 }
 
 .time-options {
@@ -2242,6 +2774,20 @@ const addCandy = () => {
   margin-bottom: 10px;
 }
 
+.timeline-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 15px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.timeline-image:hover {
+  transform: scale(1.05);
+}
+
 .timeline-icon {
   font-size: 2rem;
   position: absolute;
@@ -2262,6 +2808,17 @@ const addCandy = () => {
   text-align: center;
   margin-top: 50px;
   color: #555;
+}
+
+.anim-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.anim-reveal.anim-show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all .6s ease;
 }
 
 /* 皮亚杰理论阶段 */
@@ -2300,6 +2857,41 @@ const addCandy = () => {
   padding-bottom: 20px;
   transition: all 0.5s;
   position: relative;
+}
+
+.stage-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50% 50% 20px 20px;
+  opacity: .9;
+}
+
+.stage-label-top {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-weight: 700;
+  background: rgba(0, 0, 0, .2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: .9rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .figure-icon {
@@ -2474,6 +3066,35 @@ const addCandy = () => {
   margin: 50px auto;
 }
 
+.network-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.net-line {
+  stroke: rgba(102, 126, 234, .4);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .1));
+  transition: stroke .2s ease, stroke-width .2s ease;
+  animation: lineDash 1.5s linear infinite;
+}
+
+@keyframes lineDash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+.net-line.highlight {
+  stroke: #667eea;
+  stroke-width: 3;
+  stroke-dasharray: 0;
+  filter: drop-shadow(0 0 8px #667eea);
+  animation: none;
+}
+
 .center-child {
   position: absolute;
   top: 50%;
@@ -2516,6 +3137,45 @@ const addCandy = () => {
   height: 120px;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+.role-item::before {
+  content: attr(data-tip);
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.role-item::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+.role-item:hover::before,
+.role-item:hover::after {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
 }
 
 .role-item:nth-child(1) {
@@ -2868,6 +3528,21 @@ const addCandy = () => {
   padding: 20px;
 }
 
+.jar.pulse {
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, .6);
+  animation: jarPulse 0.6s ease;
+}
+
+@keyframes jarPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, .6)
+  }
+
+  100% {
+    box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0)
+  }
+}
+
 .jar::before {
   content: '';
   position: absolute;
@@ -2947,6 +3622,180 @@ const addCandy = () => {
   opacity: 1;
 }
 
+.first-video-anim {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.first-video-anim .video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: #000;
+}
+
+.timeline-video-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.video-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 80% 20%, rgba(255, 255, 255, .2), transparent), linear-gradient(135deg, #1f2937, #111827);
+}
+
+.first-video-img {
+  display: none;
+}
+
+.like-counter {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  color: #fff;
+  font-weight: 800;
+  background: rgba(0, 0, 0, .35);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: .95rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+}
+
+.first-video-anim .hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.first-video-anim .heart {
+  position: absolute;
+  right: -30px;
+  bottom: 20px;
+  font-size: 18px;
+  opacity: 0;
+}
+
+.first-video-anim.run .heart {
+  animation: heartRise 3s ease-in forwards;
+}
+
+.first-video-anim.run .heart:nth-child(odd) {
+  right: 10px;
+}
+
+.first-video-anim.run .heart:nth-child(3n) {
+  right: 40px;
+}
+
+.first-video-anim.run .heart:nth-child(4n) {
+  right: 80px;
+}
+
+.first-video-anim.run .heart:nth-child(5n) {
+  right: 120px;
+}
+
+.first-video-anim.run .heart:nth-child(6n) {
+  right: 160px;
+}
+
+.first-video-anim.run .heart:nth-child(7n) {
+  right: 200px;
+}
+
+.first-video-anim.run .heart:nth-child(1) {
+  animation-delay: 0s
+}
+
+.first-video-anim.run .heart:nth-child(2) {
+  animation-delay: .15s
+}
+
+.first-video-anim.run .heart:nth-child(3) {
+  animation-delay: .3s
+}
+
+.first-video-anim.run .heart:nth-child(4) {
+  animation-delay: .45s
+}
+
+.first-video-anim.run .heart:nth-child(5) {
+  animation-delay: .6s
+}
+
+.first-video-anim.run .heart:nth-child(6) {
+  animation-delay: .75s
+}
+
+.first-video-anim.run .heart:nth-child(7) {
+  animation-delay: .9s
+}
+
+.first-video-anim.run .heart:nth-child(8) {
+  animation-delay: 1.05s
+}
+
+.first-video-anim.run .heart:nth-child(9) {
+  animation-delay: 1.2s
+}
+
+.first-video-anim.run .heart:nth-child(10) {
+  animation-delay: 1.35s
+}
+
+@keyframes heartRise {
+  0% {
+    transform: translate(0, 0) scale(.6);
+    opacity: 0
+  }
+
+  40% {
+    opacity: 1
+  }
+
+  80% {
+    transform: translate(-60vw, -30vh) scale(2.2);
+    opacity: .9
+  }
+
+  100% {
+    transform: translate(-80vw, -40vh) scale(3);
+    opacity: 0
+  }
+}
+
+.first-video-anim .money {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  opacity: 0;
+  color: #ffd700;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+}
+
+.first-video-anim .money.show {
+  font-size: 6rem;
+  opacity: 1;
+  transition: all .6s ease;
+}
+
+.first-video-anim .video-tip {
+  text-align: center;
+  color: #7f8c8d;
+  margin-top: 10px;
+}
+
 .screen-off {
   position: fixed;
   top: 0;
@@ -2966,6 +3815,42 @@ const addCandy = () => {
 .screen-off.active {
   opacity: 1;
   pointer-events: all;
+}
+
+.tv-off-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #fff;
+  opacity: 0;
+}
+
+.screen-off.active .tv-off-bar {
+  animation: tvOff 1.2s ease forwards;
+}
+
+@keyframes tvOff {
+  0% {
+    height: 100%;
+    opacity: 0
+  }
+
+  30% {
+    height: 6px;
+    opacity: 1
+  }
+
+  60% {
+    height: 2px;
+    opacity: .8
+  }
+
+  100% {
+    height: 0;
+    opacity: 0
+  }
 }
 
 .phone-shutdown {
@@ -3000,6 +3885,18 @@ const addCandy = () => {
   }
 }
 
+/* 性能优化：减少动画复杂度 */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .phone-screen {
@@ -3010,6 +3907,45 @@ const addCandy = () => {
 
   .opening-text {
     font-size: 1.3rem;
+  }
+
+  /* 简化首条视频动画，减轻移动端性能负担 */
+  .first-video-anim .heart {
+    display: none;
+  }
+
+  .first-video-anim.run .money.show {
+    animation: simplePulse 0.5s ease;
+  }
+
+  @keyframes simplePulse {
+
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  /* 优化模态框移动端显示 */
+  .modal-content {
+    max-height: 85vh;
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+
+  /* 简化网络连线动画 */
+  .net-line {
+    animation: none;
+  }
+
+  /* 角色提示卡在移动端隐藏，避免误触 */
+  .role-item::before,
+  .role-item::after {
+    display: none;
   }
 
   .phone-notch {
@@ -3307,6 +4243,12 @@ const addCandy = () => {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.modal-body :deep(.penalty-list li.active .red-text) {
+  transform: scale(1.2);
+  transition: transform .3s ease;
+  display: inline-block;
+}
+
 .modal-body :deep(.penalty-list li:last-child) {
   border-bottom: none;
 }
@@ -3484,6 +4426,19 @@ const addCandy = () => {
   font-size: 1.05rem;
   transition: all 0.3s;
   position: relative;
+}
+
+/* 初始缩放为0，打开模态后展开到各自宽度 */
+.modal-content:not(.animate) :deep(.creator-share),
+.modal-content:not(.animate) :deep(.mcn-share) {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.modal-content.animate :deep(.creator-share),
+.modal-content.animate :deep(.mcn-share) {
+  transform: scaleX(1);
+  transition: transform .6s ease;
 }
 
 .modal-body :deep(.revenue-model:hover .creator-share),
