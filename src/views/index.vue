@@ -362,6 +362,9 @@
         <div class="chart-container" ref="chartAudienceGender"></div>
       </div>
 
+      <!-- 地域分布图 -->
+      <div class="chart-container" ref="chartAudienceRegion"></div>
+
       <!-- 地域分布提示 -->
       <p class="data-note" style="margin: 30px 0;">
         观看萌娃类短视频的观众中，广东占比最高，辽宁偏好度（TGI指数）最高
@@ -516,7 +519,7 @@ const chartAudienceAge = ref(null)
 const chartAudienceGender = ref(null)
 const chartWordCloud = ref(null)
 const particleCanvas = ref(null)
-
+const chartAudienceRegion = ref(null)
 // 模态内图表引用（运行时实例）
 let costMapChart = null
 let mcnSignupChart = null
@@ -761,6 +764,9 @@ const getRoleContent = () => {
       </div>
 
       <p>以一头部亲子类型网红分析，其近一个月销售额最高可达2500万-5000万。据第三方数据，儿童网红@瑶一***其短视频社交媒体账号年广告收入或超1650万元，远超90%的同粉丝量级达人。</p>
+       <h4 style="margin-top: 40px; color: #2c3e50; font-size: 1.4rem;">各地养育成本交互地图</h4>
+      <div id="costMap" style="width:100%;height:500px;background:#f8f9fa;border-radius:16px;margin-top:20px;"></div>
+      <p style="text-align:center;color:#999;margin-top:10px;font-size:0.9rem;">数据来源：《中国生育成本报告2024》</p>
     `,
     mcn: `
       <h3>MCN机构：流量公式的制造者</h3>
@@ -1578,7 +1584,72 @@ onMounted(() => {
         }]
       })
     }
+    // 观众地域分布图
+    if (chartAudienceRegion.value) {
+      const myChartRegion = echarts.init(chartAudienceRegion.value)
 
+      // 省份观看占比数据（示例）
+      const regionData = [
+        { name: '广东', value: 15.2 },
+        { name: '辽宁', value: 12.8 },
+        { name: '江苏', value: 10.5 },
+        { name: '浙江', value: 9.8 },
+        { name: '山东', value: 8.6 },
+        { name: '河南', value: 7.3 },
+        { name: '四川', value: 6.9 },
+        { name: '湖北', value: 6.2 },
+        { name: '北京', value: 5.8 },
+        { name: '上海', value: 5.1 },
+        { name: '其他', value: 11.8 }
+      ]
+
+      myChartRegion.setOption({
+        title: {
+          text: '观众地域分布TOP10',
+          subtext: '广东占比最高，辽宁偏好度最高',
+          left: 'center',
+          textStyle: { fontSize: 18, fontWeight: 'bold' }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c}%'
+        },
+        legend: {
+          orient: 'vertical',
+          right: 20,
+          top: 'center'
+        },
+        series: [{
+          type: 'pie',
+          radius: ['40%', '65%'],
+          center: ['40%', '50%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: true,
+            formatter: '{b}\n{d}%',
+            fontSize: 12
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 14,
+              fontWeight: 'bold'
+            },
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          data: regionData
+        }]
+      })
+    }
     // 评论词云图（懒加载 + 动态引入插件 + 优化词汇）
     if (chartWordCloud.value) {
       const el = chartWordCloud.value
@@ -1819,13 +1890,6 @@ onMounted(() => {
     })
   })
 
-  // （已上移至顶层）
-
-  // （已上移至顶层）
-
-  // （已上移至顶层）
-
-  // （已上移至顶层）
 
   // 初始化 MCN 签约比例饼图
   const initMcnSignupChart = () => {
@@ -1847,10 +1911,176 @@ onMounted(() => {
       }]
     })
   }
+  // 初始化养育成本地图
+  const initCostMapChart = async () => {
+    const el = document.getElementById('costMap')
+    if (!el) return
+    costMapChart?.dispose?.()
+    costMapChart = echarts.init(el)
 
+    const mapUrl = `${import.meta.env.BASE_URL}china.json`
+    try {
+      const res = await fetch(mapUrl)
+      if (!res.ok) throw new Error('map not found')
+      const mapJson = await res.json()
+      echarts.registerMap('china', mapJson)
+
+      // 省份数据（示例数据）
+      const provinceData = [
+        { name: '北京', value: 96.9 },
+        { name: '天津', value: 63.5 },
+        { name: '河北', value: 62.7 },
+        { name: '山西', value: 49.8 },
+        { name: '内蒙古', value: 54.2 },
+        { name: '辽宁', value: 64.5 },
+        { name: '吉林', value: 55.0 },
+        { name: '黑龙江', value: 52.0 },
+        { name: '上海', value: 102.6 },
+        { name: '江苏', value: 62.6 },
+        { name: '浙江', value: 72.8 },
+        { name: '安徽', value: 62.9 },
+        { name: '福建', value: 67.0 },
+        { name: '江西', value: 58.3 },
+        { name: '山东', value: 63.1 },
+        { name: '河南', value: 58.5 },
+        { name: '湖北', value: 63.4 },
+        { name: '湖南', value: 61.1 },
+        { name: '广东', value: 71.2 },
+        { name: '广西', value: 54.8 },
+        { name: '海南', value: 58.6 },
+        { name: '重庆', value: 63.0 },
+        { name: '四川', value: 56.0 },
+        { name: '贵州', value: 53.3 },
+        { name: '云南', value: 52.8 },
+        { name: '西藏', value: 58.1 },
+        { name: '陕西', value: 54.1 },
+        { name: '甘肃', value: 51.4 },
+        { name: '青海', value: 62.1 },
+        { name: '宁夏', value: 59.3 },
+        { name: '新疆', value: 55.4 }
+      ]
+
+      costMapChart.setOption({
+        title: {
+          text: '各地0-17岁孩子平均养育成本',
+          subtext: '单位：万元（港澳台未统计）',
+          left: 'center',
+          top: 15,
+          textStyle: { fontSize: 18, fontWeight: 'bold', color: '#2c3e50' },
+          subtextStyle: { fontSize: 12, color: '#999' }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function (params) {
+            if (params.value) {
+              return `<strong>${params.name}</strong><br/>养育成本: <span style="color:#e74c3c;font-weight:bold;">${params.value}万元</span>`
+            }
+            return `${params.name}<br/>暂无数据`
+          },
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          borderColor: '#ddd',
+          borderWidth: 1,
+          textStyle: { color: '#333' }
+        },
+        visualMap: {
+          min: 30,
+          max: 110,
+          left: 30,
+          bottom: 40,
+          text: ['高', '低'],
+          inRange: {
+            color: ['#fee5d9', '#fcae91', '#fb6a4a', '#de2d26', '#a50f15']
+          },
+          textStyle: { color: '#666' },
+          calculable: true
+        },
+        series: [{
+          type: 'map',
+          map: 'china',
+          roam: true,
+          scaleLimit: { min: 1, max: 3 },
+          emphasis: {
+            label: { show: true, color: '#fff' },
+            itemStyle: {
+              areaColor: '#667eea',
+              shadowBlur: 10,
+              shadowColor: 'rgba(0,0,0,0.3)'
+            }
+          },
+          select: {
+            label: { show: true },
+            itemStyle: { areaColor: '#764ba2' }
+          },
+          itemStyle: {
+            borderColor: '#fff',
+            borderWidth: 1,
+            shadowBlur: 5,
+            shadowColor: 'rgba(0,0,0,0.1)'
+          },
+          data: provinceData
+        }]
+      })
+    } catch (error) {
+      // 如果地图文件加载失败，使用柱状图代替
+      const fallbackData = [
+        { name: '上海', value: 102.6 },
+        { name: '北京', value: 96.9 },
+        { name: '浙江', value: 72.8 },
+        { name: '广东', value: 71.2 },
+        { name: '福建', value: 67.0 },
+        { name: '辽宁', value: 64.5 },
+        { name: '天津', value: 63.5 },
+        { name: '湖北', value: 63.4 }
+      ].sort((a, b) => b.value - a.value)
+
+      costMapChart.setOption({
+        title: {
+          text: '各地0-17岁孩子平均养育成本（TOP8）',
+          subtext: '单位：万元',
+          left: 'center',
+          textStyle: { fontSize: 16, fontWeight: 'bold' }
+        },
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '10%', right: '10%', bottom: '10%', top: '20%', containLabel: true },
+        xAxis: {
+          type: 'category',
+          data: fallbackData.map(i => i.name),
+          axisLabel: { rotate: 0, fontSize: 12 }
+        },
+        yAxis: {
+          type: 'value',
+          name: '万元',
+          axisLabel: { formatter: '{value}万' }
+        },
+        series: [{
+          type: 'bar',
+          data: fallbackData.map(i => i.value),
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#a50f15' },
+              { offset: 1, color: '#de2d26' }
+            ])
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}万',
+            color: '#a50f15',
+            fontWeight: 'bold'
+          }
+        }]
+      })
+    }
+  }
   // 监听角色选择，初始化/清理模态内图表与动效
   watch(selectedRole, async (role) => {
     document.body.style.overflow = role ? 'hidden' : ''
+
+    if (role === 'parents') {
+      await nextTick()
+      initCostMapChart()
+    }
+
     if (role === 'mcn') {
       await nextTick()
       initMcnSignupChart()
@@ -1868,6 +2098,7 @@ onMounted(() => {
       // 分成条动画
       document.querySelector('.modal-content')?.classList.add('animate')
     }
+
     if (!role) {
       // 关闭弹窗时清理
       costMapChart?.dispose?.(); costMapChart = null
@@ -1876,7 +2107,6 @@ onMounted(() => {
       document.querySelector('.modal-content')?.classList.remove('animate')
     }
   })
-
   // 粒子背景动画
   let particleAnimId = null
   const setupParticles = () => {
@@ -2118,7 +2348,7 @@ onUnmounted(() => {
 
   // 清理所有图表实例
   ;[chart1, chartPhoneUsers, chart2, chart3, chart4, chart5, chart6, chart7, chart8,
-    chartAudienceAge, chartAudienceGender, chartWordCloud, chartMindMap]
+    chartAudienceAge, chartAudienceGender, chartAudienceRegion, chartWordCloud, chartMindMap]
     .forEach(r => {
       if (r?.value) {
         const inst = echarts.getInstanceByDom(r.value)
