@@ -2,11 +2,6 @@
   <section class="section audience-section">
     <h2 class="section-title">谁在观看萌娃视频？</h2>
 
-    <!-- 顶部示例图（9.png） -->
-    <div class="audience-hero">
-      <img :src="audienceHero" alt="观众示例图" />
-    </div>
-
     <div class="audience-charts">
       <!-- 年龄分布图 -->
       <div class="chart-container" ref="chartAudienceAge"></div>
@@ -32,7 +27,8 @@
 
     <!-- 4张示例图片 -->
     <div class="example-images">
-      <div class="example-image-card" v-for="(img, index) in exampleImages" :key="index">
+      <div class="example-image-card" v-for="(img, index) in exampleImages"
+        :key="index">
         <img :src="img.src" :alt="img.alt" />
       </div>
     </div>
@@ -250,18 +246,6 @@ onUnmounted(() => {
   background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
 }
 
-.audience-hero {
-  max-width: 1100px;
-  margin: 20px auto 30px;
-  padding: 0 20px;
-}
-
-.audience-hero img {
-  width: 100%;
-  display: block;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-}
 
 .audience-charts {
   display: grid;

@@ -24,14 +24,19 @@
 
       <div class="circle-interaction">
         <svg ref="networkSvg" class="network-lines"></svg>
-        <div ref="centerChildEl" class="center-child" :class="{ shrink: selectedRole }">
+        <div ref="centerChildEl" class="center-child"
+          :class="{ shrink: selectedRole }">
           <div class="child-icon">👶</div>
         </div>
 
         <div ref="rolesContainerEl" class="roles-container">
-          <div v-for="role in roles" :key="role.id" class="role-item" :data-role="role.id"
-            :data-tip="`点击查看${role.name}详情`" :class="{ active: selectedRole === role.id }" @click="selectRole(role.id)"
-            @mouseenter="highlightLine(role.id, true)" @mouseleave="highlightLine(role.id, false)" tabindex="0"
+          <div v-for="role in roles" :key="role.id" class="role-item"
+            :data-role="role.id"
+            :data-tip="`点击查看${role.name}详情`"
+            :class="{ active: selectedRole === role.id }"
+            @click="selectRole(role.id)"
+            @mouseenter="highlightLine(role.id, true)"
+            @mouseleave="highlightLine(role.id, false)" tabindex="0"
             @keydown="onRoleKey($event, role.id)">
             <div class="role-avatar">{{ role.icon }}</div>
             <div class="role-name">{{ role.name }}</div>
@@ -43,8 +48,10 @@
 
     <!-- 角色详情弹窗 - 固定居中 -->
     <transition name="modal-fade">
-      <div v-if="selectedRole" class="modal-overlay" @click="selectedRole = null">
-        <div class="modal-content" role="dialog" aria-modal="true" tabindex="0" @keydown.esc="selectedRole = null"
+      <div v-if="selectedRole" class="modal-overlay"
+        @click="selectedRole = null">
+        <div class="modal-content" role="dialog" aria-modal="true" tabindex="0"
+          @keydown.esc="selectedRole = null"
           @click.stop>
           <button class="modal-close" @click="selectedRole = null">✕</button>
           <div class="modal-body" v-html="getRoleContent()"></div>
@@ -58,7 +65,8 @@
     <!-- 儿童影响 -->
     <section id="impact" class="section impact-section fullscreen">
       <div class="impact-grid">
-        <div class="impact-card" v-for="(impact, index) in impacts" :key="index">
+        <div class="impact-card" v-for="(impact, index) in impacts"
+          :key="index">
           <div class="impact-number">{{ index + 1 }}</div>
           <p class="impact-text">{{ impact }}</p>
         </div>
