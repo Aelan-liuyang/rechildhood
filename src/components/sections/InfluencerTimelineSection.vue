@@ -4,7 +4,8 @@
 
     <div class="timeline">
       <!-- 首条视频（特殊处理，包含动画） -->
-      <div class="timeline-item first-video-item" :class="{ 'timeline-visible': timelineVisible[0] }">
+      <div class="timeline-item first-video-item"
+        :class="{ 'timeline-visible': timelineVisible[0] }">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <div class="step-badge">1</div>
@@ -12,11 +13,12 @@
           <div class="first-video-anim" ref="firstVideoAnim">
             <div class="video-frame">
               <img :src="firstVideoSrc" alt="首条视频" class="timeline-video-img" />
-              <div class="like-counter">❤️ {{ likeCount.toLocaleString() }}</div>
+              <div class="like-counter">❤️ {{ likeCount.toLocaleString() }}
+              </div>
               <div class="hearts">
                 <span v-for="n in 28" :key="n" class="heart">❤️</span>
               </div>
-              <div class="money" :class="{ show: moneyShow }">💰</div>
+              <!-- <div class="money" :class="{ show: moneyShow }">💰</div> -->
             </div>
           </div>
           <p>{{ timeline[0].desc }}</p>
@@ -25,13 +27,15 @@
       </div>
 
       <!-- 其他时间线项 -->
-      <div v-for="(item, index) in timeline.slice(1)" :key="index + 1" class="timeline-item"
+      <div v-for="(item, index) in timeline.slice(1)" :key="index + 1"
+        class="timeline-item"
         :class="{ 'timeline-visible': timelineVisible[index + 1] }">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <div class="step-badge">{{ index + 2 }}</div>
           <h3>{{ item.title }}</h3>
-          <img v-if="item.image" :src="item.image" :alt="item.title" class="timeline-image" />
+          <img v-if="item.image" :src="item.image" :alt="item.title"
+            class="timeline-image" />
           <p>{{ item.desc }}</p>
           <div class="timeline-icon">{{ item.icon }}</div>
         </div>
@@ -39,7 +43,17 @@
     </div>
 
     <p class="insight-text">
-      当"养娃"变成了"养号"，爱就开始有了回报率。很多账号最初确实是出于分享和记录的目的。然而，一旦流量涌入，MCN机构伸出橄榄枝，商业合作接踵而至，最初的"爱"就可能被异化。家长的角色可能悄然转变为"经纪人"，而孩子则可能成为家庭中的"数字劳工"。
+      当<span class="keyword-highlight">"养娃"</span>变成了<span
+        class="keyword-highlight">"养号"</span>，<span
+        class="keyword-highlight">爱</span>就开始有了回报率。很多账号最初确实是出于分享和记录的目的。然而，一旦<span
+        class="keyword-highlight">流量</span>涌入，<span
+        class="keyword-highlight">MCN机构</span>伸出橄榄枝，<span
+        class="keyword-highlight">商业合作</span>接踵而至，最初的<span
+        class="keyword-highlight">"爱"</span>就可能被异化。<span
+        class="keyword-highlight">家长</span>的角色可能悄然转变为<span
+        class="keyword-highlight">"经纪人"</span>，而<span
+        class="keyword-highlight">孩子</span>则可能成为家庭中的<span
+        class="keyword-highlight">"数字劳工"</span>。
     </p>
   </section>
 </template>
@@ -52,13 +66,15 @@ const moneyShow = ref(false)
 const likeCount = ref(100)
 let likeTimer = null
 const firstVideoSrc = new URL('@/assets/images/7.png', import.meta.url).href
-const liveStreamImg = new URL('@/assets/images/8.png', import.meta.url).href
+const liveStreamImg = new URL('@/assets/images/zhibo.png', import.meta.url).href
+const liveStreamImg2 = new URL('@/assets/images/shangye.png', import.meta.url).href
+const liveStreamImg3 = new URL('@/assets/images/mcn.png', import.meta.url).href
 
 const timeline = [
   { title: '短视频第一条视频发布', desc: '当流量涌入', icon: '📱', image: firstVideoSrc },
   { title: '直播变现', desc: '开启直播带货', icon: '💰', image: liveStreamImg },
-  { title: '商业合作接踵而至', desc: '第一个广告来了', icon: '📢' },
-  { title: 'MCN抛出橄榄枝', desc: '签约MCN机构', icon: '🤝' }
+  { title: '商业合作接踵而至', desc: '第一个广告来了', icon: '📢', image: liveStreamImg2 },
+  { title: 'MCN抛出橄榄枝', desc: '签约MCN机构', icon: '🤝', image: liveStreamImg3 }
 ]
 const timelineVisible = ref([false, false, false, false])
 
@@ -210,7 +226,7 @@ onMounted(() => {
 
 .timeline-image {
   width: 100%;
-  max-height: 200px;
+  max-height: 100%;
   object-fit: cover;
   border-radius: 12px;
   margin: 15px 0;
@@ -248,6 +264,7 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   background: #000;
+  min-height: 250px;
 }
 
 .timeline-video-img {
@@ -428,6 +445,48 @@ onMounted(() => {
   }
 }
 
+.insight-text {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  max-width: 920px;
+  text-align: center;
+  margin: 50px auto;
+  color: #2c3e50;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.keyword-highlight {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: keywordPulse 2s ease-in-out infinite;
+}
+
+@keyframes keywordPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
 @media (max-width: 768px) {
   .timeline::before {
     left: 30px;
@@ -448,6 +507,11 @@ onMounted(() => {
 
   .timeline-icon {
     display: none;
+  }
+
+  .insight-text {
+    font-size: 1.1rem;
+    padding: 15px;
   }
 }
 </style>

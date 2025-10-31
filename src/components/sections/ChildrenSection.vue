@@ -1,11 +1,13 @@
 <template>
   <section id="children" class="section">
     <h2 class="section-title">在平台上还有一个特殊群体更值得关注</h2>
-    <div class="chart-container" ref="chart4"></div>
     <div class="chart-container" ref="chart5"></div>
-    <p class="data-source">数据来源：CNNIC</p>
+    <div class="chart-container" ref="chart4"></div>
+    <h2 class="chart-subtitle">那就是儿童群体</h2>
+    <!-- <p class="data-source">数据来源：CNNIC</p> -->
     <div class="highlight-box">
-      <p>截至2023年底，我国未成年网民规模达<span class="highlight-num">1.96亿</span>，未成年人互联网普及率高达<span
+      <p>截至2023年底，我国未成年网民规模达<span
+          class="highlight-num">1.96亿</span>，未成年人互联网普及率高达<span
           class="highlight-num">97.3%</span>。</p>
     </div>
     <div class="chart-container" ref="chart6"></div>
@@ -22,16 +24,138 @@ import * as echarts from 'echarts'
 const chart4 = ref(null)
 const chart5 = ref(null)
 const chart6 = ref(null)
+let myChart4Instance = null
+
+// 创建一个函数来高亮0-18岁部分
+const highlightZeroToEighteen = () => {
+  if (myChart4Instance) {
+    // 高亮显示"0-18岁"部分
+    myChart4Instance.dispatchAction({
+      type: 'highlight',
+      name: '0-18岁'
+    })
+
+    // 显示工具提示
+    myChart4Instance.dispatchAction({
+      type: 'showTip',
+      seriesIndex: 0,
+      dataIndex: 0
+    })
+
+    // 设置一个定时器，创建闪烁效果
+    let isHighlighted = true
+    const interval = setInterval(() => {
+      if (myChart4Instance) {
+        if (isHighlighted) {
+          myChart4Instance.dispatchAction({
+            type: 'downplay',
+            name: '0-18岁'
+          })
+        } else {
+          myChart4Instance.dispatchAction({
+            type: 'highlight',
+            name: '0-18岁'
+          })
+        }
+        isHighlighted = !isHighlighted
+      }
+    }, 1000)
+
+    // 保存interval ID以便清理
+    myChart4Instance.__highlightInterval = interval
+  }
+}
+
+// 创建一个函数来取消高亮
+const downplayZeroToEighteen = () => {
+  if (myChart4Instance) {
+    // 取消高亮显示"0-18岁"部分
+    myChart4Instance.dispatchAction({
+      type: 'downplay',
+      name: '0-18岁'
+    })
+
+    // 清理定时器
+    if (myChart4Instance.__highlightInterval) {
+      clearInterval(myChart4Instance.__highlightInterval)
+      myChart4Instance.__highlightInterval = null
+    }
+  }
+}
+
+// 滚动监听函数
+let scrollHandler = null
 
 onMounted(() => {
   if (chart4.value) {
     const myChart4 = echarts.init(chart4.value)
+    myChart4Instance = myChart4
     myChart4.setOption({
       title: { text: '不同年龄层群体在整体网民中的占比', left: 'center' },
       tooltip: { trigger: 'item' },
       legend: { bottom: 10, left: 'center' },
-      series: [{ type: 'pie', radius: '60%', data: [{ value: 20, name: '0-18岁' }, { value: 35, name: '19-35岁' }, { value: 25, name: '36-50岁' }, { value: 15, name: '51-65岁' }, { value: 5, name: '65岁以上' }], emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } } }]
+      series: [{
+        type: 'pie',
+        radius: '60%',
+        data: [
+          {
+            value: 20,
+            name: '0-18岁',
+            itemStyle: {
+              // 为0-18岁设置更醒目的颜色
+              color: '#e74c3c'
+            }
+          },
+          { value: 35, name: '19-35岁' },
+          { value: 25, name: '36-50岁' },
+          { value: 15, name: '51-65岁' },
+          { value: 5, name: '65岁以上' }
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }],
+      graphic: [{
+        type: 'text',
+        left: 'center',
+        bottom: 0,
+        z: 100,
+        style: {
+          text: '数据来源：CNNIC',
+          marginTop: 6,
+          textAlign: 'center',
+          fill: '#666',
+          fontSize: 12,
+          fontStyle: 'italic'
+        }
+      }]
     })
+
+    // 添加滚动监听
+    scrollHandler = () => {
+      if (!chart4.value) return
+
+      const rect = chart4.value.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+
+      // 当图表进入视窗时触发高亮
+      if (rect.top < windowHeight * 0.8 && rect.bottom > windowHeight * 0.2) {
+        highlightZeroToEighteen()
+      } else {
+        downplayZeroToEighteen()
+      }
+    }
+
+    window.addEventListener('scroll', scrollHandler)
+
+    // 初始化时检查是否应该高亮
+    setTimeout(() => {
+      scrollHandler()
+    }, 100)
   }
   if (chart5.value) {
     const myChart5 = echarts.init(chart5.value)
@@ -40,7 +164,7 @@ onMounted(() => {
       tooltip: { trigger: 'axis' }, legend: { data: ['网民数量(万人)', '普及率(%)'], bottom: 10 },
       xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023'] },
       yAxis: [{ type: 'value', name: '网民数量(万人)' }, { type: 'value', name: '普及率(%)', max: 100 }],
-      series: [{ name: '网民数量(万人)', type: 'bar', data: [18281, 19062, 19347, 19630], itemStyle: { color: '#5470c6' } }, { name: '普及率(%)', type: 'line', yAxisIndex: 1, data: [94.9, 96.8, 97.2, 97.3], itemStyle: { color: '#ee6666' } }]
+      series: [{ name: '网民数量(万人)', type: 'bar', data: [18281, 19062, 19347, 19630], itemStyle: { color: '#5470c6' } }, { name: '普及率(%)', type: 'line', yAxisIndex: 1, data: [94.9, 96.8, 97.2, 97.3], itemStyle: { color: '#ee6666' } }],
     })
   }
   if (chart6.value) {
@@ -57,6 +181,16 @@ onMounted(() => {
 
 onUnmounted(() => {
   ;[chart4, chart5, chart6].forEach(r => { if (r?.value) { const inst = echarts.getInstanceByDom(r.value); inst && inst.dispose() } })
+
+  // 清理滚动监听器
+  if (scrollHandler) {
+    window.removeEventListener('scroll', scrollHandler)
+  }
+
+  // 清理高亮定时器
+  if (myChart4Instance && myChart4Instance.__highlightInterval) {
+    clearInterval(myChart4Instance.__highlightInterval)
+  }
 })
 </script>
 
@@ -89,6 +223,14 @@ onUnmounted(() => {
   50% {
     filter: drop-shadow(0 0 10px rgba(243, 156, 18, 0.5));
   }
+}
+
+.chart-subtitle {
+  text-align: center;
+  font-size: 2.8rem;
+  color: #e74c3c;
+  margin: 20px 0;
+  font-weight: bold;
 }
 
 .data-note.small {

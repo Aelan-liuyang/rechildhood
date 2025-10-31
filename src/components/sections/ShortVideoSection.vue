@@ -3,13 +3,32 @@
     <section class="section">
       <h2 class="section-title">你每天有多少时间是在和短视频度过？</h2>
       <div class="time-options">
-        <div class="time-option">30-60min</div>
-        <div class="time-option">60-90min</div>
-        <div class="time-option">90-120min</div>
-        <div class="time-option">120min以上</div>
+        <div
+          class="time-option"
+          :class="{ selected: selectedTimeOption === '30-60min' }"
+          @click="selectTimeOption('30-60min')">
+          30-60min
+        </div>
+        <div
+          class="time-option"
+          :class="{ selected: selectedTimeOption === '60-90min' }"
+          @click="selectTimeOption('60-90min')">
+          60-90min
+        </div>
+        <div
+          class="time-option"
+          :class="{ selected: selectedTimeOption === '90-120min' }"
+          @click="selectTimeOption('90-120min')">
+          90-120min
+        </div>
+        <div
+          class="time-option"
+          :class="{ selected: selectedTimeOption === '120min以上' }"
+          @click="selectTimeOption('120min以上')">
+          120min以上
+        </div>
       </div>
-      <div class="chart-container" ref="chart2"></div>
-      <p class="data-source">数据来源：中国互联网络信息中心（CNNIC）、《2020中国网络视听发展研究报告》等</p>
+      <div v-if="showChart2" class="chart-container" ref="chart2"></div>
     </section>
 
     <section class="section video-section">
@@ -58,18 +77,43 @@ const chart2 = ref(null)
 const chart3 = ref(null)
 const showChart = ref(false)
 const selectedChoice = ref(null)
+const showChart2 = ref(false)
+const selectedTimeOption = ref('')
+
+const selectChoice = (v) => { selectedChoice.value = v; showChart.value = true }
+
+const selectTimeOption = (option) => {
+  selectedTimeOption.value = option
+  showChart2.value = true
+  nextTick(() => {
+    if (chart2.value) {
+      const myChart2 = echarts.init(chart2.value)
+      myChart2.setOption({
+        title: { text: '中国居民每日平均短视频使用时间', left: 'center', textStyle: { fontSize: 20, fontWeight: 'bold' } },
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024'] },
+        yAxis: { type: 'value', name: '分钟', axisLabel: { formatter: '{value}min' } },
+        series: [{ data: [110, 87, 150, 151, 156], type: 'bar', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#fbc658' }, { offset: 1, color: '#f77825' }]) }, label: { show: true, position: 'top', formatter: '{c}min' } }],
+        graphic: [{
+          type: 'text',
+          left: 'center',
+          bottom: 0,
+          z: 100,
+          style: {
+            text: '数据来源：中国互联网络信息中心（CNNIC）、《2020中国网络视听发展研究报告》等',
+            textAlign: 'center',
+            fill: '#666',
+            fontSize: 12,
+            fontStyle: 'italic'
+          }
+        }]
+      })
+    }
+  })
+}
 
 onMounted(() => {
-  if (chart2.value) {
-    const myChart2 = echarts.init(chart2.value)
-    myChart2.setOption({
-      title: { text: '中国居民每日平均短视频使用时间', left: 'center', textStyle: { fontSize: 20, fontWeight: 'bold' } },
-      tooltip: { trigger: 'axis' },
-      xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024'] },
-      yAxis: { type: 'value', name: '分钟', axisLabel: { formatter: '{value}min' } },
-      series: [{ data: [110, 87, 150, 151, 156], type: 'bar', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#fbc658' }, { offset: 1, color: '#f77825' }]) }, label: { show: true, position: 'top', formatter: '{c}min' } }]
-    })
-  }
+  // 移除原来的图表初始化代码，因为现在在选择时间选项后初始化
 
   // 高亮 chart3 的 "亲子"
   const setupChart3HighlightOnReveal = () => {
@@ -106,15 +150,106 @@ onMounted(() => {
     const exists = echarts.getInstanceByDom(chart3.value)
     if (exists) { exists.resize(); setupChart3HighlightOnReveal(); return }
     const myChart3 = echarts.init(chart3.value)
-    const categories = ['随拍', '剧情', '明星八卦', '舞蹈', '游戏', '亲子', '音乐', '颜值', '时政社会', '校园教育', '美食', '医疗健康', '财经', '休闲']
-    const values = [108045.7, 37819.9, 34845.9, 27364.2, 19072.4, 13513.8, 13518.6, 10068.6, 5773.9, 4761.7, 4761.7, 2337.6, 2149.5, 1772.5]
+    // 过滤掉"随拍"类型
+    const originalCategories = ['随拍', '剧情', '明星八卦', '舞蹈', '游戏', '亲子', '音乐', '颜值', '时政社会', '校园教育', '美食', '医疗健康', '财经', '休闲']
+    const originalValues = [108045.7, 37819.9, 34845.9, 27364.2, 19072.4, 13513.8, 13518.6, 10068.6, 5773.9, 4761.7, 4761.7, 2337.6, 2149.5, 1772.5]
+
+    // 找到"随拍"的索引并移除
+    const skipIndex = originalCategories.indexOf('随拍')
+    const categories = originalCategories.filter((_, index) => index !== skipIndex)
+    const values = originalValues.filter((_, index) => index !== skipIndex)
+
     myChart3.setOption({
       title: { text: '各类型视频平均点赞数', subtext: '截至2025年10月23日', left: 'center' },
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       xAxis: { type: 'value', axisLabel: { formatter: '{value}' } },
       yAxis: { type: 'category', data: categories, axisLabel: { fontSize: 12 } },
-      series: [{ data: values, type: 'bar', itemStyle: { color: (params) => { const colors = ['#ee6666', '#fc8452', '#fac858', '#91cc75', '#73c0de', '#3ba272', '#5470c6', '#9a60b4', '#ea7ccc']; return colors[params.dataIndex % colors.length] } }, label: { show: true, position: 'right', formatter: '{c}' } }]
+      series: [{
+        data: values,
+        type: 'bar',
+        itemStyle: {
+          color: (params) => {
+            // 如果是"亲子"类型，使用醒目的颜色，否则使用较暗淡的颜色
+            if (params.name === '亲子') {
+              return '#e74c3c' // 醒目的红色
+            } else {
+              // 其他类型使用更暗淡的颜色
+              const dullColors = ['#bdc3c7', '#95a5a6', '#7f8c8d', '#34495e']
+              return dullColors[params.dataIndex % dullColors.length]
+            }
+          },
+          // 为"亲子"类型添加更明显的视觉效果
+          emphasis: {
+            color: (params) => {
+              if (params.name === '亲子') {
+                return '#c0392b' // 悬停时更深的红色
+              } else {
+                return null // 使用默认的暗淡颜色
+              }
+            },
+            borderWidth: 2,
+            borderColor: (params) => {
+              if (params.name === '亲子') {
+                return '#e74c3c' // 添加边框
+              } else {
+                return null
+              }
+            }
+          }
+        },
+        label: {
+          show: true,
+          position: 'right',
+          formatter: (params) => {
+            // 为"亲子"类型添加特殊标签样式
+            if (params.name === '亲子') {
+              return `{highlight|${params.value}}`
+            } else {
+              return params.value
+            }
+          },
+          rich: {
+            highlight: {
+              color: '#e74c3c',
+              fontWeight: 'bold',
+              fontSize: 14
+            }
+          }
+        }
+      }]
     })
+
+    // 添加定时器，让"亲子"类型更加高亮
+    const highlightInterval = setTimeout(() => {
+      const cats = categories || []
+      const idx = cats.indexOf('亲子')
+      if (idx >= 0 && myChart3) {
+        // 高亮显示"亲子"类型
+        myChart3.dispatchAction({ type: 'highlight', seriesIndex: 0, dataIndex: idx })
+        // 显示工具提示
+        myChart3.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: idx })
+
+        // 每1秒切换一次高亮状态，增强视觉效果
+        let isHighlighted = true
+        const interval = setInterval(() => {
+          if (myChart3) {
+            if (isHighlighted) {
+              myChart3.dispatchAction({ type: 'downplay', seriesIndex: 0, dataIndex: idx })
+            } else {
+              myChart3.dispatchAction({ type: 'highlight', seriesIndex: 0, dataIndex: idx })
+            }
+            isHighlighted = !isHighlighted
+          }
+        }, 1000)
+
+        // 保存interval ID以便清理
+        myChart3.__highlightInterval = interval
+      }
+    }, 500)
+
+    // 保存定时器ID以便清理
+    myChart3.__highlightTimeout = highlightInterval
+
     setupChart3HighlightOnReveal()
   })
 
@@ -127,10 +262,24 @@ onMounted(() => {
   window.addEventListener('resize', onResize)
   onUnmounted(() => {
     window.removeEventListener('resize', onResize)
+
+    // 清理图表相关的定时器
+    if (chart3.value) {
+      const inst = echarts.getInstanceByDom(chart3.value)
+      if (inst) {
+        // 清理高亮定时器
+        if (inst.__highlightTimeout) {
+          clearTimeout(inst.__highlightTimeout)
+        }
+        // 清理高亮切换间隔
+        if (inst.__highlightInterval) {
+          clearInterval(inst.__highlightInterval)
+        }
+      }
+    }
   })
 })
 
-const selectChoice = (v) => { selectedChoice.value = v; showChart.value = true }
 </script>
 
 <style scoped>
@@ -155,6 +304,13 @@ const selectChoice = (v) => { selectedChoice.value = v; showChart.value = true }
 }
 
 .time-option:hover {
+  background: #f39c12;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+.time-option.selected {
   background: #f39c12;
   color: white;
   transform: translateY(-3px);
