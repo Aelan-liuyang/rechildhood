@@ -115,13 +115,57 @@ const selectTimeOption = (option) => {
   showChart2.value = true
   nextTick(() => {
     if (chart2.value) {
+      const isMobile = window.innerWidth <= 480
+      const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
+      const titleFontSize = isMobile ? 14 : isTablet ? 16 : 20
+      const axisLabelFontSize = isMobile ? 10 : isTablet ? 11 : 12
+      const labelFontSize = isMobile ? 10 : isTablet ? 11 : 12
+      const sourceFontSize = isMobile ? 9 : isTablet ? 10 : 12
+
       const myChart2 = echarts.init(chart2.value)
       myChart2.setOption({
-        title: { text: '中国居民每日平均短视频使用时间', left: 'center', textStyle: { fontSize: 20, fontWeight: 'bold' } },
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024'] },
-        yAxis: { type: 'value', name: '分钟', axisLabel: { formatter: '{value}min' } },
-        series: [{ data: [110, 87, 150, 151, 156], type: 'bar', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#fbc658' }, { offset: 1, color: '#f77825' }]) }, label: { show: true, position: 'top', formatter: '{c}min' } }],
+        title: {
+          text: '中国居民每日平均短视频使用时间',
+          left: 'center',
+          textStyle: { fontSize: titleFontSize, fontWeight: 'bold' },
+          top: isMobile ? 10 : 15
+        },
+        tooltip: {
+          trigger: 'axis',
+          textStyle: { fontSize: isMobile ? 11 : 12 }
+        },
+        grid: {
+          left: isMobile ? '8%' : '3%',
+          right: isMobile ? '8%' : '4%',
+          bottom: isMobile ? '18%' : '15%',
+          top: isMobile ? '25%' : '20%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          data: ['2020', '2021', '2022', '2023', '2024'],
+          axisLabel: { fontSize: axisLabelFontSize }
+        },
+        yAxis: {
+          type: 'value',
+          name: '分钟',
+          nameTextStyle: { fontSize: axisLabelFontSize },
+          axisLabel: { formatter: '{value}min', fontSize: axisLabelFontSize }
+        },
+        series: [{
+          data: [110, 87, 150, 151, 156],
+          type: 'bar',
+          barWidth: isMobile ? '50%' : '45%',
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#fbc658' }, { offset: 1, color: '#f77825' }])
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '{c}min',
+            fontSize: labelFontSize
+          }
+        }],
         graphic: [{
           type: 'text',
           left: 'center',
@@ -131,10 +175,15 @@ const selectTimeOption = (option) => {
             text: '数据来源：中国互联网络信息中心（CNNIC）、《2020中国网络视听发展研究报告》等',
             textAlign: 'center',
             fill: '#666',
-            fontSize: 12,
+            fontSize: sourceFontSize,
             fontStyle: 'italic'
           }
         }]
+      })
+
+      // 响应式调整
+      window.addEventListener('resize', () => {
+        myChart2.resize()
       })
     }
   })
@@ -925,6 +974,8 @@ onMounted(() => {
 .chart-reveal {
   margin-top: var(--spacing-2xl, 60px);
   animation: chartRevealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 100%;
+  max-width: 100%;
 }
 
 @keyframes chartRevealAnimation {
@@ -1014,82 +1065,136 @@ onMounted(() => {
     font-size: 1.5rem;
   }
 
+  .chart-reveal {
+    margin-top: var(--spacing-xl, 40px);
+  }
+
+  .chart-container.large {
+    height: 500px;
+  }
+
   .data-note {
     padding: var(--spacing-md, 20px);
     font-size: 1rem;
+    margin-top: var(--spacing-md, 20px);
   }
 }
 
 @media (max-width: 480px) {
+
+  .time-section,
+  .video-section {
+    padding: 40px 10px;
+  }
+
   .time-options {
     grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 0 15px;
+    gap: 12px;
+    padding: 0 10px;
   }
 
   .time-option {
-    padding: var(--spacing-md, 20px) 15px;
+    padding: 16px 12px;
+    min-height: 44px;
   }
 
   .time-icon {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .time-text {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .section-subtitle,
   .section-subtitle-light {
-    font-size: 1rem;
-    margin: -10px 0 var(--spacing-lg, 30px);
+    font-size: 0.95rem;
+    margin: -8px 0 25px;
+    padding: 0 10px;
   }
 
   .video-examples {
-    gap: var(--spacing-lg, 30px);
-    padding: 0 15px;
+    gap: 25px;
+    padding: 0 10px;
+  }
+
+  .video-card {
+    max-width: 100%;
   }
 
   .video-badge {
-    top: 10px;
-    right: 10px;
-    padding: 6px 12px;
-    font-size: 0.75rem;
+    top: 8px;
+    right: 8px;
+    padding: 5px 10px;
+    font-size: 0.7rem;
   }
 
   .video-info {
-    padding: var(--spacing-md, 20px) 15px;
+    padding: 15px 12px;
+  }
+
+  .video-title {
+    font-size: 0.95rem;
   }
 
   .video-likes {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .heart-icon {
-    font-size: 1.2rem;
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-  }
-
-  .choice-buttons {
-    gap: var(--spacing-md, 20px);
-  }
-
-  .choice-btn {
-    padding: 18px 40px;
     font-size: 1.1rem;
   }
 
+  .video-tags {
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .choice-buttons {
+    gap: 15px;
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .choice-btn {
+    padding: 16px 35px;
+    font-size: 1rem;
+    width: 100%;
+    min-height: 48px;
+  }
+
   .btn-icon {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+  }
+
+  .btn-text {
+    font-size: 1rem;
+  }
+
+  .chart-reveal {
+    margin-top: 30px;
+    padding: 0 5px;
+  }
+
+  .chart-container {
+    padding: 12px 10px;
+  }
+
+  .chart-container.large {
+    height: 380px;
+    padding: 15px 10px;
   }
 
   .data-note {
-    padding: 18px;
-    font-size: 0.9rem;
+    padding: 15px 12px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin-top: 18px;
+    border-radius: var(--radius-md, 12px);
   }
 }
 </style>

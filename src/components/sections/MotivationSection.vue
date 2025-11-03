@@ -541,6 +541,29 @@ watch(showMindmap, async (v) => {
 
 /* ==================== 移动端适配 ==================== */
 @media (max-width: 768px) {
+  .section {
+    padding: 60px 25px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    padding: 0 15px;
+    line-height: 1.6;
+  }
+
+  .section-intro {
+    font-size: 1.1rem;
+    padding: 0 15px;
+    line-height: 2;
+  }
+
+  .insight-text {
+    font-size: 1.1rem;
+    line-height: 2.1;
+    padding: 0 15px;
+    text-align: left;
+  }
+
   .motivation-flow {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg, 30px);
@@ -607,50 +630,142 @@ watch(showMindmap, async (v) => {
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: 45px 16px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    padding: 0 10px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .section-intro {
+    font-size: 1rem;
+    padding: 0 10px;
+    line-height: 2;
+    margin-bottom: 25px;
+  }
+
+  .insight-text {
+    font-size: 1.05rem;
+    line-height: 2.2;
+    padding: 0 10px;
+    margin: 25px auto;
+    max-width: 100%;
+    text-align: left;
+    color: #333;
+  }
+
+  /* 移动端关键词高亮优化 */
+  .highlight-quote {
+    font-size: 1.08rem;
+    padding: 0 3px;
+  }
+
+  .highlight-key {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-emphasis {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-positive {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-success {
+    font-size: 1.08rem;
+    padding: 0 4px;
+  }
+
+  .highlight-negative {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-warning {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-danger {
+    font-size: 1.08rem;
+    padding: 0 4px;
+  }
+
   .motivation-flow {
-    margin: var(--spacing-lg, 30px) auto;
+    margin: 30px auto;
+    gap: 20px;
   }
 
   .flow-left,
   .flow-right {
-    padding: var(--spacing-md, 20px);
+    padding: 20px 16px;
+    font-size: 1rem;
+  }
+
+  .flow-left h3,
+  .flow-right h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .mindmap-btn {
+    padding: 14px 28px;
+    font-size: 1.05rem;
   }
 
   .mindmap-modal {
-    padding: 15px;
+    padding: 12px;
   }
 
   .mindmap-modal .chart-container {
     height: 320px;
     min-height: 300px;
-    margin: var(--spacing-sm, 12px) 0;
+    margin: 12px 0;
   }
 
   .modal-content {
-    padding: var(--spacing-md, 20px) 15px;
-    width: 100%;
-    max-height: 92vh;
+    padding: 20px 14px;
+    width: calc(100% - 20px);
+    max-height: 90vh;
   }
 
   .modal-title {
     font-size: 1.3rem;
+    padding: 0 10px;
   }
 
   .modal-subtitle {
-    font-size: 0.8rem;
-    margin-bottom: var(--spacing-xs, 8px);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    padding: 0 10px;
   }
 
   .legend-container {
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-xs, 8px);
-    padding: var(--spacing-xs, 8px);
-    margin-top: var(--spacing-xs, 8px);
+    gap: 10px;
+    padding: 12px 10px;
+    margin-top: 12px;
   }
 
   .legend-item {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .modal-close {
+    top: 10px;
+    right: 10px;
+    width: 38px;
+    height: 38px;
+    font-size: 1.4rem;
   }
 }
 </style>

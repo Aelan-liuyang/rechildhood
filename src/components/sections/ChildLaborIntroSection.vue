@@ -17,8 +17,7 @@
     <p class="key-message">在这其中，有一部分在父母的包装下成为了<span
         class="highlight">小网红博主</span>（后文称为"网红儿童"）。当"晒娃"念起了"生意经"，儿童也就变成了"摇钱树"。
     </p>
-    <div class="stat-box">据第三方数据机构统计，2025年国内3-12岁儿童网红超<span
-        class="big-num">180万</span>，日均直播时长<span
+    <div class="stat-box">据第三方数据机构统计，2025年国内3-12岁儿童网红超<span class="big-num">180万</span>，日均直播时长<span
         class="big-num">3.6小时</span>，头部账号月收入可达<span class="big-num">百万</span>。
     </div>
   </section>
@@ -96,6 +95,88 @@
 
   50% {
     filter: drop-shadow(0 0 10px rgba(243, 156, 18, 0.5));
+  }
+}
+
+@media (max-width: 768px) {
+  .dark-section {
+    padding: 50px 20px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .childlabor-types {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .type-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .type-card p {
+    font-size: 0.95rem;
+  }
+
+  .key-message {
+    font-size: 1.1rem;
+  }
+
+  .stat-box {
+    font-size: 1rem;
+  }
+
+  .big-num {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dark-section {
+    padding: 40px 12px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    padding: 0 8px;
+  }
+
+  .childlabor-types {
+    gap: 18px;
+    padding: 0 5px;
+  }
+
+  .type-card {
+    padding: 18px 15px;
+  }
+
+  .type-card h3 {
+    font-size: 1.15rem;
+  }
+
+  .type-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .key-message {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+
+  .highlight {
+    font-size: 1.05rem;
+  }
+
+  .stat-box {
+    font-size: 0.95rem;
+    padding: 20px 15px;
+  }
+
+  .big-num {
+    font-size: 1.5rem;
   }
 }
 </style>

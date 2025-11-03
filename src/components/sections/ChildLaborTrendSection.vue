@@ -178,23 +178,25 @@ onUnmounted(() => {
 
 <style scoped>
 .section-intro {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   text-align: center;
   max-width: 900px;
-  line-height: 1.8;
-  color: #555;
-  margin-bottom: var(--paragraph-spacing, 20px);
+  line-height: 2;
+  color: #444;
+  margin-bottom: var(--paragraph-spacing, 30px);
   margin-left: auto;
   margin-right: auto;
+  font-weight: 400;
 }
 
 .key-message {
   font-size: 1.3rem;
-  text-align: center;
-  line-height: 1.8;
-  max-width: 800px;
+  text-align: left;
+  line-height: 2;
+  max-width: 900px;
   margin: var(--spacing-xl, 40px) auto;
   color: #2c3e50;
+  font-weight: 400;
 }
 
 /* 关键词高亮样式 - 简约版 */
@@ -315,5 +317,159 @@ onUnmounted(() => {
   margin-top: 10px;
   font-style: italic;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 25px;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+    padding: 0 15px;
+    line-height: 1.6;
+  }
+
+  .section-intro {
+    font-size: 1.1rem;
+    padding: 0 15px;
+    line-height: 2.1;
+    margin-bottom: 30px;
+    text-align: left;
+    color: #444;
+    word-spacing: 0.05em;
+    letter-spacing: 0.01em;
+    width: 420px;
+  }
+
+  .key-message {
+    font-size: 1.15rem;
+    padding: 0 15px;
+    line-height: 2;
+    text-align: left;
+  }
+
+  .chart-container {
+    padding: 20px 15px;
+    margin: 30px 0;
+  }
+
+  .table-container {
+    padding: 18px 15px;
+    margin: 30px 0;
+  }
+
+  .table-title {
+    font-size: 1.15rem;
+    padding: 12px;
+  }
+
+  .styled-table {
+    font-size: 0.9rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 45px 16px;
+  }
+
+  .main-title,
+  h1.section-title {
+    font-size: 1.4rem;
+    padding: 0 10px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .section-intro {
+    font-size: 1.05rem;
+    padding: 0 10px;
+    line-height: 2.2;
+    margin-bottom: 28px;
+    text-align: left;
+    color: #333;
+    word-spacing: 0.05em;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    width: 420px;
+  }
+
+  .key-message {
+    font-size: 1.05rem;
+    padding: 0 10px;
+    line-height: 2.1;
+    text-align: left;
+    color: #2c3e50;
+  }
+
+  /* 关键词高亮在移动端的优化 */
+  .highlight-keyword {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-keyword.important {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-number {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .highlight-number.strong {
+    font-size: 1.08rem;
+    padding: 0 2px;
+  }
+
+  .highlight-action,
+  .highlight-warning,
+  .highlight-emphasis,
+  .highlight-contrast {
+    font-size: 1.05rem;
+    padding: 0 2px;
+  }
+
+  .chart-container {
+    padding: 15px 12px;
+    margin: 25px 0;
+  }
+
+  .table-container {
+    padding: 15px 12px;
+    border-radius: 10px;
+    margin: 25px 0;
+  }
+
+  .table-title {
+    font-size: 1.05rem;
+    padding: 10px;
+  }
+
+  .styled-table {
+    font-size: 0.85rem;
+  }
+
+  .styled-table th {
+    font-size: 0.9rem;
+    padding: 10px 6px;
+  }
+
+  .styled-table td {
+    padding: 10px 6px;
+  }
+
+  .table-source {
+    font-size: 0.8rem;
+    padding: 0 10px;
+    margin-top: 8px;
+  }
 }
 </style>

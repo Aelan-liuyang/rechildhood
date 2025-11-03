@@ -370,11 +370,44 @@ h3 {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   padding: var(--spacing-md, 20px);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
 }
 
 .chart-container:hover {
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
+}
+
+/* 移动端图表优化 */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 16px 12px;
+    border-radius: var(--radius-md, 12px);
+    height: var(--chart-height, 380px);
+  }
+
+  .chart-container.large {
+    height: var(--chart-height-large, 480px);
+    padding: 18px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    padding: 14px 10px;
+    border-radius: var(--radius-sm, 8px);
+    height: var(--chart-height, 320px);
+  }
+
+  .chart-container.large {
+    height: var(--chart-height-large, 400px);
+    padding: 15px 12px;
+  }
+
+  /* 移动端图表内容优化 */
+  .chart-container * {
+    font-size: inherit;
+  }
 }
 
 .chart-container.large {

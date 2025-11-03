@@ -321,4 +321,51 @@ onUnmounted(() => {
     font-size: 0.85rem;
   }
 }
+
+@media (max-width: 480px) {
+  .interactive-section {
+    padding: 40px 10px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    padding: 0 5px;
+  }
+
+  .circle-interaction {
+    height: 420px;
+  }
+
+  .center-child {
+    width: 90px;
+    height: 90px;
+  }
+
+  .child-icon {
+    font-size: 2.5rem;
+  }
+
+  .center-child.shrink {
+    width: 70px;
+    height: 70px;
+  }
+
+  .center-child.shrink .child-icon {
+    font-size: 1.8rem;
+  }
+
+  .role-item {
+    padding: 8px;
+  }
+
+  .role-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+
+  .role-name {
+    font-size: 0.75rem;
+  }
+}
 </style>

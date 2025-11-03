@@ -643,37 +643,72 @@ onMounted(() => {
 }
 
 @media (max-width: 480px) {
+  .timeline {
+    padding: 30px 10px;
+  }
+
   .timeline::before {
-    left: 20px;
+    left: 18px;
+    width: 4px;
   }
 
   .timeline-dot {
-    left: 20px;
-    width: 16px;
-    height: 16px;
+    left: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .step-badge {
+    left: 10px;
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+
+  .timeline-item {
+    margin-bottom: 35px;
   }
 
   .timeline-item:nth-child(odd) .timeline-content,
   .timeline-item:nth-child(even) .timeline-content {
-    width: calc(100% - 60px);
-    margin-left: 60px;
+    width: calc(100% - 55px);
+    margin-left: 55px;
+    margin-right: 0;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-content::before,
+  .timeline-item:nth-child(even) .timeline-content::before {
+    display: none;
   }
 
   .timeline-content {
-    padding: 18px;
+    padding: 16px;
+    border-radius: 16px;
   }
 
   .timeline-content h3 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
   }
 
   .timeline-content p {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .timeline-image {
+    max-width: 100%;
+    margin: 15px 0;
+  }
+
+  .timeline-icon {
+    display: none;
   }
 
   .insight-text {
-    font-size: 1rem;
-    padding: 18px;
+    font-size: 0.95rem;
+    padding: 15px;
+    margin: 30px auto;
   }
 }
 </style>

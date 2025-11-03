@@ -1260,54 +1260,117 @@ onUnmounted(() => {
   }
 }
 
+/* 平板和手机响应式 */
 @media (max-width: 768px) {
+  .opening-section {
+    padding: 40px 15px 60px;
+    min-height: 100vh;
+  }
+
   .phone-screen {
+    width: 200px;
+    height: 400px;
+    border: 6px solid #1a1a1a;
+  }
+
+  .phone-glow {
     width: 220px;
-    height: 440px;
-    border: 8px solid #1a1a1a;
+    height: 420px;
+  }
+
+  .phone-notch {
+    width: 120px;
+    height: 22px;
+    gap: 8px;
+  }
+
+  .camera-lens {
+    width: 10px;
+    height: 10px;
+  }
+
+  .speaker {
+    width: 40px;
+    height: 4px;
+  }
+
+  .power {
+    width: 3px;
+    height: 25px;
   }
 
   .opening-text {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    padding: 20px 15px;
+    line-height: 1.6;
+  }
+
+  .text-particles {
+    display: none;
+  }
+
+  .scroll-indicator {
+    bottom: 25px;
+    gap: 8px;
+  }
+
+  .indicator-line {
+    height: 35px;
+  }
+
+  .indicator-text {
+    font-size: 0.8rem;
+  }
+
+  .scroll-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
   }
 
   .nav-container {
-    padding: 0 var(--spacing-md, 20px);
-    height: var(--nav-height, 70px);
-    transition: height 0.3s ease;
+    padding: 0 18px;
+    height: 70px;
+  }
+
+  .nav-brand {
+    font-size: 1.35rem;
+    gap: 12px;
+  }
+
+  .brand-icon-wrapper {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand-icon {
+    font-size: 1.9rem;
+  }
+
+  .brand-text {
+    font-size: 1.35rem;
   }
 
   .nav-menu {
     position: fixed;
-    top: var(--nav-height, 70px);
+    top: 70px;
     left: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     flex-direction: column;
     gap: 0;
-    padding: var(--spacing-md, 20px) 0;
+    padding: 20px 0;
     transform: translateY(-100%);
     opacity: 0;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.4s ease;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    z-index: var(--z-dropdown, 999);
-  }
-
-  /* 添加遮罩层 */
-  .nav-menu::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    z-index: var(--z-overlay, 100);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+    z-index: 998;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    border-top: 1px solid rgba(102, 126, 234, 0.1);
   }
 
   .nav-menu.active {
@@ -1315,25 +1378,202 @@ onUnmounted(() => {
     opacity: 1;
   }
 
-  .nav-menu.active::before {
-    opacity: 1;
-    pointer-events: auto;
+  .nav-link {
+    padding: 14px 24px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+    border-radius: 0;
+    min-height: 52px;
+    font-size: 1rem;
+    background: transparent;
+    backdrop-filter: none;
+    margin: 0 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
   }
 
-  .nav-link {
-    padding: 15px var(--spacing-lg, 30px);
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid #f0f0f0;
-    border-radius: 0;
-    min-height: var(--touch-target-min, 44px);
+  .nav-link:last-child {
+    border-bottom: none;
+  }
+
+  .nav-link:active {
+    background: rgba(102, 126, 234, 0.08);
+    transform: scale(0.98);
+  }
+
+  .nav-link .link-icon {
+    font-size: 1.2rem;
+    min-width: 24px;
+  }
+
+  .nav-link .link-text {
+    font-weight: 600;
   }
 
   .nav-toggle {
     display: flex;
-    padding: var(--spacing-sm, 12px);
-    min-width: var(--touch-target-min, 44px);
-    min-height: var(--touch-target-min, 44px);
+    padding: 12px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .nav-toggle span {
+    width: 28px;
+  }
+
+  .navbar {
+    height: 70px;
+  }
+
+  .navbar.scrolled {
+    height: 65px;
+  }
+
+  .navbar.scrolled .nav-container {
+    height: 65px;
+  }
+
+  .navbar.scrolled .nav-menu {
+    top: 65px;
+    max-height: calc(100vh - 65px);
+  }
+}
+
+@media (max-width: 480px) {
+  .opening-section {
+    padding: 30px 10px 50px;
+  }
+
+  .phone-screen {
+    width: 160px;
+    height: 320px;
+    border: 5px solid #1a1a1a;
+  }
+
+  .phone-glow {
+    width: 180px;
+    height: 340px;
+  }
+
+  .phone-notch {
+    width: 100px;
+    height: 18px;
+  }
+
+  .camera-lens {
+    width: 8px;
+    height: 8px;
+  }
+
+  .speaker {
+    width: 30px;
+    height: 3px;
+  }
+
+  .power {
+    width: 2px;
+    height: 20px;
+  }
+
+  .opening-text {
+    font-size: 1.2rem;
+    padding: 15px 10px;
+    letter-spacing: 0px;
+  }
+
+  .scroll-indicator {
+    bottom: 20px;
+    gap: 6px;
+  }
+
+  .indicator-line {
+    height: 30px;
+  }
+
+  .indicator-text {
+    font-size: 0.75rem;
+  }
+
+  .scroll-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .nav-container {
+    padding: 0 14px;
+    height: 65px;
+  }
+
+  .nav-brand {
+    font-size: 1.2rem;
+    gap: 10px;
+  }
+
+  .brand-icon-wrapper {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-icon {
+    font-size: 1.7rem;
+  }
+
+  .brand-text {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-menu {
+    top: 65px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(102, 126, 234, 0.12);
+  }
+
+  .nav-link {
+    padding: 14px 20px;
+    min-height: 50px;
+    font-size: 0.95rem;
+    margin: 0 10px;
+    border-radius: 10px;
+  }
+
+  .nav-link .link-icon {
+    font-size: 1.15rem;
+    min-width: 22px;
+  }
+
+  .nav-link .link-text {
+    font-weight: 600;
+  }
+
+  .nav-toggle {
+    padding: 10px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .nav-toggle span {
+    width: 26px;
+    height: 2.5px;
+  }
+
+  .navbar {
+    height: 65px;
+  }
+
+  .navbar.scrolled {
+    height: 60px;
+  }
+
+  .navbar.scrolled .nav-container {
+    height: 60px;
+  }
+
+  .navbar.scrolled .nav-menu {
+    top: 60px;
+    max-height: calc(100vh - 60px);
   }
 }
 </style>

@@ -489,12 +489,126 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .audience-section {
+    padding: 50px 20px;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
   .audience-charts {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .chart-card {
-    padding: 16px;
+    padding: 18px;
+  }
+
+  .chart-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .chart-summary {
+    font-size: 0.95rem;
+  }
+
+  .chart-container {
+    height: 320px;
+  }
+
+  .subsection-title {
+    font-size: 1.5rem;
+    margin: 40px 0 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .audience-section {
+    padding: 40px 12px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    padding: 0 5px;
+  }
+
+  .audience-charts {
+    gap: 18px;
+    padding: 0 5px;
+  }
+
+  .chart-card {
+    padding: 15px 12px;
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .chart-header h3 {
+    font-size: 1.15rem;
+  }
+
+  .info-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+  }
+
+  .chart-summary {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0 2px;
+  }
+
+  .highlight-orange {
+    font-size: 0.95rem;
+  }
+
+  .chart-legend {
+    gap: 12px;
+  }
+
+  .legend-item {
+    font-size: 0.85rem;
+  }
+
+  .legend-color {
+    width: 14px;
+    height: 14px;
+  }
+
+  .chart-container {
+    height: 280px;
+  }
+
+  .gender-chart {
+    height: 260px;
+  }
+
+  .chart-container.large {
+    height: 350px;
+  }
+
+  .data-note {
+    font-size: 0.9rem;
+    padding: 0 5px;
+    margin: 25px auto;
+  }
+
+  .subsection-title {
+    font-size: 1.3rem;
+    margin: 35px 0 20px;
+    padding: 0 5px;
+  }
+
+  .data-source {
+    font-size: 0.75rem;
+    padding: 0 10px;
   }
 }
 </style>

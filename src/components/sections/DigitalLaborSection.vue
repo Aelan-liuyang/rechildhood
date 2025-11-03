@@ -72,4 +72,75 @@
   line-height: 1.8;
   margin-bottom: 20px;
 }
+
+@media (max-width: 768px) {
+  .concept-section {
+    padding: 50px 20px;
+  }
+
+  .highlight-text {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .highlight-text2 {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .concept-box {
+    padding: 30px 25px;
+  }
+
+  .concept-box h3 {
+    font-size: 1.5rem;
+  }
+
+  .concept-detail,
+  .concept-explain {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .concept-section {
+    padding: 40px 15px;
+  }
+
+  .highlight-text {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    padding: 0 5px;
+  }
+
+  .highlight-text2 {
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+    padding: 0 5px;
+  }
+
+  .concept-intro {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .concept-box {
+    padding: 20px 18px;
+    border-radius: 15px;
+  }
+
+  .concept-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .concept-detail,
+  .concept-explain {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+  }
+}
 </style>

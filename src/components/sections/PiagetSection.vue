@@ -186,4 +186,88 @@ const piagetStages = [
   opacity: 0;
   transform: translateX(-50%) translateY(20px);
 }
+
+@media (max-width: 768px) {
+  .piaget-section {
+    padding: 50px 20px;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .section-intro {
+    font-size: 1rem;
+  }
+
+  .piaget-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .stage-name {
+    font-size: 1.1rem;
+  }
+
+  .stage-age {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .piaget-section {
+    padding: 40px 12px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    padding: 0 5px;
+  }
+
+  .section-intro {
+    font-size: 0.95rem;
+    padding: 0 5px;
+  }
+
+  .piaget-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 0 5px;
+  }
+
+  .piaget-stage {
+    padding: 15px;
+  }
+
+  .stage-figure {
+    height: 140px !important;
+  }
+
+  .figure-icon {
+    font-size: 2.5rem;
+  }
+
+  .stage-photo {
+    width: 100%;
+    max-height: 140px;
+  }
+
+  .stage-age {
+    font-size: 0.85rem;
+  }
+
+  .stage-name {
+    font-size: 1.05rem;
+  }
+
+  .stage-detail {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .stage-detail p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
 </style>

@@ -460,25 +460,36 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .section {
-    padding: var(--spacing-md, 20px) 15px;
+    padding: 30px 12px;
   }
 
   .section-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    padding: 0 5px;
   }
 
   .chart-subtitle {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    padding: 0 5px;
+  }
+
+  .section-intro {
+    font-size: 1rem;
+    padding: 0 5px;
   }
 
   .highlight-box {
-    padding: 20px;
-    font-size: 1.1rem;
+    padding: 18px 15px;
+    font-size: 1.05rem;
+  }
+
+  .chart-container {
+    padding: 15px 10px;
   }
 
   .data-note.small {
-    font-size: 0.88rem;
-    padding: 15px 18px;
+    font-size: 0.85rem;
+    padding: 12px 15px;
   }
 }
 </style>

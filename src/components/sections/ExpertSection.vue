@@ -12,7 +12,28 @@
       :autoplay="{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }" :effect="'coverflow'"
       :coverflowEffect="{ rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true }"
       :navigation="{ enabled: true, clickable: true }" :pagination="{ clickable: true, dynamicBullets: true }"
-      :allowTouchMove="true" :grabCursor="true" @swiper="onSwiper" @slideChange="onSlideChange">
+      :allowTouchMove="true" :grabCursor="true" :breakpoints="{
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 15,
+          coverflowEffect: { rotate: 10, stretch: 0, depth: 100, modifier: 1, slideShadows: true }
+        },
+        480: {
+          slidesPerView: 1.1,
+          spaceBetween: 20,
+          coverflowEffect: { rotate: 15, stretch: 0, depth: 150, modifier: 1, slideShadows: true }
+        },
+        768: {
+          slidesPerView: 1.3,
+          spaceBetween: 30,
+          coverflowEffect: { rotate: 18, stretch: 0, depth: 180, modifier: 1, slideShadows: true }
+        },
+        1024: {
+          slidesPerView: 1.5,
+          spaceBetween: 50,
+          coverflowEffect: { rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true }
+        }
+      }" @swiper="onSwiper" @slideChange="onSlideChange">
       <swiper-slide v-for="(expert, index) in experts" :key="index" class="expert-slide"
         :style="{ backgroundImage: `url(${expert.bg})` }">
         <div class="overlay"></div>
@@ -658,6 +679,46 @@ onMounted(() => {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
+  .section {
+    padding: 60px 25px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    padding: 0 15px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .expert-swiper {
+    margin: 40px auto 0;
+    padding-bottom: 50px;
+  }
+
+  .expert-slide {
+    height: 420px;
+    border-radius: 14px;
+  }
+
+  .expert-content {
+    padding: 25px 20px;
+    max-width: 100%;
+  }
+
+  .expert-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .expert-title {
+    font-size: 0.95rem;
+  }
+
+  .expert-advice {
+    font-size: 1.05rem;
+    line-height: 2;
+  }
+
   .rights-table-wrapper {
     grid-template-columns: 1fr;
     gap: 2px;
@@ -696,6 +757,128 @@ onMounted(() => {
 
   .parent-advice-text p {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 45px 16px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    padding: 0 10px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .expert-swiper {
+    margin: 30px 0 0;
+    padding-bottom: 45px;
+  }
+
+  .expert-slide {
+    height: 380px;
+    border-radius: 12px;
+  }
+
+  .expert-content {
+    padding: 20px 16px;
+    max-width: 100%;
+  }
+
+  .expert-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .expert-title {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .expert-advice {
+    font-size: 1rem;
+    line-height: 2.1;
+  }
+
+  /* Swiper 控制优化 */
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-radius: 50% !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+
+  .swiper-pagination-bullet {
+    width: 9px !important;
+    height: 9px !important;
+    opacity: 0.7 !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    opacity: 1 !important;
+    background: #fff !important;
+  }
+
+  .rights-table-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    margin: 25px 0;
+  }
+
+  .age-column {
+    min-height: 230px;
+  }
+
+  .age-header {
+    font-size: 1.4rem;
+    padding: 18px;
+  }
+
+  .age-content {
+    padding: 25px 18px;
+    gap: 18px;
+  }
+
+  .content-text {
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+
+  .icon-wrapper {
+    width: 55px;
+    height: 55px;
+  }
+
+  .parent-advice-text {
+    padding: 28px 18px;
+  }
+
+  .advice-title {
+    font-size: 1.35rem;
+    padding: 0 10px;
+    margin-bottom: 18px;
+  }
+
+  .parent-advice-text p {
+    font-size: 1rem;
+    padding: 0 10px;
+    line-height: 2;
+  }
+
+  /* SVG 表格响应式 */
+  svg {
+    max-width: 100%;
+    height: auto;
   }
 }
 

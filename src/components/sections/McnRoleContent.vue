@@ -24,10 +24,39 @@
     <div class="chart-full">
       <h4 class="chart-title">2025年3月 有孩家庭人群&Z世代父母 兴趣偏好活跃占比TOP15</h4>
       <div ref="chart3" class="chart-container-large"></div>
-      <p class="chart-note">
-        注：1、有孩家庭人群指画像标签为已婚且家庭有孩子（0-18岁）的活跃用户;2、Z世代父母指95后+00后中标签为已婚目家庭有孩子（0-18岁）的活跃用户:3、活跃占比：目标人群具有某个标签属性的月活跃用户教除以该目标人群的月活跃用户数;4、占比差值=Z世代父母兴趣标签活跃占比-有孩家庭人群兴趣标签活跃占比。5、活跃占比TGI:目标人群某个标签属性的月活跃占比除以全网具有该标签属性的月活跃比*100<br>Source：<span
-          style="color: #ffd700; font-weight: bold;">QuestMobile</span>
-        GROWTH 用户画像标签数据库 2025年3月</p>
+      <div class="chart-note-box">
+        <div class="note-header">
+          <span class="note-icon">📝</span>
+          <span class="note-title">数据说明</span>
+        </div>
+        <div class="note-content">
+          <div class="note-item">
+            <span class="note-label">1.</span>
+            <span class="note-text"><strong>有孩家庭人群</strong>：画像标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
+          </div>
+          <div class="note-item">
+            <span class="note-label">2.</span>
+            <span class="note-text"><strong>Z世代父母</strong>：95后+00后中标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
+          </div>
+          <div class="note-item">
+            <span class="note-label">3.</span>
+            <span class="note-text"><strong>活跃占比</strong>：目标人群具有某个标签属性的月活跃用户数 ÷ 该目标人群的月活跃用户数</span>
+          </div>
+          <div class="note-item">
+            <span class="note-label">4.</span>
+            <span class="note-text"><strong>占比差值</strong>：Z世代父母兴趣标签活跃占比 - 有孩家庭人群兴趣标签活跃占比</span>
+          </div>
+          <div class="note-item">
+            <span class="note-label">5.</span>
+            <span class="note-text"><strong>活跃占比TGI</strong>：目标人群某个标签属性的月活跃占比 ÷ 全网具有该标签属性的月活跃占比 × 100</span>
+          </div>
+        </div>
+        <div class="note-source">
+          <span class="source-icon">📊</span>
+          <span class="source-text">数据来源：<strong class="source-highlight">QuestMobile</strong> GROWTH 用户画像标签数据库
+            2025年3月</span>
+        </div>
+      </div>
     </div>
 
     <div class="formula-box">
@@ -92,18 +121,32 @@
     </div>
 
     <div class="penalty-box">
-      <h4>违约条款示例：</h4>
+      <div class="penalty-header">
+        <span class="warning-icon">⚠️</span>
+        <h4>违约条款示例</h4>
+        <span class="warning-icon">⚠️</span>
+      </div>
+      <p class="penalty-hint">鼠标悬停暂停弹幕</p>
       <div class="danmaku-container">
-        <div class="danmaku-track" v-for="(line, lineIndex) in 3" :key="lineIndex">
-          <div class="danmaku-content" :style="{ animationDelay: `${lineIndex * 2}s` }">
-            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-${index}`">
-              <span class="danmaku-text">{{ item.text }}</span><span class="red-text">{{ item.highlight }}</span><span
-                class="danmaku-text">{{ item.suffix }}</span>
+        <div class="danmaku-track" v-for="(line, lineIndex) in 3" :key="lineIndex" :class="`track-${lineIndex + 1}`">
+          <div class="danmaku-content" :style="{
+            animationDelay: `${lineIndex * 1.5}s`,
+            animationDuration: `${40 + lineIndex * 5}s`
+          }">
+            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-${index}`"
+              :class="`item-style-${(index % 3) + 1}`">
+              <span class="item-icon">{{ getItemIcon(index) }}</span>
+              <span class="danmaku-text">{{ item.text }}</span>
+              <span class="red-text">{{ item.highlight }}</span>
+              <span class="danmaku-text">{{ item.suffix }}</span>
             </span>
             <!-- 复制一份用于无缝循环 -->
-            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-copy-${index}`">
-              <span class="danmaku-text">{{ item.text }}</span><span class="red-text">{{ item.highlight }}</span><span
-                class="danmaku-text">{{ item.suffix }}</span>
+            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-copy-${index}`"
+              :class="`item-style-${(index % 3) + 1}`">
+              <span class="item-icon">{{ getItemIcon(index) }}</span>
+              <span class="danmaku-text">{{ item.text }}</span>
+              <span class="red-text">{{ item.highlight }}</span>
+              <span class="danmaku-text">{{ item.suffix }}</span>
             </span>
           </div>
         </div>
@@ -161,6 +204,12 @@ const mcnModels = [
     creatorColor: '#27ae60'
   }
 ]
+
+// 弹幕项图标
+const getItemIcon = (index) => {
+  const icons = ['⚡', '💰', '⚠️', '🚫', '📄']
+  return icons[index % icons.length]
+}
 
 onMounted(() => {
   // chart1 - 2023年有孩家庭人群线上消费能力（折线+柱状）
@@ -576,6 +625,105 @@ onUnmounted(() => {
   text-align: left;
 }
 
+/* ==================== 图表注释盒子 ==================== */
+.chart-note-box {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.note-icon {
+  font-size: 1.3rem;
+}
+
+.note-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #495057;
+  letter-spacing: 0.5px;
+}
+
+.note-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.note-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.note-label {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.note-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #495057;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.note-text strong {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.note-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.source-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.source-text {
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.6;
+}
+
+.source-highlight {
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 /* ==================== 数据高亮样式 ==================== */
 .data-highlight {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -735,57 +883,118 @@ ul li::before {
 }
 
 .penalty-box {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border-left: 4px solid #e74c3c;
-  padding: 20px 25px;
-  margin: 25px 0;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #e74c3c;
+  padding: 25px 30px;
+  margin: 30px 0;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
   position: relative;
 }
 
+.penalty-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #e74c3c 0%, #ff6b6b 50%, #e74c3c 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.penalty-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.warning-icon {
+  font-size: 1.8rem;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
 .penalty-box h4 {
   color: #ff6b6b;
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(255, 107, 107, 0.5);
+}
+
+.penalty-hint {
   text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin: 0 0 15px 0;
+  font-style: italic;
 }
 
 /* 弹幕容器 */
 .danmaku-container {
   position: relative;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .danmaku-track {
   position: absolute;
   width: 100%;
-  height: 60px;
+  height: 65px;
   overflow: hidden;
 }
 
-.danmaku-track:nth-child(1) {
-  top: 10px;
+.track-1 {
+  top: 8px;
 }
 
-.danmaku-track:nth-child(2) {
-  top: 75px;
+.track-2 {
+  top: 78px;
 }
 
-.danmaku-track:nth-child(3) {
-  top: 140px;
+.track-3 {
+  top: 148px;
 }
 
 .danmaku-content {
   display: inline-block;
   white-space: nowrap;
-  animation: danmaku-scroll 60s linear infinite;
+  animation: danmaku-scroll 40s linear infinite;
   padding-left: 100%;
+  will-change: transform;
 }
 
 @keyframes danmaku-scroll {
@@ -803,47 +1012,114 @@ ul li::before {
 }
 
 .danmaku-item {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: #fff;
   font-size: 1rem;
-  padding: 10px 24px;
-  margin-right: 50px;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 20px;
+  margin-right: 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-radius: 28px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   position: relative;
   white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.danmaku-item::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 28px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 不同样式的弹幕项 */
+.item-style-1 {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
+  border-color: rgba(231, 76, 60, 0.4);
+}
+
+.item-style-2 {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.1) 100%);
+  border-color: rgba(255, 107, 107, 0.4);
+}
+
+.item-style-3 {
+  background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(255, 71, 87, 0.1) 100%);
+  border-color: rgba(255, 71, 87, 0.4);
+}
+
+.danmaku-container:hover .danmaku-item {
+  transform: scale(1.05);
+}
+
+.item-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .danmaku-text {
   display: inline;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .red-text {
+  display: inline-block;
   color: #ff4757;
   font-weight: 900;
-  font-size: 1.3rem;
-  text-shadow: 0 0 10px rgba(255, 71, 87, 0.8),
-    0 0 20px rgba(255, 71, 87, 0.5);
-  padding: 0 8px;
-  animation: glow 2s ease-in-out infinite;
+  font-size: 1.35rem;
+  text-shadow: 0 0 12px rgba(255, 71, 87, 0.9),
+    0 0 24px rgba(255, 71, 87, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 0 10px;
+  animation: glow-intense 2.5s ease-in-out infinite;
+  letter-spacing: 1px;
+  position: relative;
 }
 
-@keyframes glow {
+.red-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff4757, transparent);
+  opacity: 0.6;
+}
+
+@keyframes glow-intense {
 
   0%,
   100% {
-    text-shadow: 0 0 10px rgba(255, 71, 87, 0.8),
-      0 0 20px rgba(255, 71, 87, 0.5);
+    text-shadow: 0 0 12px rgba(255, 71, 87, 0.9),
+      0 0 24px rgba(255, 71, 87, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+    transform: scale(1);
   }
 
   50% {
-    text-shadow: 0 0 20px rgba(255, 71, 87, 1),
-      0 0 30px rgba(255, 71, 87, 0.8),
-      0 0 40px rgba(255, 71, 87, 0.5);
+    text-shadow: 0 0 18px rgba(255, 71, 87, 1),
+      0 0 35px rgba(255, 71, 87, 0.8),
+      0 0 50px rgba(255, 71, 87, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
   }
 }
 
@@ -879,6 +1155,56 @@ ul li::before {
     height: 320px;
   }
 
+  .chart-note-box {
+    padding: 18px 20px;
+    margin-top: 18px;
+  }
+
+  .note-header {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+
+  .note-icon {
+    font-size: 1.2rem;
+  }
+
+  .note-title {
+    font-size: 1rem;
+  }
+
+  .note-content {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .note-label {
+    width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
+  }
+
+  .note-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .note-source {
+    padding: 10px 14px;
+  }
+
+  .source-icon {
+    font-size: 1.1rem;
+  }
+
+  .source-text {
+    font-size: 0.85rem;
+  }
+
+  .source-highlight {
+    font-size: 0.95rem;
+  }
+
   .data-highlight .big {
     font-size: 1.4rem;
   }
@@ -900,35 +1226,205 @@ ul li::before {
     font-size: 1.1rem;
   }
 
+  .penalty-box {
+    padding: 20px 18px;
+  }
+
+  .penalty-header {
+    gap: 12px;
+  }
+
+  .warning-icon {
+    font-size: 1.5rem;
+  }
+
+  .penalty-box h4 {
+    font-size: 1.2rem;
+  }
+
+  .penalty-hint {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .danmaku-container {
+    height: 170px;
+  }
+
+  .danmaku-track {
+    height: 52px;
+  }
+
+  .track-1 {
+    top: 6px;
+  }
+
+  .track-2 {
+    top: 60px;
+  }
+
+  .track-3 {
+    top: 114px;
+  }
+
+  .danmaku-item {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    margin-right: 30px;
+    gap: 6px;
+  }
+
+  .item-icon {
+    font-size: 1rem;
+  }
+
+  .red-text {
+    font-size: 1.15rem;
+    padding: 0 6px;
+  }
+
+  .conclusion-text {
+    font-size: 1rem;
+    padding: 18px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-note-box {
+    padding: 16px 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+  }
+
+  .note-header {
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .note-icon {
+    font-size: 1.1rem;
+  }
+
+  .note-title {
+    font-size: 0.95rem;
+  }
+
+  .note-content {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .note-label {
+    width: 18px;
+    height: 18px;
+    font-size: 0.75rem;
+  }
+
+  .note-text {
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  .note-text strong {
+    font-size: 0.85rem;
+  }
+
+  .note-source {
+    padding: 10px 12px;
+    gap: 6px;
+    border-radius: 6px;
+  }
+
+  .source-icon {
+    font-size: 1rem;
+  }
+
+  .source-text {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .source-highlight {
+    font-size: 0.85rem;
+  }
+
+  .penalty-box {
+    padding: 18px 15px;
+    margin: 25px 0;
+  }
+
+  .penalty-header {
+    gap: 10px;
+  }
+
+  .warning-icon {
+    font-size: 1.3rem;
+  }
+
+  .penalty-box h4 {
+    font-size: 1.1rem;
+  }
+
+  .penalty-hint {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+  }
+
   .danmaku-container {
     height: 150px;
   }
 
   .danmaku-track {
-    height: 50px;
+    height: 46px;
   }
 
-  .danmaku-track:nth-child(2) {
-    top: 55px;
+  .track-1 {
+    top: 4px;
   }
 
-  .danmaku-track:nth-child(3) {
-    top: 105px;
+  .track-2 {
+    top: 52px;
+  }
+
+  .track-3 {
+    top: 100px;
+  }
+
+  .danmaku-content {
+    animation-duration: 35s;
   }
 
   .danmaku-item {
     font-size: 0.85rem;
-    padding: 6px 15px;
-    margin-right: 30px;
+    padding: 8px 14px;
+    margin-right: 25px;
+    gap: 5px;
+    border-radius: 24px;
+  }
+
+  .item-icon {
+    font-size: 0.9rem;
+  }
+
+  .danmaku-text {
+    font-size: 0.85rem;
   }
 
   .red-text {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    padding: 0 5px;
+    letter-spacing: 0.5px;
+  }
+
+  .red-text::after {
+    height: 1.5px;
   }
 
   .conclusion-text {
-    font-size: 1rem;
-    padding: 15px 20px;
+    font-size: 0.95rem;
+    padding: 16px 16px;
+    line-height: 2;
   }
 }
 </style>
