@@ -183,7 +183,9 @@ onUnmounted(() => {
   max-width: 900px;
   line-height: 1.8;
   color: #555;
-  margin-bottom: 40px;
+  margin-bottom: var(--paragraph-spacing, 20px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .key-message {
@@ -191,7 +193,7 @@ onUnmounted(() => {
   text-align: center;
   line-height: 1.8;
   max-width: 800px;
-  margin: 30px 0;
+  margin: var(--spacing-xl, 40px) auto;
   color: #2c3e50;
 }
 

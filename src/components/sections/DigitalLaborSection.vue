@@ -33,21 +33,11 @@
   margin-bottom: 30px;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: pulse 2s infinite;
+  transition: transform 0.3s ease;
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+.highlight-text2:hover {
+  transform: scale(1.05);
 }
 
 .concept-section {

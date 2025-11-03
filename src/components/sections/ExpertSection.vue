@@ -34,14 +34,58 @@
       </div>
     </div>
 
-    <!-- 家长建议图片和文本 -->
-    <div class="parent-advice-section">
-      <div class="advice-image-wrapper">
-        <img :src="parentAdviceImg" alt="家长建议" class="advice-image" />
+    <!-- 儿童权利分级模式表格 -->
+    <div class="rights-table-section">
+      <h2 class="table-section-title">儿童网络内容生产权利分级模式</h2>
+      <div class="rights-table-wrapper">
+        <div class="age-column age-0-8">
+          <div class="age-header">0-8岁</div>
+          <div class="age-content">
+            <p class="content-text">应禁止参与带营销性质的内容生产</p>
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 100 100" class="prohibition-icon">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" />
+                <line x1="20" y1="20" x2="80" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="age-column age-8-12">
+          <div class="age-header">8-12岁</div>
+          <div class="age-content">
+            <p class="content-text">探索设置"儿童同意权"</p>
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 100 100" class="question-icon">
+                <text x="50" y="70" font-size="80" text-anchor="middle" fill="currentColor" font-weight="bold">?</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="age-column age-12-18">
+          <div class="age-header">12-18岁</div>
+          <div class="age-content">
+            <p class="content-text">可根据其认知能力设置相应的权利义务</p>
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 100 100" class="balance-icon">
+                <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="4" />
+                <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="4" />
+                <line x1="20" y1="40" x2="30" y2="60" stroke="currentColor" stroke-width="4" />
+                <line x1="80" y1="40" x2="70" y2="60" stroke="currentColor" stroke-width="4" />
+                <circle cx="50" cy="20" r="8" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="advice-text">
-        <p>家长应尊重孩子的主体性，把童年还给儿童，不要在摆拍和表演中度过童年。亲子高光时刻转瞬即逝，眼睛和心灵才是最好的相机。</p>
-      </div>
+      <p class="table-source">基于儿童成长发育规律的分级保护机制</p>
+    </div>
+
+    <!-- 家长建议文本 -->
+    <div class="parent-advice-text">
+      <h3 class="advice-title">给家长的建议</h3>
+      <p>家长应尊重孩子的主体性，把童年还给儿童，不要让孩子在摆拍和表演中度过童年。亲子高光时刻转瞬即逝，眼睛和心灵才是最好的相机。</p>
     </div>
   </section>
 </template>
@@ -54,9 +98,6 @@ import "swiper/css/navigation"
 import "swiper/css/effect-coverflow"
 import "swiper/css/pagination"
 import { Navigation, Autoplay, EffectCoverflow, Pagination } from "swiper/modules"
-
-// 导入8.png图片
-const parentAdviceImg = new URL('@/assets/images/8.png', import.meta.url).href
 
 const experts = [
   {
@@ -159,7 +200,7 @@ onMounted(() => {
 .expert-section {
   position: relative;
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-  padding-bottom: 80px;
+  padding: var(--section-padding-top, 80px) var(--container-padding, 40px) var(--section-padding-bottom, 80px);
   text-align: center;
   overflow: hidden;
 }
@@ -167,16 +208,16 @@ onMounted(() => {
 .particle-bg {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: var(--z-below, -1);
 }
 
 .expert-swiper {
   position: relative;
-  z-index: 2;
+  z-index: var(--z-content, 10);
   width: 100%;
   max-width: 1200px;
-  margin: 50px auto 0;
-  padding-bottom: 60px;
+  margin: var(--spacing-2xl, 60px) auto 0;
+  padding-bottom: var(--spacing-2xl, 60px);
 }
 
 /* 轮播每一项 */
@@ -232,6 +273,7 @@ onMounted(() => {
   /* 高亮渐变颜色 */
   background: linear-gradient(90deg, #fff176, #ffc107, #ffeb3b);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 
   /* 阴影增强可读性 */
@@ -447,6 +489,213 @@ onMounted(() => {
   .advice-text p {
     font-size: 1rem;
     line-height: 1.8;
+  }
+}
+
+/* ==================== 儿童权利分级表格样式 ==================== */
+.rights-table-section {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: var(--spacing-2xl, 60px) auto 0;
+  padding: 0 var(--spacing-md, 20px);
+}
+
+.table-section-title {
+  font-size: var(--font-size-h2, 2.2rem);
+  color: white;
+  text-align: center;
+  margin-bottom: var(--spacing-xl, 40px);
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.rights-table-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-radius: var(--radius-lg, 20px);
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  margin-bottom: var(--spacing-md, 20px);
+}
+
+.age-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.age-column:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.age-header {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.age-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl, 40px) var(--spacing-lg, 30px);
+  gap: var(--spacing-lg, 30px);
+}
+
+.content-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  font-weight: 600;
+  margin: 0;
+}
+
+.icon-wrapper {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 0-8岁：红色禁止 */
+.age-0-8 {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+.age-0-8 .content-text {
+  color: white;
+}
+
+.age-0-8 .prohibition-icon {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* 8-12岁：黄色探索 */
+.age-8-12 {
+  background: linear-gradient(135deg, #f9d423 0%, #f7b731 100%);
+}
+
+.age-8-12 .content-text {
+  color: #2c3e50;
+}
+
+.age-8-12 .question-icon {
+  color: rgba(44, 62, 80, 0.8);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+/* 12-18岁：绿色平衡 */
+.age-12-18 {
+  background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+}
+
+.age-12-18 .content-text {
+  color: white;
+}
+
+.age-12-18 .balance-icon {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.table-source {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-top: var(--spacing-md, 20px);
+  font-style: italic;
+}
+
+/* ==================== 家长建议文本样式 ==================== */
+.parent-advice-text {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: var(--spacing-2xl, 60px) auto 0;
+  padding: var(--spacing-xl, 40px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.advice-title {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: var(--spacing-lg, 30px);
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.parent-advice-text p {
+  font-size: 1.15rem;
+  line-height: 2;
+  color: #2c3e50;
+  text-align: center;
+  margin: 0;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .rights-table-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .age-column {
+    min-height: 250px;
+  }
+
+  .age-header {
+    font-size: 1.6rem;
+    padding: var(--spacing-md, 20px);
+  }
+
+  .age-content {
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+    gap: var(--spacing-md, 20px);
+  }
+
+  .content-text {
+    font-size: 1rem;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .parent-advice-text {
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  }
+
+  .advice-title {
+    font-size: 1.5rem;
+  }
+
+  .parent-advice-text p {
+    font-size: 1rem;
   }
 }
 

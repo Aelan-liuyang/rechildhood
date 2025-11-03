@@ -2464,15 +2464,21 @@ onUnmounted(() => {
   position: fixed;
   right: 20px;
   bottom: 24px;
-  width: 44px;
-  height: 44px;
+  width: var(--touch-target-min, 44px);
+  height: var(--touch-target-min, 44px);
   border-radius: 50%;
   border: 0;
   color: #fff;
   background: linear-gradient(135deg, #667eea, #764ba2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  z-index: 1100;
+  z-index: var(--z-toast, 1100);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.backtop:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .restart-btn {

@@ -370,12 +370,13 @@ onUnmounted(() => {
 .highlight-box {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
-  padding: 30px;
-  border-radius: 15px;
+  padding: var(--spacing-xl, 40px);
+  border-radius: var(--radius-lg, 20px);
   text-align: center;
   font-size: 1.3rem;
   max-width: 800px;
-  margin: 40px auto;
+  margin: var(--spacing-xl, 40px) auto;
+  line-height: 1.8;
 }
 
 .highlight-num {
@@ -401,8 +402,9 @@ onUnmounted(() => {
   text-align: center;
   font-size: 2.8rem;
   color: #e74c3c;
-  margin: 20px 0;
+  margin: var(--subtitle-margin-bottom, 25px) 0;
   font-weight: bold;
+  line-height: 1.3;
 }
 
 .data-note.small {
@@ -434,8 +436,10 @@ onUnmounted(() => {
   text-align: center;
   font-size: var(--font-size-h2, 2.2rem);
   color: #333;
-  margin-bottom: var(--spacing-lg, 30px);
+  margin-bottom: var(--title-margin-bottom, 40px);
   font-weight: bold;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
 /* 移动端优化 */

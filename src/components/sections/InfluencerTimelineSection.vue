@@ -15,7 +15,7 @@
               <div class="like-counter">❤️ {{ likeCount.toLocaleString() }}
               </div>
               <div class="hearts">
-                <span v-for="n in 28" :key="n" class="heart">❤️</span>
+                <span v-for="n in 15" :key="n" class="heart">❤️</span>
               </div>
               <!-- <div class="money" :class="{ show: moneyShow }">💰</div> -->
             </div>
@@ -71,26 +71,28 @@ const timeline = [
 const timelineVisible = ref([false, false, false, false])
 
 onMounted(() => {
-  // 时间线进入视口逐个显现
+  // 时间线进入视口逐个显现 - 优化速度
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const index = parseInt(entry.target.dataset.index)
-          setTimeout(() => { timelineVisible.value[index] = true }, index * 300)
+          // 减少延迟：300ms -> 150ms
+          setTimeout(() => { timelineVisible.value[index] = true }, index * 150)
         }
       })
     },
-    { threshold: 0.5 }
+    { threshold: 0.3 } // 降低阈值，更早触发
   )
 
+  // 减少初始延迟：500ms -> 200ms
   setTimeout(() => {
     const timelineItems = document.querySelectorAll('.timeline-item')
     timelineItems.forEach((item, index) => {
       item.dataset.index = index
       observer.observe(item)
     })
-  }, 500)
+  }, 200)
 
   // 首条视频动画
   const setupFirstVideoAnimation = () => {
@@ -133,9 +135,10 @@ onMounted(() => {
 <style scoped>
 .timeline {
   width: 100%;
-  max-width: 800px;
-  margin: 50px auto;
+  max-width: 900px;
+  margin: var(--spacing-2xl, 60px) auto;
   position: relative;
+  padding: var(--spacing-lg, 30px) 0;
 }
 
 .timeline::before {
@@ -144,45 +147,77 @@ onMounted(() => {
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 4px;
-  background: linear-gradient(to bottom, #3498db, #9b59b6);
+  width: 5px;
+  background: linear-gradient(to bottom, #667eea, #764ba2, #f093fb);
   transform: translateX(-50%);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
 }
 
 .timeline-item {
   display: flex;
   align-items: center;
-  margin: 50px 0;
+  margin: var(--spacing-2xl, 60px) 0;
   position: relative;
   opacity: 0;
-  transform: translateX(-100px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .timeline-item.timeline-visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0) scale(1);
 }
 
 .timeline-dot {
-  width: 20px;
-  height: 20px;
-  background: #3498db;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 50%;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 0 0 8px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 10px rgba(102, 126, 234, 0.15),
+    0 0 20px rgba(102, 126, 234, 0.4);
   z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.timeline-item.timeline-visible .timeline-dot {
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 10px rgba(102, 126, 234, 0.15),
+      0 0 20px rgba(102, 126, 234, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 15px rgba(102, 126, 234, 0.1),
+      0 0 30px rgba(102, 126, 234, 0.6);
+  }
 }
 
 .timeline-content {
   width: 45%;
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  padding: var(--spacing-lg, 30px);
+  border-radius: var(--radius-xl, 24px);
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.18),
+    0 8px 20px rgba(0, 0, 0, 0.12);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .timeline-item:nth-child(odd) .timeline-content {
@@ -194,52 +229,135 @@ onMounted(() => {
   margin-left: 55%;
 }
 
+.timeline-item:nth-child(odd) .timeline-content::before {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid rgba(248, 249, 255, 0.95);
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-right: 20px solid rgba(248, 249, 255, 0.95);
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
 .step-badge {
   position: absolute;
-  top: -14px;
-  left: -14px;
-  width: 36px;
-  height: 36px;
+  top: -16px;
+  left: -16px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 800;
+  font-size: 1.1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  border: 3px solid white;
+  z-index: 3;
 }
 
 .timeline-content h3 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm, 12px);
+  font-weight: 700;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.timeline-content p {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1.05rem;
 }
 
 .timeline-image {
   width: 100%;
   max-height: 100%;
   object-fit: cover;
-  border-radius: 12px;
-  margin: 15px 0;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  border-radius: var(--radius-md, 12px);
+  margin: var(--spacing-md, 20px) 0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid rgba(102, 126, 234, 0.1);
 }
 
 .timeline-image:hover {
-  transform: scale(1.05);
+  transform: scale(1.03) translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.25);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .timeline-icon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   position: absolute;
-  right: -60px;
+  right: -70px;
   top: 50%;
   transform: translateY(-50%);
+  background: linear-gradient(135deg, #fff, #f8f9ff);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+  border: 2px solid rgba(102, 126, 234, 0.15);
+  transition: all 0.3s ease;
+}
+
+.timeline-item.timeline-visible .timeline-icon {
+  animation: iconBounce 1s ease-in-out;
+}
+
+@keyframes iconBounce {
+
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+
+  25% {
+    transform: translateY(-50%) scale(1.15) rotate(5deg);
+  }
+
+  50% {
+    transform: translateY(-50%) scale(0.95) rotate(-5deg);
+  }
+
+  75% {
+    transform: translateY(-50%) scale(1.05) rotate(3deg);
+  }
+}
+
+.timeline-icon:hover {
+  transform: translateY(-50%) scale(1.15) rotate(10deg);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.35);
 }
 
 .timeline-item:nth-child(even) .timeline-icon {
-  left: -60px;
+  left: -70px;
   right: auto;
 }
 
@@ -442,13 +560,13 @@ onMounted(() => {
   line-height: 1.8;
   max-width: 920px;
   text-align: center;
-  margin: 50px auto;
+  margin: var(--spacing-2xl, 60px) auto;
   color: #2c3e50;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: var(--spacing-lg, 30px);
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
+  border-radius: var(--radius-lg, 20px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -459,20 +577,37 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .timeline {
+    padding: var(--spacing-md, 20px) 0;
+    max-width: 100%;
+  }
+
   .timeline::before {
-    left: 30px;
+    left: 25px;
+    width: 3px;
     transform: none;
+  }
+
+  .timeline-item {
+    margin: var(--spacing-xl, 40px) 0;
   }
 
   .timeline-item:nth-child(odd) .timeline-content,
   .timeline-item:nth-child(even) .timeline-content {
-    width: calc(100% - 80px);
-    margin-left: 80px;
+    width: calc(100% - 70px);
+    margin-left: 70px;
     margin-right: 0;
   }
 
+  .timeline-item:nth-child(odd) .timeline-content::before,
+  .timeline-item:nth-child(even) .timeline-content::before {
+    display: none;
+  }
+
   .timeline-dot {
-    left: 30px;
+    left: 25px;
+    width: 18px;
+    height: 18px;
     transform: none;
   }
 
@@ -480,9 +615,65 @@ onMounted(() => {
     display: none;
   }
 
+  .step-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    top: -12px;
+    left: -12px;
+  }
+
+  .timeline-content {
+    padding: var(--spacing-md, 20px);
+  }
+
+  .timeline-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.95rem;
+  }
+
   .insight-text {
+    font-size: 1.05rem;
+    padding: var(--spacing-md, 20px);
+    margin: var(--spacing-xl, 40px) auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline::before {
+    left: 20px;
+  }
+
+  .timeline-dot {
+    left: 20px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-content,
+  .timeline-item:nth-child(even) .timeline-content {
+    width: calc(100% - 60px);
+    margin-left: 60px;
+  }
+
+  .timeline-content {
+    padding: 18px;
+  }
+
+  .timeline-content h3 {
     font-size: 1.1rem;
-    padding: 15px;
+  }
+
+  .timeline-content p {
+    font-size: 0.9rem;
+  }
+
+  .insight-text {
+    font-size: 1rem;
+    padding: 18px;
   }
 }
 </style>

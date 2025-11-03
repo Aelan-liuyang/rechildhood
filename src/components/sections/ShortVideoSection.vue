@@ -1,52 +1,87 @@
 <template>
   <div>
-    <section class="section">
-      <h2 class="section-title">你每天有多少时间是在和短视频度过？</h2>
+    <section class="section time-section">
+      <h2 class="section-title gradient-title">你每天有多少时间是在和短视频度过？</h2>
+      <p class="section-subtitle">选择你的平均使用时长</p>
       <div class="time-options">
         <div class="time-option" :class="{ selected: selectedTimeOption === '30-60min' }"
           @click="selectTimeOption('30-60min')">
-          30-60min
+          <span class="time-icon">⏱️</span>
+          <span class="time-text">30-60min</span>
+          <div class="option-ripple"></div>
         </div>
         <div class="time-option" :class="{ selected: selectedTimeOption === '60-90min' }"
           @click="selectTimeOption('60-90min')">
-          60-90min
+          <span class="time-icon">⏰</span>
+          <span class="time-text">60-90min</span>
+          <div class="option-ripple"></div>
         </div>
         <div class="time-option" :class="{ selected: selectedTimeOption === '90-120min' }"
           @click="selectTimeOption('90-120min')">
-          90-120min
+          <span class="time-icon">⌚</span>
+          <span class="time-text">90-120min</span>
+          <div class="option-ripple"></div>
         </div>
         <div class="time-option" :class="{ selected: selectedTimeOption === '120min以上' }"
           @click="selectTimeOption('120min以上')">
-          120min以上
+          <span class="time-icon">⏳</span>
+          <span class="time-text">120min以上</span>
+          <div class="option-ripple"></div>
         </div>
       </div>
-      <div v-if="showChart2" class="chart-container" ref="chart2"></div>
+      <transition name="chart-fade">
+        <div v-if="showChart2" class="chart-container animated-chart" ref="chart2"></div>
+      </transition>
     </section>
 
     <section class="section video-section">
-      <h2 class="section-title">这样的视频有在你的喜欢列表吗？</h2>
+      <h2 class="section-title gradient-title-light">这样的视频有在你的喜欢列表吗？</h2>
+      <p class="section-subtitle-light">滑动查看典型的儿童短视频内容</p>
       <div class="video-examples">
-        <div class="video-card floating-card">
+        <div class="video-card floating-card" @mouseenter="activeCard = 0" @mouseleave="activeCard = null">
+          <div class="video-badge">热门</div>
           <img src="@/assets/images/1.png" alt="视频示例1" class="video-image" />
           <div class="video-info">
-            <p class="video-likes">❤️ 123.4万</p>
+            <p class="video-likes">
+              <span class="heart-icon">❤️</span>
+              <span class="likes-number">123.4万</span>
+            </p>
+            <div class="video-tags">
+              <span class="tag">#亲子</span>
+              <span class="tag">#日常</span>
+            </div>
           </div>
           <div class="card-glow"></div>
+          <div class="card-shine"></div>
         </div>
-        <div class="video-card floating-card">
+        <div class="video-card floating-card" @mouseenter="activeCard = 1" @mouseleave="activeCard = null">
+          <div class="video-badge trending">爆款</div>
           <img src="@/assets/images/2.png" alt="视频示例2" class="video-image" />
           <div class="video-info">
-            <p class="video-likes">❤️ 89.2万</p>
+            <p class="video-likes">
+              <span class="heart-icon">❤️</span>
+              <span class="likes-number">89.2万</span>
+            </p>
+            <div class="video-tags">
+              <span class="tag">#萌娃</span>
+              <span class="tag">#记录</span>
+            </div>
           </div>
           <div class="card-glow"></div>
+          <div class="card-shine"></div>
         </div>
       </div>
 
       <div class="choice-buttons">
-        <button class="choice-btn" @click="selectChoice('yes')"
-          :class="{ selected: selectedChoice === 'yes' }">有</button>
-        <button class="choice-btn" @click="selectChoice('no')"
-          :class="{ selected: selectedChoice === 'no' }">没有</button>
+        <button class="choice-btn choice-yes" @click="selectChoice('yes')"
+          :class="{ selected: selectedChoice === 'yes' }">
+          <span class="btn-icon">✓</span>
+          <span class="btn-text">有</span>
+        </button>
+        <button class="choice-btn choice-no" @click="selectChoice('no')" :class="{ selected: selectedChoice === 'no' }">
+          <span class="btn-icon">✗</span>
+          <span class="btn-text">没有</span>
+        </button>
       </div>
 
       <transition name="slide-down">
@@ -71,6 +106,7 @@ const showChart = ref(false)
 const selectedChoice = ref(null)
 const showChart2 = ref(false)
 const selectedTimeOption = ref('')
+const activeCard = ref(null)
 
 const selectChoice = (v) => { selectedChoice.value = v; showChart.value = true }
 
@@ -275,93 +311,312 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* ==================== Section 样式 ==================== */
+.time-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.time-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(243, 156, 18, 0.1) 0%, transparent 70%);
+  animation: rotateBackground 20s linear infinite;
+}
+
+@keyframes rotateBackground {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gradient-title {
+  background: linear-gradient(135deg, #f39c12, #e74c3c, #f39c12);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradientFlow 3s linear infinite;
+}
+
+.gradient-title-light {
+  background: linear-gradient(135deg, #fff, #fffaf0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin: -15px 0 var(--spacing-xl, 40px);
+  font-style: italic;
+}
+
+.section-subtitle-light {
+  text-align: center;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: -15px 0 var(--spacing-xl, 40px);
+  font-style: italic;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== 时间选项样式 ==================== */
 .time-options {
-  display: flex;
-  gap: 20px;
-  margin: 30px 0;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg, 30px);
+  margin: var(--spacing-2xl, 60px) auto;
+  max-width: 1000px;
+  padding: 0 var(--spacing-md, 20px);
+  position: relative;
+  z-index: 1;
 }
 
 .time-option {
-  padding: var(--spacing-sm, 12px) var(--spacing-lg, 30px);
-  font-size: 1.1rem;
-  border: 2px solid #f39c12;
-  background: white;
+  padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  font-size: 1.2rem;
+  border: 3px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #f39c12, #e74c3c) border-box;
   color: #f39c12;
-  border-radius: 25px;
+  border-radius: var(--radius-xl, 24px);
   cursor: pointer;
-  transition: all 0.3s;
-  font-weight: 500;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 600;
   min-height: var(--touch-target-min, 44px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm, 12px);
+  box-shadow: 0 8px 25px rgba(243, 156, 18, 0.15);
+}
+
+.time-icon {
+  font-size: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: grayscale(50%);
+}
+
+.time-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.option-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl, 24px);
+  background: radial-gradient(circle, rgba(243, 156, 18, 0.3) 0%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .time-option:hover {
-  background: #f39c12;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(243, 156, 18, 0.4);
+}
+
+.time-option:hover .time-icon {
+  transform: scale(1.2) rotate(10deg);
+  filter: grayscale(0%);
+}
+
+.time-option:hover .option-ripple {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.time-option:active {
+  transform: translateY(-5px) scale(0.98);
 }
 
 .time-option.selected {
-  background: #f39c12;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(243, 156, 18, 0.5);
+  animation: selectedPulse 2s ease-in-out infinite;
 }
 
+.time-option.selected .time-icon {
+  filter: grayscale(0%);
+  animation: iconBounce 1s ease-in-out infinite;
+}
+
+@keyframes selectedPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 15px 40px rgba(243, 156, 18, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 20px 50px rgba(243, 156, 18, 0.7);
+  }
+}
+
+@keyframes iconBounce {
+
+  0%,
+  100% {
+    transform: scale(1.2) translateY(0);
+  }
+
+  50% {
+    transform: scale(1.3) translateY(-5px);
+  }
+}
+
+/* ==================== 视频 Section ==================== */
 .video-section {
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.video-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent);
+  pointer-events: none;
 }
 
 .video-examples {
   display: flex;
-  gap: 40px;
+  gap: var(--spacing-2xl, 60px);
   justify-content: center;
-  margin: 40px auto;
-  max-width: 900px;
+  margin: var(--spacing-2xl, 60px) auto;
+  max-width: 1000px;
+  padding: 0 var(--spacing-md, 20px);
 }
 
 .video-card {
   flex: 1;
-  max-width: 400px;
+  max-width: 450px;
   background: white;
-  border-radius: 20px;
+  border-radius: var(--radius-xl, 24px);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
+  cursor: pointer;
 }
 
 .video-card:hover {
-  transform: translateY(-15px) scale(1.02);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  transform: translateY(-20px) scale(1.03);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+/* 视频徽章 */
+.video-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+.video-badge.trending {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+@keyframes badgePulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+  }
 }
 
 .card-glow {
   position: absolute;
-  inset: -2px;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-  border-radius: 20px;
+  inset: -3px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
+  border-radius: var(--radius-xl, 24px);
   opacity: 0;
   z-index: -1;
-  filter: blur(20px);
+  filter: blur(25px);
   transition: opacity 0.5s;
+  background-size: 300% 300%;
 }
 
 .video-card:hover .card-glow {
-  opacity: 0.6;
-  animation: rotateBorder 3s linear infinite;
+  opacity: 0.7;
+  animation: rotateBorder 4s linear infinite;
 }
 
 @keyframes rotateBorder {
   0% {
-    transform: rotate(0deg);
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
   }
 
   100% {
-    transform: rotate(360deg);
+    background-position: 0% 50%;
   }
+}
+
+.card-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.video-card:hover .card-shine {
+  left: 100%;
 }
 
 .floating-card {
@@ -389,40 +644,129 @@ onMounted(() => {
   aspect-ratio: 9/16;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+}
+
+.video-card:hover .video-image {
+  transform: scale(1.05);
 }
 
 .video-info {
-  padding: 20px;
-  text-align: center;
+  padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), white);
+  backdrop-filter: blur(10px);
 }
 
 .video-likes {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: 800;
   color: #e74c3c;
+  margin-bottom: var(--spacing-sm, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs, 8px);
 }
 
+.heart-icon {
+  font-size: 1.5rem;
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+.likes-number {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.video-tags {
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+}
+
+.tag:hover {
+  background: rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+}
+
+/* ==================== 选择按钮 ==================== */
 .choice-buttons {
   display: flex;
-  gap: 30px;
-  margin: 40px 0;
+  gap: var(--spacing-2xl, 60px);
+  margin: var(--spacing-2xl, 60px) 0;
   justify-content: center;
 }
 
 .choice-btn {
-  padding: 18px 60px;
-  font-size: 1.3rem;
-  border: 3px solid #3498db;
+  padding: var(--spacing-lg, 30px) 70px;
+  font-size: 1.4rem;
+  border: 4px solid transparent;
   background: white;
-  color: #3498db;
-  border-radius: 50px;
+  border-radius: 60px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 800;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   min-height: var(--touch-target-min, 44px);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 12px);
+  letter-spacing: 1px;
+}
+
+.choice-yes {
+  color: #27ae60;
+  box-shadow: 0 8px 30px rgba(39, 174, 96, 0.25);
+  border-color: #27ae60;
+}
+
+.choice-no {
+  color: #e74c3c;
+  box-shadow: 0 8px 30px rgba(231, 76, 60, 0.25);
+  border-color: #e74c3c;
+}
+
+.btn-icon {
+  font-size: 1.8rem;
+  font-weight: 900;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
 }
 
 .choice-btn::before {
@@ -433,23 +777,37 @@ onMounted(() => {
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3498db, #2980b9);
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform: translate(-50%, -50%);
   z-index: 0;
 }
 
+.choice-yes::before {
+  background: linear-gradient(135deg, #27ae60, #229954);
+}
+
+.choice-no::before {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
 .choice-btn::after {
   content: '';
   position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, #3498db, #2980b9, #3498db);
-  border-radius: 50px;
+  inset: -3px;
+  border-radius: 60px;
   opacity: 0;
   z-index: -1;
-  filter: blur(10px);
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
+  filter: blur(15px);
+  background-size: 300% 300%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.choice-yes::after {
+  background: linear-gradient(45deg, #27ae60, #229954, #27ae60);
+}
+
+.choice-no::after {
+  background: linear-gradient(45deg, #e74c3c, #c0392b, #e74c3c);
 }
 
 @keyframes gradientShift {
@@ -465,26 +823,54 @@ onMounted(() => {
 }
 
 .choice-btn:hover::before {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
 }
 
 .choice-btn:hover::after {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .choice-btn:hover {
   color: white;
-  transform: translateY(-5px) scale(1.08);
-  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.5);
+  transform: translateY(-8px) scale(1.1);
   border-color: transparent;
 }
 
+.choice-yes:hover {
+  box-shadow: 0 20px 50px rgba(39, 174, 96, 0.6);
+}
+
+.choice-no:hover {
+  box-shadow: 0 20px 50px rgba(231, 76, 60, 0.6);
+}
+
+.choice-btn:hover .btn-icon {
+  transform: scale(1.3) rotate(360deg);
+}
+
+.choice-btn:active {
+  transform: translateY(-5px) scale(1.05);
+}
+
 .choice-btn.selected {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
-  box-shadow: 0 10px 30px rgba(52, 152, 219, 0.5);
-  animation: pulseButton 1.5s ease-in-out;
+  border-color: transparent;
+  animation: pulseButton 2s ease-in-out infinite;
+}
+
+.choice-yes.selected {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  box-shadow: 0 15px 45px rgba(39, 174, 96, 0.7);
+}
+
+.choice-no.selected {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  box-shadow: 0 15px 45px rgba(231, 76, 60, 0.7);
+}
+
+.choice-btn.selected .btn-icon {
+  animation: iconSpin 1s ease-in-out infinite;
 }
 
 @keyframes pulseButton {
@@ -495,28 +881,56 @@ onMounted(() => {
   }
 
   50% {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 }
 
-.chart-reveal {
-  margin-top: 50px;
+@keyframes iconSpin {
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
 }
 
-/* 图表宽度交由内联样式控制（见模板），避免层叠冲突 */
-
-.slide-down-enter-active {
-  animation: slideDown 0.6s ease-out;
+/* ==================== 图表样式 ==================== */
+.animated-chart {
+  animation: chartFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.slide-down-leave-active {
-  animation: slideDown 0.6s ease-out reverse;
-}
-
-@keyframes slideDown {
+@keyframes chartFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(40px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chart-fade-enter-active {
+  animation: chartFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chart-fade-leave-active {
+  animation: chartFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) reverse;
+}
+
+.chart-reveal {
+  margin-top: var(--spacing-2xl, 60px);
+  animation: chartRevealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes chartRevealAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
   }
 
   to {
@@ -525,10 +939,60 @@ onMounted(() => {
   }
 }
 
+.slide-down-enter-active {
+  animation: slideDown 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-down-leave-active {
+  animation: slideDown 0.5s ease-out reverse;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.data-note {
+  padding: var(--spacing-lg, 30px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg, 20px);
+  margin-top: var(--spacing-lg, 30px);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #555;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== 响应式样式 ==================== */
 @media (max-width: 768px) {
+  .time-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md, 20px);
+  }
+
+  .time-option {
+    padding: var(--spacing-md, 20px);
+  }
+
+  .time-icon {
+    font-size: 2rem;
+  }
+
+  .time-text {
+    font-size: 1rem;
+  }
+
   .video-examples {
     flex-direction: column;
-    gap: var(--spacing-lg, 30px);
+    gap: var(--spacing-xl, 40px);
   }
 
   .video-card {
@@ -536,41 +1000,96 @@ onMounted(() => {
   }
 
   .choice-buttons {
-    gap: var(--spacing-md, 20px);
+    gap: var(--spacing-lg, 30px);
     flex-wrap: wrap;
   }
 
   .choice-btn {
-    padding: 15px 40px;
-    font-size: 1.1rem;
+    padding: var(--spacing-md, 20px) 50px;
+    font-size: 1.2rem;
     min-height: var(--touch-target-min, 44px);
   }
 
-  .time-option {
-    padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
-    font-size: 1rem;
+  .btn-icon {
+    font-size: 1.5rem;
   }
 
-  /* 移动端宽度由内联 + ECharts 自适应控制 */
+  .data-note {
+    padding: var(--spacing-md, 20px);
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .video-examples {
-    gap: var(--spacing-md, 20px);
-  }
-
-  .choice-buttons {
+  .time-options {
+    grid-template-columns: 1fr;
     gap: 15px;
-  }
-
-  .choice-btn {
-    padding: var(--spacing-sm, 12px) var(--spacing-lg, 30px);
-    font-size: 1rem;
+    padding: 0 15px;
   }
 
   .time-option {
-    padding: 10px 18px;
-    font-size: var(--font-size-small, 0.9rem);
+    padding: var(--spacing-md, 20px) 15px;
+  }
+
+  .time-icon {
+    font-size: 1.8rem;
+  }
+
+  .time-text {
+    font-size: 0.95rem;
+  }
+
+  .section-subtitle,
+  .section-subtitle-light {
+    font-size: 1rem;
+    margin: -10px 0 var(--spacing-lg, 30px);
+  }
+
+  .video-examples {
+    gap: var(--spacing-lg, 30px);
+    padding: 0 15px;
+  }
+
+  .video-badge {
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .video-info {
+    padding: var(--spacing-md, 20px) 15px;
+  }
+
+  .video-likes {
+    font-size: 1.1rem;
+  }
+
+  .heart-icon {
+    font-size: 1.2rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .choice-buttons {
+    gap: var(--spacing-md, 20px);
+  }
+
+  .choice-btn {
+    padding: 18px 40px;
+    font-size: 1.1rem;
+  }
+
+  .btn-icon {
+    font-size: 1.3rem;
+  }
+
+  .data-note {
+    padding: 18px;
+    font-size: 0.9rem;
   }
 }
 </style>
