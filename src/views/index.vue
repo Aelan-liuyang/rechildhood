@@ -1,418 +1,73 @@
 <template>
   <div class="rechildhood-container">
+    <!-- 开场动画和导航栏 -->
     <OpeningNavbarSection />
 
-    <IntroSection />
-
-    <ShortVideoSection />
-
-    <DigitalLaborSection />
-
-    <ChildrenSection />
-
-    <ChildLaborIntroSection />
-
-    <ChildLaborTrendSection />
-
-    <InfluencerTimelineSection />
-
-    <PiagetSection />
-
-    <!-- 四方关系环形图 -->
-    <section class="section interactive-section">
-      <h2 class="section-title">屏幕背后的利益网络</h2>
-
-      <div class="circle-interaction">
-        <svg ref="networkSvg" class="network-lines"></svg>
-        <div ref="centerChildEl" class="center-child"
-          :class="{ shrink: selectedRole }">
-          <div class="child-icon">👶</div>
-        </div>
-
-        <div ref="rolesContainerEl" class="roles-container">
-          <div v-for="role in roles" :key="role.id" class="role-item"
-            :data-role="role.id"
-            :data-tip="`点击查看${role.name}详情`"
-            :class="{ active: selectedRole === role.id }"
-            @click="selectRole(role.id)"
-            @mouseenter="highlightLine(role.id, true)"
-            @mouseleave="highlightLine(role.id, false)" tabindex="0"
-            @keydown="onRoleKey($event, role.id)">
-            <div class="role-avatar">{{ role.icon }}</div>
-            <div class="role-name">{{ role.name }}</div>
-          </div>
-        </div>
-      </div>
-
+    <!-- ==================== 第一章：你好，屏幕里的童年 ==================== -->
+    <section id="chapter0-content">
+      <IntroSection />
+      <ShortVideoSection />
+      <DigitalLaborSection />
+      <ChildrenSection />
+      <ChildLaborIntroSection />
+      <ChildLaborTrendSection />
+      <!-- <PiagetSection /> -->
     </section>
 
-    <!-- 角色详情弹窗 - 固定居中 -->
-    <transition name="modal-fade">
-      <div v-if="selectedRole" class="modal-overlay"
-        @click="selectedRole = null">
-        <div class="modal-content" role="dialog" aria-modal="true" tabindex="0"
-          @keydown.esc="selectedRole = null"
-          @click.stop>
-          <button class="modal-close" @click="selectedRole = null">✕</button>
-          <div class="modal-body" v-html="getRoleContent()"></div>
-        </div>
-      </div>
-    </transition>
+    <!-- ==================== 第二章：一个网红儿童的诞生 ==================== -->
+    <section id="chapter1">
+      <InfluencerTimelineSection />
 
-    <AudienceSection />
-
-
-    <!-- 儿童影响 -->
-    <section id="impact" class="section impact-section fullscreen">
-      <div class="impact-grid">
-        <div class="impact-card" v-for="(impact, index) in impacts"
-          :key="index">
-          <div class="impact-number">{{ index + 1 }}</div>
-          <p class="impact-text">{{ impact }}</p>
-        </div>
-      </div>
-      <p class="data-source">数据来源：新华网、中工网、儿童发展研究学会（SRCD）、《美国医学会杂志（JAMA）》等</p>
+      <!-- 利益网络交互模块（已拆分为5个组件） -->
+      <NetworkInteractionWrapper />
     </section>
 
-    <MotivationSection />
+    <!-- ==================== 第三章：让爱回到现实 ==================== -->
+    <section id="chapter2">
+      <ExpertSection />
+      <FinalInteractionSection />
+    </section>
 
-    <ExpertSection />
-
-    <FinalInteractionSection />
+    <!-- 回到顶部按钮 -->
+    <button v-show="showBackTop" class="backtop" @click="goTop">↑</button>
   </div>
-  <!-- 回到顶部按钮 -->
-  <button v-show="showBackTop" class="backtop" @click="goTop">↑</button>
 </template>
 
 <script setup>
+// ==================== Vue核心依赖 ====================
 import { ref, onMounted, nextTick, watch, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
-import AudienceSection from '@/components/sections/AudienceSection.vue'
-import PiagetSection from '@/components/sections/PiagetSection.vue'
-import ExpertSection from '@/components/sections/ExpertSection.vue'
-import InfluencerTimelineSection from '@/components/sections/InfluencerTimelineSection.vue'
-import MotivationSection from '@/components/sections/MotivationSection.vue'
+
+// ==================== 组件导入 ====================
+// 开场和导航
 import OpeningNavbarSection from '@/components/sections/OpeningNavbarSection.vue'
+
+// 第一章：你好，屏幕里的童年
 import IntroSection from '@/components/sections/IntroSection.vue'
 import ShortVideoSection from '@/components/sections/ShortVideoSection.vue'
 import DigitalLaborSection from '@/components/sections/DigitalLaborSection.vue'
 import ChildrenSection from '@/components/sections/ChildrenSection.vue'
 import ChildLaborIntroSection from '@/components/sections/ChildLaborIntroSection.vue'
 import ChildLaborTrendSection from '@/components/sections/ChildLaborTrendSection.vue'
+import InfluencerTimelineSection from '@/components/sections/InfluencerTimelineSection.vue'
+
+// 第二章：一个网红儿童的诞生
+import NetworkInteractionWrapper from '@/components/sections/NetworkInteractionWrapper.vue'
+import PiagetSection from '@/components/sections/PiagetSection.vue'
+
+// 第三章：让爱回到现实
+import ExpertSection from '@/components/sections/ExpertSection.vue'
 import FinalInteractionSection from '@/components/sections/FinalInteractionSection.vue'
+
+// ==================== 工具函数和清理 ====================
 const cleanupFns = []
 
-// 图表引用
-// moved to IntroSection
-// moved to ShortVideoSection
-// moved to ChildrenSection / ChildLaborTrendSection
-// moved to AudienceSection
-// moved to IntroSection
-// moved to AudienceSection
-// 模态内图表引用（运行时实例）
-let costMapChart = null
-let mcnSignupChart = null
-let mcnPenaltyTimer = null
-
-// 首条视频动画控制
-const costRefImg = new URL('@/assets/images/9.png', import.meta.url).href
-
-// moved to InfluencerTimelineSection
-
-// 四方角色数据
-const roles = [
-  { id: 'parents', name: '父母', icon: '👨‍👩‍👧' },
-  { id: 'mcn', name: 'MCN机构', icon: '🏢' },
-  { id: 'platform', name: '平台', icon: '📱' },
-  { id: 'audience', name: '观众', icon: '👥' }
-]
-
-const selectedRole = ref(null)
-const rolesContainerEl = ref(null)
-const centerChildEl = ref(null)
-const networkSvg = ref(null)
-
-// 影响数据
-const impacts = [
-  '54%的青少年最向往的职业是当主播和网红',
-  '频繁接触社交媒体的青少年，抑郁和焦虑发生率分别提高45%和38%',
-  '40%使用社交媒体的女孩遭遇过网络骚扰或欺凌，这一比例在男孩当中为25%',
-  '6岁前日均屏幕时间超过1小时的儿童，其总智商平均下降6.7至8.2分',
-  '儿童在成人设计的"剧本"中被"催熟"，15%的萌宝短剧存在此类成人化倾向语言',
-  '过早暴露在聚光灯下的儿童，大脑前额叶皮质发育受损率高达67%'
-]
-
-// moved to ExpertSection
-
-// moved to FinalInteractionSection
-
-// 开场动画和导航
-const openingComplete = ref(false)
-const showNav = ref(false)
-const menuOpen = ref(false)
-const isScrolled = ref(false)
-const activeSection = ref('intro')
-const scrollProgress = ref(0)
-
-// moved to ShortVideoSection
-
-// 开场动画控制
-const phoneVisible = ref(false)
-const textVisible = ref(false)
-const indicatorVisible = ref(false)
-const charVisible = ref([false, false, false, false, false, false, false, false, false])
-
-// moved to AudienceSection
-
-// 过渡动画控制
-const isTransitioning = ref(false)
-const transitionAnim = ref(null)
-// 回到顶部
+// ==================== UI状态管理 ====================
+// 回到顶部按钮显示状态
 const showBackTop = ref(false)
 
-// moved to PiagetSection
 
-// 选择角色
-const selectRole = (roleId) => {
-  selectedRole.value = selectedRole.value === roleId ? null : roleId
-}
-
-// 获取角色内容
-const getRoleContent = () => {
-  const contents = {
-    parents: `
-      <h3>父母："只是想分享一下"</h3>
-      <p>是很多家长在社交媒体"晒娃"的初衷。许多账号由家长运营，或是以父母视角拍摄孩子的有趣瞬间，或是以孩子视角开设儿童账号，但是在流量至上、利益诱惑面前，这份分享可能就会变了味。</p>
-      <div class="cost-comparison">
-        <div class="cost-item">
-          <h4>养育成本</h4>
-          <div class="cost-map-container">
-            <div class="child-silhouette">
-              <span class="silhouette-value">85万</span>
-            </div>
-            <div class="map-note">各地0-17岁孩子平均养育成本（港澳台未统计）</div>
-            <div class="cost-legend">
-              <span class="legend-item"><span class="legend-color" style="background: #fee5d9"></span> 30-40万</span>
-              <span class="legend-item"><span class="legend-color" style="background: #fcae91"></span> 40-50万</span>
-              <span class="legend-item"><span class="legend-color" style="background: #fb6a4a"></span> 50-60万</span>
-              <span class="legend-item"><span class="legend-color" style="background: #de2d26"></span> 60-80万</span>
-              <span class="legend-item"><span class="legend-color" style="background: #a50f15"></span> 80万以上</span>
-            </div>
-            <div style="width:100%;margin-top:12px;text-align:center;">
-              <img src="${costRefImg}" alt="养育成本参考" style="max-width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08);" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="data-highlight">
-        <p>全国家庭0-17岁孩子的养育成本平均为<span class="big">53.8万元</span></p>
-        <p>而仅2023年7月内，儿童博主的平均累计销售额就超过<span class="big">85万元</span>，约是养育成本的两倍。</p>
-      </div>
-
-      <h4 style="margin-top: 30px; color: #2c3e50; font-size: 1.4rem;">头部网红月销售额（悬停查看详情）</h4>
-      <div class="sales-timeline">
-        <div class="sales-item" data-date="9.26" data-sales="250-500万">
-          <div class="date">9.26</div>
-          <div class="bar" style="height: 30%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 1-2.5万</p>
-            <p>销售额: 250-500万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.9" data-sales="500-750万">
-          <div class="date">10.9</div>
-          <div class="bar" style="height: 45%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 1-2.5万</p>
-            <p>销售额: 500-750万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.13" data-sales="1000-2500万">
-          <div class="date">10.13</div>
-          <div class="bar" style="height: 75%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 5-7.5万</p>
-            <p>销售额: 1000-2500万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.15" data-sales="2500-5000万">
-          <div class="date">10.15</div>
-          <div class="bar" style="height: 100%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 10-25万</p>
-            <p>销售额: 2500-5000万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.17" data-sales="1000-2500万">
-          <div class="date">10.17</div>
-          <div class="bar" style="height: 70%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 10-25万</p>
-            <p>销售额: 1000-2500万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.19" data-sales="2500-5000万">
-          <div class="date">10.19</div>
-          <div class="bar" style="height: 95%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 5-7.5万</p>
-            <p>销售额: 2500-5000万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.22" data-sales="500-750万">
-          <div class="date">10.22</div>
-          <div class="bar" style="height: 40%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 10-25万</p>
-            <p>销售额: 500-750万</p>
-          </div>
-        </div>
-        <div class="sales-item" data-date="10.24" data-sales="2500-5000万">
-          <div class="date">10.24</div>
-          <div class="bar" style="height: 100%;"></div>
-          <div class="sales-tooltip">
-            <p>销量: 10-25万</p>
-            <p>销售额: 2500-5000万</p>
-          </div>
-        </div>
-      </div>
-
-      <p>以一头部亲子类型网红分析，其近一个月销售额最高可达2500万-5000万。据第三方数据，儿童网红@瑶一***其短视频社交媒体账号年广告收入或超1650万元，远超90%的同粉丝量级达人。</p>
-       <h4 style="margin-top: 40px; color: #2c3e50; font-size: 1.4rem;">各地养育成本交互地图</h4>
-      <div id="costMap" style="width:100%;height:500px;background:#f8f9fa;border-radius:16px;margin-top:20px;"></div>
-      <p style="text-align:center;color:#999;margin-top:10px;font-size:0.9rem;">数据来源：《中国生育成本报告2024》</p>
-    `,
-    mcn: `
-      <h3>MCN机构：流量公式的制造者</h3>
-      <p>"网红儿童"内容的制作者远不止是分享生活的父母，其背后通常有专业的推手。MCN机构看到了儿童群体在线上商业变现上的潜力。</p>
-      <div class="formula-box">
-        <p class="formula">萌娃(40%) + 冲突剧情(30%) + 商品植入(30%) = 爆款模板</p>
-      </div>
-      <p>MCN常会套用这样的流量公式，主动签约有潜力的素人账号，提供从人设定位、剧本编写到拍摄剪辑、商业变现的全套服务。</p>
-      <div class="data-highlight">
-        <p>粉丝量百万以上账号中，<span class="big">54.9%</span>已与MCN签约</p>
-      </div>
-
-      <h4 style="margin-top: 30px; color: #2c3e50; font-size: 1.4rem;">MCN合作模式与分成比例</h4>
-      <div class="mcn-revenue-chart">
-        <div class="revenue-model">
-          <div class="model-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <h5>自营模式</h5>
-            <p class="model-desc">MCN全程运营</p>
-          </div>
-          <div class="revenue-split">
-            <div class="split-bar">
-              <div class="creator-share" style="width: 30%; background: #e74c3c;">创作者 30%</div>
-              <div class="mcn-share" style="width: 70%; background: #3498db;">MCN 70%</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="revenue-model">
-          <div class="model-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-            <h5>联营模式</h5>
-            <p class="model-desc">共同运营管理</p>
-          </div>
-          <div class="revenue-split">
-            <div class="split-bar">
-              <div class="creator-share" style="width: 50%; background: #e74c3c;">创作者 50%</div>
-              <div class="mcn-share" style="width: 50%; background: #3498db;">MCN 50%</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="revenue-model">
-          <div class="model-header" style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);">
-            <h5>签约模式</h5>
-            <p class="model-desc">创作者主导运营</p>
-          </div>
-          <div class="revenue-split">
-            <div class="split-bar">
-              <div class="creator-share" style="width: 70%; background: #27ae60;">创作者 70%</div>
-              <div class="mcn-share" style="width: 30%; background: #3498db;">MCN 30%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h4 style="margin-top: 20px; color: #2c3e50; font-size: 1.4rem;">MCN签约比例（抖查查）</h4>
-      <div id="mcnSignupChart" style="width:100%;height:320px;background:#fff;border-radius:16px;"></div>
-
-      <p class="warning">但是MCN资质参差不齐，签约后伴随着的是：</p>
-      <ul>
-        <li>高频率的视频发表（亲子类头部达人月发布视频最高达96条）</li>
-        <li>不平等的分成比例（自营模式分成最低仅30%）</li>
-        <li>困难的解约方式以及高昂的违约金（最高可达单月流水的24倍）</li>
-      </ul>
-      <div class="penalty-box">
-        <h4>违约条款示例：</h4>
-        <ul class="penalty-list">
-          <li>未经同意在非指定平台表演，违规一次需承担合同期内单月最高流水收入的<span class="red-text">24倍</span>赔偿</li>
-          <li>未经同意擅自接第三方活动的，发生一次须赔偿公司<span class="red-text">50万元</span></li>
-          <li>主播擅自提取账号佣金的，需赔偿不低于<span class="red-text">50万元</span></li>
-        </ul>
-      </div>
-    `,
-    platform: `
-      <h3>平台：算法推荐的推手</h3>
-      <p>平台的推荐算法会识别出完播率、互动率更高的内容类型，并给予更大的流量推荐，从而形成"表现越好-推荐越多"的循环。</p>
-      <div class="data-highlight">
-        <p>东北财经大学研究显示，儿童网红账号的完播率比成人账号高<span class="big">47%</span></p>
-        <p>平台因此加大流量倾斜，形成"数据越好-流量越多-变现越强"的恶性循环。</p>
-      </div>
-      <p>为了追求流量和商业利益，部分平台对晒娃视频的内容审核把关不严，任由带有广告植入、过度商业化的视频肆意传播。</p>
-    `,
-    audience: `
-      <h3>观众：天然流量的来源</h3>
-      <p>观看者中不乏真正喜爱孩子、通过视频获得情感慰藉的用户。一个有趣的现象是，不少头部萌娃账号的粉丝中，18-23岁的年轻人对萌娃视频的偏好度最高。</p>
-      <div class="insight-box">
-        <p>从进化心理学角度解释，这种现象是因为人类天生会对具有"婴儿图式"（如圆脸、大眼等特征）的幼崽产生保护欲和亲密感，这是一种本能反应，而女性通常对此更为敏感。</p>
-      </div>
-      <p>萌娃们天真无邪的言行和温馨的家庭互动场景，为年轻观众提供了一个逃离现实压力、获得情绪疗愈的窗口。</p>
-      <p class="warning">"啃娃逻辑"正在逐渐被更多人接受。甚至出现了一批"母婴博主陪跑""宝妈专业运营"等专门教导家长如何打造"小网红"的账号。</p>
-    `
-  }
-  return contents[selectedRole.value] || ''
-}
-
-
-// 切换菜单
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
-}
-
-// 平滑滚动到指定区域
-const scrollToSection = (sectionId) => {
-  const element = document.getElementById(sectionId)
-  if (element) {
-    const nav = document.querySelector('.navbar')
-    const offset = nav ? nav.offsetHeight : 0
-    const top = element.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top, behavior: 'smooth' })
-    menuOpen.value = false
-  }
-}
-
-// 添加糖果时检查是否显示结尾（最多20个），增加反馈效果
-// moved to FinalInteractionSection
-
-// 选择视频喜好并显示图表
-const selectChoice = (v) => {
-  selectedChoice.value = v
-  showChart.value = true
-}
-
-// 角色项键盘可用
-const onRoleKey = (e, id) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault()
-    selectRole(id)
-  }
-}
-
-// 重新开始（黑屏结束）
-// moved to FinalInteractionSection
-
+// ==================== 页面滚动和导航 ====================
 // 回到顶部
 const goTop = () => {
   try {
@@ -423,81 +78,12 @@ const goTop = () => {
   }
 }
 
-// moved to ShortVideoSection
+// ==================== 动画和视觉效果 ====================
+// 注：首条视频动画已迁移到 InfluencerTimelineSection.vue 中处理
+// 注：网络连线绘制已迁移到 CircleNetworkSection.vue 中处理
 
-// 首条视频动画：进入视口后爱心从右侧不断涌出并放大覆盖，随后变成金钱符号
-const setupFirstVideoAnimation = () => {
-  if (!firstVideoAnim.value) return
-  const container = firstVideoAnim.value
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        container.classList.add('run')
-        // 点赞数快速上升动画
-        likeTimer && clearInterval(likeTimer)
-        likeCount.value = 100
-        let acceleration = 1
-        likeTimer = setInterval(() => {
-          acceleration += 0.1
-          likeCount.value += Math.floor(30 * acceleration + Math.random() * 100)
-          if (likeCount.value >= 8000) {
-            clearInterval(likeTimer)
-            likeTimer = null
-            likeCount.value = 8000
-          }
-        }, 60)
-        // 2.5秒后结束点赞动画
-        setTimeout(() => {
-          if (likeTimer) {
-            clearInterval(likeTimer)
-            likeTimer = null
-            likeCount.value = 8000
-          }
-        }, 2500)
-        // 3.5s 后显示金钱符号（爱心覆盖完成后）
-        setTimeout(() => { moneyShow.value = true }, 3500)
-        observer.unobserve(container)
-      }
-    })
-  }, { threshold: 0.6 })
-  observer.observe(container)
-}
-
-// 画出角色与中心的连线
-const drawNetworkLines = () => {
-  const svg = networkSvg.value
-  const center = centerChildEl.value
-  const rolesWrap = rolesContainerEl.value
-  if (!svg || !center || !rolesWrap) return
-  const containerRect = svg.parentElement.getBoundingClientRect()
-  const centerRect = center.getBoundingClientRect()
-  const cx = centerRect.left + centerRect.width / 2 - containerRect.left
-  const cy = centerRect.top + centerRect.height / 2 - containerRect.top
-  const roles = rolesWrap.querySelectorAll('.role-item')
-  const lines = []
-  roles.forEach((el) => {
-    const r = el.getBoundingClientRect()
-    const rx = r.left + r.width / 2 - containerRect.left
-    const ry = r.top + r.height / 2 - containerRect.top
-    const roleId = el.getAttribute('data-role') || ''
-    lines.push(`<line x1="${cx}" y1="${cy}" x2="${rx}" y2="${ry}" data-role="${roleId}" class="net-line" />`)
-  })
-  svg.setAttribute('width', String(containerRect.width))
-  svg.setAttribute('height', String(containerRect.height))
-  svg.innerHTML = lines.join('')
-}
-
-const highlightLine = (roleId, on) => {
-  const svg = networkSvg.value
-  if (!svg) return
-  const line = svg.querySelector(`.net-line[data-role="${roleId}"]`)
-  if (line) {
-    if (on) line.classList.add('highlight')
-    else line.classList.remove('highlight')
-  }
-}
-
-// 简单节流函数（用于 resize）
+// ==================== 工具函数 ====================
+// 节流函数（用于窗口resize事件）
 const throttleFn = (fn, limit = 150) => {
   let inThrottle = false
   return (...args) => {
@@ -509,99 +95,33 @@ const throttleFn = (fn, limit = 150) => {
   }
 }
 
-// 更新活动section和滚动进度
-const updateScrollState = () => {
-  const scrollTop = window.scrollY
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight
+// ==================== 滚动状态更新 ====================
+// 注：导航栏的滚动状态（scrollProgress, isScrolled, activeSection）已迁移到 OpeningNavbarSection.vue 中处理
 
-  // 更新滚动进度
-  scrollProgress.value = docHeight <= 0 ? 0 : (scrollTop / docHeight) * 100
-
-  // 更新滚动状态
-  isScrolled.value = scrollTop > 100
-
-  // 更新当前激活的section
-  const sections = ['intro', 'digital-labor', 'children', 'influencer', 'impact', 'solution']
-  for (const sectionId of sections) {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const rect = element.getBoundingClientRect()
-      if (rect.top <= 150 && rect.bottom >= 150) {
-        activeSection.value = sectionId
-        break
-      }
-    }
-  }
-
-  // 底部息屏逻辑已迁移到 FinalInteractionSection
-}
-
-// 统一滚动处理：状态与回顶
+// 统一滚动处理：更新回到顶部按钮状态
 const onScroll = () => {
-  updateScrollState()
   showBackTop.value = window.scrollY > 600
 }
 
-// 初始化图表
+// ==================== 生命周期钩子 ====================
 onMounted(() => {
-  // 开场动画序列
-  setTimeout(() => {
-    phoneVisible.value = true
-  }, 500)
+  // 注：开场动画已迁移到 OpeningNavbarSection.vue 中处理
 
-  // 字符逐个弹出
-  const chars = charVisible.value
-  setTimeout(() => { chars[0] = true }, 1500)
-  setTimeout(() => {
-    setTimeout(() => { chars[1] = true }, 1650)
-    setTimeout(() => { chars[2] = true }, 1800)
-    setTimeout(() => { chars[3] = true }, 1950)
-    setTimeout(() => { chars[4] = true }, 2100)
-    setTimeout(() => { chars[5] = true }, 2250)
-    setTimeout(() => { chars[6] = true }, 2400)
-    setTimeout(() => { chars[7] = true }, 2550)
-    setTimeout(() => { chars[8] = true }, 2700)
-
-    setTimeout(() => {
-      indicatorVisible.value = true
-    }, 3200)
-
-    setTimeout(() => {
-      showNav.value = true
-    }, 3500)
-
-    nextTick(() => {
-      initCharts()
-      setupScrollAnimations()
-      setupNavScroll()
-      drawNetworkLines()
-      setupMagneticEffect()
-      setupRevealAnimations()
-      const onResizeThrottled = throttleFn(drawNetworkLines, 150)
-      window.addEventListener('resize', onResizeThrottled)
-      cleanupFns.push(() => window.removeEventListener('resize', onResizeThrottled))
-    })
+  nextTick(() => {
+    initCharts()
+    setupScrollAnimations()
+    setupNavScroll()
+    setupMagneticEffect()
+    setupRevealAnimations()
   })
 
-  // 初始化所有图表
+  // 初始化所有图表（大部分已迁移到各自的组件中）
   const initCharts = () => {
-    // moved chart1 & chartPhoneUsers to IntroSection
-
-    // moved chart2 & chart3 to ShortVideoSection
-
-    // moved chart4 to ChildrenSection
-
-    // moved chart5 to ChildrenSection
-
-    // moved chart6 to ChildrenSection
-
-    // moved chart7 to ChildLaborTrendSection
-
-    // moved chart8 to ChildLaborTrendSection
-
-    // moved audience charts and wordcloud into AudienceSection
+    // 注：各章节的图表已迁移到对应的Section组件中维护
+    // 此处仅保留共享图表的初始化逻辑
   }
 
+  // ==================== 初始化函数 ====================
   // 设置滚动动画
   const setupScrollAnimations = () => {
     const observer = new IntersectionObserver((entries) => {
@@ -637,11 +157,7 @@ onMounted(() => {
     onScroll()
   }
 
-  // moved: example images transition & timeline animation handled in components
-
-  // moved: chart3 init to ShortVideoSection
-
-
+  // ==================== 模态窗口图表初始化 ====================
   // 初始化 MCN 签约比例饼图
   const initMcnSignupChart = () => {
     const el = document.getElementById('mcnSignupChart')
@@ -823,44 +339,11 @@ onMounted(() => {
       })
     }
   }
-  // 监听角色选择，初始化/清理模态内图表与动效
-  watch(selectedRole, async (role) => {
-    document.body.style.overflow = role ? 'hidden' : ''
 
-    if (role === 'parents') {
-      await nextTick()
-      initCostMapChart()
-    }
+  // ==================== 响应式监听 ====================
+  // 注：角色选择的 watch 已迁移到 NetworkInteractionWrapper.vue 中处理
 
-    if (role === 'mcn') {
-      await nextTick()
-      initMcnSignupChart()
-      // 违约条款循环高亮
-      const items = document.querySelectorAll('.penalty-list li')
-      let i = 0
-      const tick = () => {
-        items.forEach(el => el.classList.remove('active'))
-        items[i]?.classList.add('active')
-        i = (i + 1) % items.length
-      }
-      tick()
-      mcnPenaltyTimer && clearInterval(mcnPenaltyTimer)
-      mcnPenaltyTimer = setInterval(tick, 1800)
-      // 分成条动画
-      document.querySelector('.modal-content')?.classList.add('animate')
-    }
-
-    if (!role) {
-      // 关闭弹窗时清理
-      costMapChart?.dispose?.(); costMapChart = null
-      mcnSignupChart?.dispose?.(); mcnSignupChart = null
-      if (mcnPenaltyTimer) { clearInterval(mcnPenaltyTimer); mcnPenaltyTimer = null }
-      document.querySelector('.modal-content')?.classList.remove('animate')
-    }
-  })
-  // 粒子背景动画
-  // moved particles & parallax to IntroSection
-
+  // ==================== 交互效果设置 ====================
   // 磁性悬停效果
   const setupMagneticEffect = () => {
     const items = document.querySelectorAll('.magnetic-item')
@@ -903,29 +386,26 @@ onMounted(() => {
     })
     cleanupFns.push(() => observer.disconnect())
   }
-
-  // moved to MotivationSection
-
-  // 资源清理和性能优化
 })
 
+// ==================== 清理和卸载 ====================
 onUnmounted(() => {
+  // 移除事件监听器
   window.removeEventListener('scroll', onScroll)
-  costMapChart?.dispose?.(); costMapChart = null
-  mcnSignupChart?.dispose?.(); mcnSignupChart = null
-  if (mcnPenaltyTimer) { clearInterval(mcnPenaltyTimer); mcnPenaltyTimer = null }
-  // moved likeTimer usage to InfluencerTimelineSection
 
-  // 清理所有图表实例
-  ;[chartMindMap]
-    .forEach(r => {
-      if (r?.value) {
-        const inst = echarts.getInstanceByDom(r.value)
-        if (inst) {
-          inst.dispose()
-        }
-      }
-    })
+  // 销毁图表实例
+  costMapChart?.dispose?.()
+  costMapChart = null
+  mcnSignupChart?.dispose?.()
+  mcnSignupChart = null
+
+  // 清理定时器
+  if (mcnPenaltyTimer) {
+    clearInterval(mcnPenaltyTimer)
+    mcnPenaltyTimer = null
+  }
+
+  // 注：其他图表实例已迁移到各自组件中管理和清理
 
   // 执行所有清理函数
   cleanupFns.forEach(fn => {
@@ -934,11 +414,13 @@ onUnmounted(() => {
     }
   })
 
-  // 清理动态添加的样式
+  // 清理动态样式
   document.querySelectorAll('style[data-dynamic]').forEach(s => s.remove())
 })
 </script>
+
 <style>
+/* ==================== 全局容器样式 ==================== */
 .rechildhood-container {
   width: 100%;
   min-height: 100vh;
@@ -946,7 +428,7 @@ onUnmounted(() => {
   overflow-x: hidden;
 }
 
-/* 粒子背景 */
+/* ==================== 粒子背景和动画 ==================== */
 .particle-bg {
   position: absolute;
   top: 0;
@@ -985,7 +467,7 @@ onUnmounted(() => {
   transform: translateY(0) scale(1);
 }
 
-/* 开场部分 */
+/* ==================== 开场动画 ==================== */
 .opening-section {
   min-height: 100vh;
   background: #000;
@@ -1233,7 +715,7 @@ onUnmounted(() => {
   }
 }
 
-/* 导航栏 */
+/* ==================== 导航栏样式 ==================== */
 .navbar {
   position: fixed;
   top: 0;
@@ -1416,7 +898,7 @@ onUnmounted(() => {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* 进度条 */
+/* 导航进度条 */
 .nav-progress {
   position: absolute;
   bottom: 0;
@@ -1427,6 +909,7 @@ onUnmounted(() => {
   box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
 }
 
+/* ==================== 章节通用样式 ==================== */
 .section {
   min-height: auto;
   padding: 80px 20px;
@@ -1557,7 +1040,7 @@ onUnmounted(() => {
   box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
 }
 
-/* 视频展示部分 */
+/* ==================== 视频展示样式 ==================== */
 .video-section {
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 }
@@ -2029,10 +1512,7 @@ onUnmounted(() => {
   transition: all .6s ease;
 }
 
-/* 皮亚杰理论样式已迁移到 PiagetSection.vue */
-
-/* 观众分析部分样式已迁移到 AudienceSection.vue */
-
+/* ==================== 四方关系网络样式 ==================== */
 .circle-interaction {
   position: relative;
   width: 600px;
@@ -2202,7 +1682,7 @@ onUnmounted(() => {
   color: #2c3e50;
 }
 
-/* 弹窗样式 */
+/* ==================== 弹窗样式 ==================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -2290,6 +1770,7 @@ onUnmounted(() => {
   }
 }
 
+/* ==================== 影响展示样式 ==================== */
 .impact-section {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
@@ -2340,6 +1821,7 @@ onUnmounted(() => {
   padding-top: 20px;
 }
 
+/* ==================== 动机流程样式 ==================== */
 .motivation-flow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -2419,8 +1901,7 @@ onUnmounted(() => {
   color: #e74c3c;
 }
 
-/* 专家建议样式已迁移到 ExpertSection.vue */
-
+/* ==================== 最终互动样式 ==================== */
 .final-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -2876,6 +2357,7 @@ onUnmounted(() => {
   font-style: italic;
 }
 
+/* ==================== 息屏效果 ==================== */
 .screen-off {
   position: fixed;
   top: 0;
@@ -2965,7 +2447,7 @@ onUnmounted(() => {
   }
 }
 
-/* 性能优化：减少动画复杂度 */
+/* ==================== 无障碍和性能优化 ==================== */
 @media (prefers-reduced-motion: reduce) {
 
   *,
@@ -2977,7 +2459,7 @@ onUnmounted(() => {
   }
 }
 
-/* 回到顶部与重播按钮 */
+/* ==================== 功能按钮 ==================== */
 .backtop {
   position: fixed;
   right: 20px;
@@ -3006,7 +2488,7 @@ onUnmounted(() => {
   backdrop-filter: blur(6px);
 }
 
-/* 屏幕背后的利益网络：增加作用域前缀，避免其它组件样式干扰 */
+/* ==================== 作用域样式（避免样式冲突） ==================== */
 .interactive-section .circle-interaction {
   position: relative;
   width: 600px;
@@ -3602,6 +3084,7 @@ onUnmounted(() => {
   filter: brightness(1.1);
 }
 
+/* ==================== 响应式设计 ==================== */
 /* 移动端优化：角色弹窗与图表高度 */
 @media (max-width: 768px) {
   .modal-overlay {
@@ -3652,7 +3135,7 @@ onUnmounted(() => {
   }
 }
 
-/* 响应式设计 */
+/* 移动端通用样式 */
 @media (max-width: 768px) {
   .phone-screen {
     width: 220px;
@@ -4458,6 +3941,59 @@ onUnmounted(() => {
   .expert-cards {
     max-width: 1400px;
   }
+}
+
+/* 儿童图片弹窗样式 */
+.modal-title {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.modal-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.child-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.child-image-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.child-image-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.child-impact-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.image-caption {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 /* 打印样式 */

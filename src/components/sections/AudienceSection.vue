@@ -4,9 +4,40 @@
 
     <div class="audience-charts">
       <!-- 年龄分布图 -->
-      <div class="chart-container" ref="chartAudienceAge"></div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>年龄分布</h3>
+          <span class="info-icon">?</span>
+        </div>
+        <div class="chart-summary">
+          <span class="highlight-orange">31-40岁</span>年龄段占比最高，
+          <span class="highlight-orange">18-23岁</span>年龄段偏好度（TGI指数）最高
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-color" style="background: #5B8FF9"></span>
+            占比
+          </span>
+          <span class="legend-item">
+            <span class="legend-color" style="background: #5AD8A6"></span>
+            TGI
+          </span>
+        </div>
+        <div class="chart-container" ref="chartAudienceAge"></div>
+      </div>
+
       <!-- 性别分布图 -->
-      <div class="chart-container" ref="chartAudienceGender"></div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>性别分布</h3>
+          <span class="info-icon">?</span>
+        </div>
+        <div class="chart-summary">
+          <span class="highlight-orange">女性</span>占比最高，
+          <span class="highlight-orange">女性</span>偏好度（TGI指数）最高
+        </div>
+        <div class="chart-container gender-chart" ref="chartAudienceGender"></div>
+      </div>
     </div>
 
     <!-- 地域分布提示 -->
@@ -21,17 +52,6 @@
     <h3 class="subsection-title">评论区的声音</h3>
     <div class="chart-container large" ref="chartWordCloud"></div>
 
-    <p class="insight-text anim-reveal">
-      萌娃的天然流量优势再加之粉丝追捧，"晒娃"行为在相关平台越烧越旺。某千万级网红父母为其新生儿"光速"注册账号，仅1条视频，抖音吸粉十几万，点赞超30万。
-    </p>
-
-    <!-- 4张示例图片 -->
-    <div class="example-images">
-      <div class="example-image-card" v-for="(img, index) in exampleImages"
-        :key="index">
-        <img :src="img.src" :alt="img.alt" />
-      </div>
-    </div>
   </section>
 </template>
 
@@ -44,57 +64,148 @@ const chartAudienceGender = ref(null)
 const chartAudienceRegion = ref(null)
 const chartWordCloud = ref(null)
 
-const audienceHero = new URL('@/assets/images/9.png', import.meta.url).href
-
-const exampleImages = [
-  { src: new URL('@/assets/images/3.png', import.meta.url).href, alt: '示例图片3' },
-  { src: new URL('@/assets/images/4.png', import.meta.url).href, alt: '示例图片4' },
-  { src: new URL('@/assets/images/5.png', import.meta.url).href, alt: '示例图片5' },
-  { src: new URL('@/assets/images/6.png', import.meta.url).href, alt: '示例图片6' }
-]
-
 let cloudObserver = null
 
 onMounted(() => {
-  // 年龄分布
+  // 年龄分布（双轴柱状图）
   if (chartAudienceAge.value) {
     const myChartAge = echarts.init(chartAudienceAge.value)
     myChartAge.setOption({
-      title: { text: '观看萌娃视频的观众年龄分布', left: 'center' },
-      tooltip: { trigger: 'item' },
-      legend: { bottom: 10, left: 'center' },
-      series: [{
-        type: 'pie', radius: '65%',
-        data: [
-          { value: 15, name: '18岁以下' },
-          { value: 35, name: '18-23岁', itemStyle: { color: '#5470c6' } },
-          { value: 25, name: '24-30岁' },
-          { value: 15, name: '31-40岁' },
-          { value: 10, name: '40岁以上' }
-        ],
-        emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } },
-        label: { show: true, formatter: '{b}\n{d}%' }
-      }]
+      grid: { left: '12%', right: '12%', top: '15%', bottom: '15%' },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' }
+      },
+      xAxis: {
+        type: 'category',
+        data: ['18-23岁', '24-30岁', '31-40岁', '41-50岁', '51岁+'],
+        axisLine: { lineStyle: { color: '#E5E5E5' } },
+        axisTick: { show: false },
+        axisLabel: { color: '#666' }
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '占比',
+          position: 'left',
+          axisLabel: { formatter: '{value}%', color: '#666' },
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#F0F0F0', type: 'dashed' } },
+          max: 32
+        },
+        {
+          type: 'value',
+          name: 'TGI',
+          position: 'right',
+          axisLabel: { color: '#666' },
+          axisLine: { show: false },
+          splitLine: { show: false },
+          max: 280
+        }
+      ],
+      series: [
+        {
+          name: '占比',
+          type: 'bar',
+          data: [24, 24, 30, 12, 10],
+          barWidth: '35%',
+          itemStyle: {
+            color: '#5B8FF9',
+            borderRadius: [4, 4, 0, 0]
+          },
+          label: {
+            show: false
+          }
+        },
+        {
+          name: 'TGI',
+          type: 'line',
+          yAxisIndex: 1,
+          data: [250, 180, 95, 60, 100],
+          smooth: true,
+          symbol: 'circle',
+          symbolSize: 8,
+          itemStyle: {
+            color: '#5AD8A6',
+            borderWidth: 2,
+            borderColor: '#fff'
+          },
+          lineStyle: {
+            color: '#5AD8A6',
+            width: 3
+          },
+          label: {
+            show: true,
+            position: 'top',
+            formatter: (params) => params.value === 100 ? 'TGI: 100' : '',
+            color: '#5AD8A6',
+            fontWeight: 'bold'
+          },
+          markLine: {
+            silent: true,
+            symbol: 'none',
+            lineStyle: {
+              color: '#FFBB00',
+              type: 'dashed',
+              width: 2
+            },
+            data: [{ yAxis: 100 }],
+            label: { show: false }
+          }
+        }
+      ]
     })
   }
 
-  // 性别分布
+  // 性别分布（人形图标展示）
   if (chartAudienceGender.value) {
-    const myChartGender = echarts.init(chartAudienceGender.value)
-    myChartGender.setOption({
-      title: { text: '观看萌娃视频的观众性别分布', left: 'center' },
-      tooltip: { trigger: 'item' },
-      legend: { bottom: 10, left: 'center' },
-      series: [{
-        type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false,
-        itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
-        label: { show: true, formatter: '{b}\n{d}%', fontSize: 16 },
-        data: [
-          { value: 68, name: '女性', itemStyle: { color: '#ee6666' } },
-          { value: 32, name: '男性', itemStyle: { color: '#5470c6' } }
-        ]
-      }]
-    })
+    const container = chartAudienceGender.value
+    container.innerHTML = `
+      <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 300px; padding: 40px 20px;">
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+          <div style="position: relative; margin-bottom: 20px;">
+            <svg width="120" height="180" viewBox="0 0 120 180">
+              <!-- 头部 -->
+              <circle cx="60" cy="30" r="25" fill="#B0B0B0"/>
+              <!-- 身体 -->
+              <rect x="35" y="55" width="50" height="60" rx="8" fill="#B0B0B0"/>
+              <!-- 腿部 -->
+              <rect x="42" y="115" width="15" height="60" rx="8" fill="#5B8FF9"/>
+              <rect x="63" y="115" width="15" height="60" rx="8" fill="#5B8FF9"/>
+            </svg>
+          </div>
+          <div style="font-size: 20px; color: #5B8FF9; font-weight: bold; margin-bottom: 8px;">男性</div>
+          <div style="font-size: 16px; color: #666; margin-bottom: 4px;">
+            占比: <span style="font-weight: bold; color: #333;">32%</span>
+          </div>
+          <div style="font-size: 16px; color: #666;">
+            TGI: <span style="font-weight: bold; color: #333;">68</span>
+          </div>
+        </div>
+
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+          <div style="position: relative; margin-bottom: 20px;">
+            <svg width="120" height="180" viewBox="0 0 120 180">
+              <!-- 头部 -->
+              <circle cx="60" cy="30" r="25" fill="#B0B0B0"/>
+              <!-- 身体（裙子形状） -->
+              <path d="M 40 55 L 35 115 L 85 115 L 80 55 Z" fill="#FF6B9D" rx="5"/>
+              <rect x="37" y="55" width="46" height="25" rx="8" fill="#B0B0B0"/>
+              <!-- 腿部 -->
+              <rect x="42" y="115" width="15" height="60" rx="8" fill="#FF6B9D"/>
+              <rect x="63" y="115" width="15" height="60" rx="8" fill="#FF6B9D"/>
+            </svg>
+          </div>
+          <div style="font-size: 20px; color: #FF6B9D; font-weight: bold; margin-bottom: 8px;">女性</div>
+          <div style="font-size: 16px; color: #666; margin-bottom: 4px;">
+            占比: <span style="font-weight: bold; color: #333;">68%</span>
+          </div>
+          <div style="font-size: 16px; color: #666;">
+            TGI: <span style="font-weight: bold; color: #333;">128</span>
+          </div>
+        </div>
+      </div>
+    `
   }
 
   // 地域分布（交互地图）
@@ -169,7 +280,6 @@ onMounted(() => {
             }]
           })
         } catch (e) {
-          // 如果地图加载失败，保持空白或在控制台提示
           console.warn('China map load failed:', e)
         }
       })()
@@ -232,7 +342,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   cloudObserver?.disconnect?.()
-    ;[chartAudienceAge, chartAudienceGender, chartAudienceRegion, chartWordCloud].forEach(r => {
+    ;[chartAudienceAge, chartAudienceRegion, chartWordCloud].forEach(r => {
       if (r?.value) {
         const inst = echarts.getInstanceByDom(r.value)
         inst && inst.dispose()
@@ -244,16 +354,111 @@ onUnmounted(() => {
 <style scoped>
 .audience-section {
   background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
+  padding: 60px 20px;
 }
 
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 50px;
+}
 
 .audience-charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
   width: 100%;
-  max-width: 1100px;
-  margin: 40px auto;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.chart-header h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #E5E5E5;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.chart-summary {
+  background: #F7F9FC;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.highlight-orange {
+  color: #FF8C42;
+  font-weight: bold;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+  padding-left: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.chart-container {
+  width: 100%;
+  height: 350px;
+}
+
+.gender-chart {
+  height: 300px;
+}
+
+.data-note {
+  text-align: center;
+  color: #666;
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 30px auto;
 }
 
 .subsection-title {
@@ -264,82 +469,19 @@ onUnmounted(() => {
   margin: 60px 0 30px;
 }
 
-.example-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+.chart-container.large {
+  height: 500px;
   max-width: 1200px;
-  margin: 50px auto;
-  padding: 0 20px;
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  margin: 0 auto;
 }
 
-.example-image-card {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  /* 恢复为进入时自动播放动画 */
-  animation: imageCardReveal 0.8s ease-out backwards;
-}
-
-.example-image-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.example-image-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.example-image-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.example-image-card:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-@keyframes imageCardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(40px) rotateX(15deg);
+@media (max-width: 768px) {
+  .audience-charts {
+    grid-template-columns: 1fr;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
+  .chart-card {
+    padding: 16px;
   }
-}
-
-.example-image-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  opacity: 0;
-  transition: opacity 0.4s;
-  z-index: 1;
-}
-
-.example-image-card:hover::before {
-  opacity: 1;
-}
-
-.example-image-card:hover {
-  transform: translateY(-15px) scale(1.05) rotateZ(2deg);
-  box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
-}
-
-.example-image-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 </style>

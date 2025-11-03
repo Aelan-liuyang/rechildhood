@@ -1,25 +1,39 @@
 <template>
   <section id="intro" class="section intro-section">
     <canvas ref="particleCanvas" class="particle-bg"></canvas>
-    <h1 class="main-title fade-in" data-parallax="0.3">你每天有多少时间在和小小的手机屏幕接触？</h1>
 
-    <!-- 时间选项 -->
-    <div class="time-options">
-      <div class="time-option" v-for="option in timeOptions" :key="option"
-        :class="{ selected: selectedTime === option }" @click="selectTime(option)">
-        {{ option }}
+    <!-- 第一个问题 -->
+    <div class="question-container" ref="question1">
+      <h1 class="main-title question-text" data-parallax="0.3">
+        你每天有多少时间在和小小的手机屏幕接触？
+      </h1>
+
+      <!-- 时间选项 -->
+      <div class="time-options">
+        <div class="time-option" v-for="option in timeOptions" :key="option"
+          :class="{ selected: selectedTime === option }" @click="selectTime(option)">
+          {{ option }}
+        </div>
       </div>
+
+      <!-- 图表容器：选择后显示，横向排列 -->
+      <transition name="slide-down">
+        <div v-if="showCharts" class="charts-row">
+          <div class="chart-container half" ref="chart1" data-parallax="0.15"></div>
+          <div class="chart-container half" ref="chartPhoneUsers" data-parallax="0.15"></div>
+        </div>
+      </transition>
+
+      <p v-if="showCharts" class="data-source">数据来源：国家统计局、中国互联网络信息中心（CNNIC）、QuestMobile</p>
     </div>
 
-    <!-- 图表容器：选择后显示，横向排列 -->
-    <transition name="slide-down">
-      <div v-if="showCharts" class="charts-row">
-        <div class="chart-container half" ref="chart1" data-parallax="0.15"></div>
-        <div class="chart-container half" ref="chartPhoneUsers" data-parallax="0.15"></div>
-      </div>
-    </transition>
-
-    <p v-if="showCharts" class="data-source">数据来源：国家统计局、中国互联网络信息中心（CNNIC）、QuestMobile</p>
+    <!-- 第二个问题 - 增加间距 -->
+    <!-- <div class="question-container question-spacer" ref="question2">
+      <h1 class="main-title question-text" data-parallax="0.2">
+        你每天有多少时间是在和短视频度过？
+      </h1>
+      <p class="question-hint">（这部分内容将在短视频章节展示）</p>
+    </div> -->
   </section>
 </template>
 
@@ -30,6 +44,8 @@ import * as echarts from 'echarts'
 const chart1 = ref(null)
 const chartPhoneUsers = ref(null)
 const particleCanvas = ref(null)
+const question1 = ref(null)
+const question2 = ref(null)
 let particleAnimId = null
 const cleanupFns = []
 
@@ -83,6 +99,31 @@ const initCharts = () => {
 }
 
 onMounted(() => {
+  // 问题滚动放大效果
+  const setupQuestionScaleEffect = () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const questionText = entry.target.querySelector('.question-text')
+        if (questionText) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+            questionText.classList.add('scale-active')
+          } else {
+            questionText.classList.remove('scale-active')
+          }
+        }
+      })
+    }, {
+      threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
+      rootMargin: '-20% 0px -20% 0px'
+    })
+
+    if (question1.value) observer.observe(question1.value)
+    if (question2.value) observer.observe(question2.value)
+
+    cleanupFns.push(() => observer.disconnect())
+  }
+  setupQuestionScaleEffect()
+
   // 粒子背景
   const setupParticles = () => {
     if (!particleCanvas.value) return
@@ -169,11 +210,46 @@ onUnmounted(() => {
 .intro-section {
   position: relative;
   overflow: hidden;
+  padding: 80px 20px 120px;
 }
 
 .intro-section>* {
   position: relative;
   z-index: 1;
+}
+
+/* 问题容器 */
+.question-container {
+  margin-bottom: 60px;
+  transition: all 0.3s ease;
+}
+
+/* 增加第二个问题的间距 */
+.question-spacer {
+  margin-top: 200px;
+  margin-bottom: 100px;
+}
+
+/* 问题文字样式 */
+.question-text {
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+/* 滚动到问题时放大 */
+.question-text.scale-active {
+  transform: scale(1.15);
+  text-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+/* 问题提示 */
+.question-hint {
+  text-align: center;
+  color: #999;
+  font-size: 1rem;
+  margin-top: 20px;
+  font-style: italic;
+  opacity: 0.7;
 }
 
 .time-options {
@@ -262,6 +338,19 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .intro-section {
+    padding: 60px 15px 100px;
+  }
+
+  .question-spacer {
+    margin-top: 150px;
+    margin-bottom: 80px;
+  }
+
+  .question-text.scale-active {
+    transform: scale(1.1);
+  }
+
   .time-options {
     gap: 15px;
   }
@@ -283,6 +372,23 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
+  .intro-section {
+    padding: 40px 10px 80px;
+  }
+
+  .question-spacer {
+    margin-top: 120px;
+    margin-bottom: 60px;
+  }
+
+  .question-text.scale-active {
+    transform: scale(1.08);
+  }
+
+  .question-hint {
+    font-size: 0.9rem;
+  }
+
   .time-option {
     padding: 8px 16px;
     font-size: 0.9rem;

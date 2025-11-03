@@ -179,13 +179,17 @@ onUnmounted(() => {
 }
 
 .final-question {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: clamp(40px, 8vh, 60px);
   line-height: 1.6;
   position: relative;
   z-index: 1;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 0 20px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .savings-jar {
@@ -202,12 +206,15 @@ onUnmounted(() => {
 }
 
 .jar {
-  width: 320px;
-  height: 420px;
+  width: min(320px, 85vw);
+  height: min(420px, 60vh);
+  max-width: 400px;
+  max-height: 500px;
   background: linear-gradient(135deg,
       rgba(255, 255, 255, 0.3) 0%,
       rgba(255, 255, 255, 0.15) 50%,
       rgba(255, 255, 255, 0.25) 100%);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border: 6px solid rgba(255, 255, 255, 0.4);
   border-radius: 25px 25px 50px 50px;
@@ -221,6 +228,7 @@ onUnmounted(() => {
     inset 0 0 30px rgba(255, 255, 255, 0.2),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset;
   transition: all 0.3s ease;
+  margin: 0 auto;
 }
 
 .jar::before {
@@ -398,18 +406,20 @@ onUnmounted(() => {
 .candies {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: clamp(8px, 2vw, 12px);
   justify-content: center;
   align-content: flex-end;
   position: relative;
   z-index: 5;
+  padding: 5px;
 }
 
 .candy {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   animation: candyPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .candy:hover {
@@ -629,18 +639,21 @@ onUnmounted(() => {
 
 .jar-label {
   text-align: center;
-  font-size: 1.5rem;
-  margin-top: 25px;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  margin-top: clamp(15px, 3vh, 25px);
   font-weight: 800;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: clamp(6px, 1.5vw, 10px);
+  padding: 0 10px;
 }
 
 .label-icon {
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
   animation: iconBounce 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes iconBounce {
@@ -657,19 +670,20 @@ onUnmounted(() => {
 
 .jar-counter {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: bold;
-  margin-top: 10px;
-  padding: 10px 20px;
+  margin-top: clamp(8px, 2vh, 10px);
+  padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .add-candy-btn {
-  padding: 22px 55px;
-  font-size: 1.35rem;
+  padding: clamp(18px, 3vw, 22px) clamp(40px, 7vw, 55px);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   color: #2c3e50;
   border: none;
@@ -685,7 +699,11 @@ onUnmounted(() => {
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 12px);
+  max-width: 90vw;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .add-candy-btn::before {
@@ -707,8 +725,13 @@ onUnmounted(() => {
 }
 
 .btn-icon {
-  font-size: 1.6rem;
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
   animation: iconRotate 3s linear infinite;
+  flex-shrink: 0;
+}
+
+.btn-text {
+  display: inline-block;
 }
 
 @keyframes iconRotate {
@@ -930,43 +953,50 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .final-question {
-    font-size: 1.5rem;
-  }
-
   .jar {
-    width: 280px;
-    height: 380px;
     padding: 20px;
   }
 
-  .add-candy-btn {
-    padding: 18px 40px;
-    font-size: 1.15rem;
-  }
-
   .final-message {
-    font-size: 1.2rem;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    padding: 0 15px;
   }
 
   .jar-label {
-    font-size: 1.3rem;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+  }
+
+  .jar-container {
+    transform: scale(0.95);
   }
 }
 
 @media (max-width: 480px) {
   .jar {
-    width: 240px;
-    height: 340px;
+    padding: 15px;
+  }
+
+  .jar-container {
+    transform: scale(0.9);
+  }
+
+  .btn-text {
+    font-size: 0.9em;
+  }
+
+  .final-section {
+    padding: 40px 10px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .jar {
+    width: min(380px, 85vw);
+    height: min(480px, 60vh);
   }
 
   .candy {
-    font-size: 1.5rem;
-  }
-
-  .add-candy-btn {
-    padding: 15px 30px;
-    font-size: 1rem;
+    font-size: 2.2rem;
   }
 }
 </style>

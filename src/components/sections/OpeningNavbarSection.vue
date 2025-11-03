@@ -38,34 +38,20 @@
         </div>
 
         <div class="nav-menu" :class="{ active: menuOpen }">
-          <a @click.prevent="scrollToSection('intro')" class="nav-link" :class="{ active: activeSection === 'intro' }">
-            <span class="link-icon">📊</span>
-            <span class="link-text">数据概览</span>
+          <a @click.prevent="scrollToSection('chapter0-content')" class="nav-link"
+            :class="{ active: activeSection === 'chapter0-content' }">
+            <span class="link-icon">👋</span>
+            <span class="link-text">你好，屏幕里的童年</span>
           </a>
-          <a @click.prevent="scrollToSection('digital-labor')" class="nav-link"
-            :class="{ active: activeSection === 'digital-labor' }">
-            <span class="link-icon">💼</span>
-            <span class="link-text">数字劳工</span>
-          </a>
-          <a @click.prevent="scrollToSection('children')" class="nav-link"
-            :class="{ active: activeSection === 'children' }">
-            <span class="link-icon">👧</span>
-            <span class="link-text">儿童网民</span>
-          </a>
-          <a @click.prevent="scrollToSection('influencer')" class="nav-link"
-            :class="{ active: activeSection === 'influencer' }">
+          <a @click.prevent="scrollToSection('chapter1')" class="nav-link"
+            :class="{ active: activeSection === 'chapter1' }">
             <span class="link-icon">⭐</span>
-            <span class="link-text">网红儿童</span>
+            <span class="link-text">一个网红儿童的诞生</span>
           </a>
-          <a @click.prevent="scrollToSection('impact')" class="nav-link"
-            :class="{ active: activeSection === 'impact' }">
-            <span class="link-icon">⚠️</span>
-            <span class="link-text">影响分析</span>
-          </a>
-          <a @click.prevent="scrollToSection('solution')" class="nav-link"
-            :class="{ active: activeSection === 'solution' }">
-            <span class="link-icon">💡</span>
-            <span class="link-text">专家建议</span>
+          <a @click.prevent="scrollToSection('chapter2')" class="nav-link"
+            :class="{ active: activeSection === 'chapter2' }">
+            <span class="link-icon">💝</span>
+            <span class="link-text">让爱回到现实</span>
           </a>
         </div>
 
@@ -92,7 +78,7 @@ const charVisible = ref([false, false, false, false, false, false, false, false,
 const showNav = ref(false)
 const menuOpen = ref(false)
 const isScrolled = ref(false)
-const activeSection = ref('intro')
+const activeSection = ref('chapter0')
 const scrollProgress = ref(0)
 
 const toggleMenu = () => { menuOpen.value = !menuOpen.value }
@@ -112,7 +98,7 @@ const updateScrollState = () => {
   const docHeight = document.documentElement.scrollHeight - window.innerHeight
   scrollProgress.value = docHeight <= 0 ? 0 : (scrollTop / docHeight) * 100
   isScrolled.value = scrollTop > 100
-  const sections = ['intro', 'digital-labor', 'children', 'influencer', 'impact', 'solution']
+  const sections = ['chapter0', 'chapter0-content', 'chapter1', 'chapter2']
   for (const sectionId of sections) {
     const element = document.getElementById(sectionId)
     if (element) {

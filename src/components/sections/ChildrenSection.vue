@@ -20,7 +20,6 @@
       </p>
     </div>
 
-    <div class="chart-container" ref="chart6"></div>
 
     <p class="data-note small">
       截至2024年6月,10岁以前首次"触网"的未成年人占比达52%,较上年提高7.4%。村镇儿童过早接触直播/短视频的比例(82.3%)远高于城市儿童(51.6%)。以刚进入幼儿园的3岁儿童为例,78.6%的儿童屏幕时间超过了每天1小时的指南推荐标准。
@@ -34,7 +33,7 @@ import * as echarts from 'echarts'
 
 const chart4 = ref(null)
 const chart5 = ref(null)
-const chart6 = ref(null)
+
 let myChart4Instance = null
 let myChart5Instance = null
 let myChart6Instance = null
@@ -350,35 +349,6 @@ onMounted(() => {
             shadowOffsetX: 0,
             shadowColor: 'rgba(0, 0, 0, 0.5)'
           }
-        }
-      }]
-    })
-  }
-
-  // chart6 - 示例图表(需要根据实际数据补充)
-  if (chart6.value) {
-    myChart6Instance = echarts.init(chart6.value)
-    myChart6Instance.setOption({
-      title: {
-        text: '示例图表6',
-        left: 'center',
-        top: 10
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      xAxis: {
-        type: 'category',
-        data: ['A', 'B', 'C', 'D', 'E']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [{
-        data: [120, 200, 150, 80, 70],
-        type: 'bar',
-        itemStyle: {
-          color: '#667eea'
         }
       }]
     })

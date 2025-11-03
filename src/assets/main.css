@@ -20,6 +20,35 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 全局文案优化 - 避免短词断行 */
+p,
+li,
+span,
+div {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 特定类名文案优化 */
+.section-intro,
+.main-intro,
+.insight-text,
+.intro-text,
+.section-subtitle {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 8px;

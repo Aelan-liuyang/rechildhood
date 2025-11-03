@@ -4,25 +4,16 @@
 
     <h1 class="main-title anim-reveal" style="color: white;">把童年还给孩子，让爱回到现实</h1>
     <p class="section-intro" style="color: white;">
-      要整治“网红儿童”背后的流量牟利乱象，必须多方协同发力。
+      要整治"网红儿童"背后的流量牟利乱象，必须多方协同发力。
     </p>
 
-    <swiper
-      class="expert-swiper"
-      :modules="[Navigation, Autoplay, EffectCoverflow, Pagination]"
-      :slides-per-view="1.5"
-      :space-between="50"
-      :centered-slides="true"
-      :loop="true"
-      :autoplay="{ delay: 4000, disableOnInteraction: false }"
-      :effect="'coverflow'"
+    <swiper class="expert-swiper" :modules="[Navigation, Autoplay, EffectCoverflow, Pagination]" :slides-per-view="1.5"
+      :space-between="50" :centered-slides="true" :loop="true"
+      :autoplay="{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }" :effect="'coverflow'"
       :coverflowEffect="{ rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true }"
-      navigation
-      :pagination="{ clickable: true }">
-      <swiper-slide
-        v-for="(expert, index) in experts"
-        :key="index"
-        class="expert-slide"
+      :navigation="{ enabled: true, clickable: true }" :pagination="{ clickable: true, dynamicBullets: true }"
+      :allowTouchMove="true" :grabCursor="true" @swiper="onSwiper" @slideChange="onSlideChange">
+      <swiper-slide v-for="(expert, index) in experts" :key="index" class="expert-slide"
         :style="{ backgroundImage: `url(${expert.bg})` }">
         <div class="overlay"></div>
         <div class="expert-content">
@@ -32,6 +23,26 @@
         </div>
       </swiper-slide>
     </swiper>
+
+    <!-- 平台建议对话 -->
+    <div class="platform-dialogue">
+      <div class="dialogue-content">
+        <p>平台可从儿童出镜频率、账号收益中儿童贡献的比例、商业化内容占比等维度建立量化标准来识别是分享还是牟利；推流机制要在法律范围内，减少对可能损害儿童权益内容的流量倾斜。</p>
+        <p>
+          在法律层面，未来应探索出台未成年人网络保护实施细则和行为规范，进一步优化年龄段治理模式。借鉴国外治理经验，孩子们必须获取相关执照才能成为"网红"，而他们因此获得的收入，必须存入一个专门的银行账户，供他们年满16岁后使用。
+        </p>
+      </div>
+    </div>
+
+    <!-- 家长建议图片和文本 -->
+    <div class="parent-advice-section">
+      <div class="advice-image-wrapper">
+        <img :src="parentAdviceImg" alt="家长建议" class="advice-image" />
+      </div>
+      <div class="advice-text">
+        <p>家长应尊重孩子的主体性，把童年还给儿童，不要在摆拍和表演中度过童年。亲子高光时刻转瞬即逝，眼睛和心灵才是最好的相机。</p>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -44,40 +55,54 @@ import "swiper/css/effect-coverflow"
 import "swiper/css/pagination"
 import { Navigation, Autoplay, EffectCoverflow, Pagination } from "swiper/modules"
 
+// 导入8.png图片
+const parentAdviceImg = new URL('@/assets/images/8.png', import.meta.url).href
+
 const experts = [
   {
     name: "蒋俏蕾",
     title: "清华大学新闻与传播学院长聘副教授",
-    advice: "儿童不适宜出现在公开的网络账号中，不要打开“儿童网红”产业化的潘多拉魔盒。如果能够明确禁止未成年人在公开网络账号中出现，就可以从根本上避免利用儿童引流的问题。",
-    bg: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=1600&q=80",
+    advice: "儿童不适宜出现在公开的网络账号中，不要打开「儿童网红」产业化的潘多拉魔盒。如果能够明确禁止未成年人在公开网络账号中出现，就可以从根本上避免利用儿童引流的问题。",
+    bg: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=80"
   },
   {
     name: "方增泉",
     title: "北京师范大学新闻传播学院未成年人网络素养研究中心主任",
     advice: "进一步明确设定儿童出镜时长、内容更新频次、商业链接植入等行业规范，以确保充分发挥网络平台丰富家庭数字记忆、促进儿童成长发展的同时，有效防止儿童被工具化利用。",
-    bg: "https://images.unsplash.com/photo-1517242023979-5f2d1ccdf36e?auto=format&fit=crop&w=1600&q=80",
+    bg: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=1600&q=80"
   },
   {
     name: "郑宁",
     title: "中国传媒大学文化产业管理学院法律系教授",
-    advice: "建议尽快明确“儿童网红”账号的判断和利用未成年人牟利的标准，主管部门应指导相关行业协会出台细化标准，可结合出镜频率、账号收益分配、商业化内容占比等因素综合判断。",
-    bg: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80",
+    advice: "建议尽快明确「儿童网红」账号的判断和利用未成年人牟利的标准，主管部门应指导相关行业协会出台细化标准，可结合出镜频率、账号收益分配、商业化内容占比等因素综合判断。",
+    bg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80"
   },
   {
     name: "李可欣",
     title: "儿童心理发展专家",
     advice: "过早将孩子暴露在网络镜头下，可能影响其心理发展。建议家庭和学校协同，引导孩子在现实生活中获取更多自我认同感。",
-    bg: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80",
+    bg: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80"
   },
   {
     name: "王思远",
     title: "教育技术与媒体研究者",
-    advice: "网络内容应当服务于儿童成长，而非牟利。家长和平台需共同制定观看和参与规则，避免孩子成为流量工具。。",
-    bg: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80",
-  },
+    advice: "网络内容应当服务于儿童成长，而非牟利。家长和平台需共同制定观看和参与规则，避免孩子成为流量工具。",
+    bg: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80"
+  }
 ]
 
 const particleCanvas = ref(null)
+const swiperInstance = ref(null)
+
+// Swiper 实例回调
+const onSwiper = (swiper) => {
+  swiperInstance.value = swiper
+}
+
+// 切换幻灯片回调
+const onSlideChange = () => {
+  console.log('Slide changed')
+}
 
 onMounted(() => {
   const canvas = particleCanvas.value
@@ -233,20 +258,42 @@ onMounted(() => {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   animation: fadeUp 1s ease 0.4s forwards;
   opacity: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-/* Swiper 控制按钮 */
+/* Swiper 控制按钮 - 增强交互性 */
 .swiper-button-next,
 .swiper-button-prev {
   color: white;
   top: 45%;
   transition: 0.3s;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 204, 51, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 100;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
   color: #ffcc33;
+  background: rgba(255, 204, 51, 0.4);
   transform: scale(1.2);
+}
+
+.swiper-button-next:active,
+.swiper-button-prev:active {
+  transform: scale(0.95);
 }
 
 /* 分页小点 */
@@ -254,12 +301,96 @@ onMounted(() => {
   background: white;
   opacity: 0.7;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .swiper-pagination-bullet-active {
   background: #ffcc33;
   transform: scale(1.3);
   opacity: 1;
+}
+
+/* 平台建议对话样式 */
+.platform-dialogue {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 60px auto 40px;
+  padding: 40px 50px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.dialogue-content p {
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 2;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.dialogue-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 家长建议图片和文本样式 */
+.parent-advice-section {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+.advice-image-wrapper {
+  width: 100%;
+  margin-bottom: 30px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s;
+}
+
+.advice-image-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.advice-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s;
+}
+
+.advice-image-wrapper:hover .advice-image {
+  transform: scale(1.05);
+}
+
+.advice-text {
+  padding: 30px 40px;
+  background: linear-gradient(135deg, rgba(255, 204, 51, 0.25) 0%, rgba(255, 204, 51, 0.15) 100%);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  border: 2px solid rgba(255, 204, 51, 0.4);
+  box-shadow: 0 8px 32px rgba(255, 204, 51, 0.2);
+}
+
+.advice-text p {
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 2;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* 小屏幕适配 */
@@ -282,6 +413,40 @@ onMounted(() => {
 
   .expert-advice {
     font-size: 1rem;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 50px;
+    height: 50px;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 20px;
+  }
+
+  .platform-dialogue {
+    margin: 40px 20px 30px;
+    padding: 30px 25px;
+  }
+
+  .dialogue-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .parent-advice-section {
+    padding: 0 15px;
+  }
+
+  .advice-text {
+    padding: 20px 25px;
+  }
+
+  .advice-text p {
+    font-size: 1rem;
+    line-height: 1.8;
   }
 }
 
