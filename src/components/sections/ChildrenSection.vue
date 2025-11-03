@@ -10,7 +10,9 @@
         截至2023年底，我国未成年网民规模达
         <span class="highlight-num">1.96亿</span>，
         未成年人互联网普及率高达
-        <span class="highlight-num">97.3%</span>。
+        <span
+          class="highlight-num">97.3%</span>。
+        未成年人的互联网普及率已基本达到饱和状态。他们很早就开始使用数字设备，已经是重要的互联网用户群。
       </p>
     </div>
 
