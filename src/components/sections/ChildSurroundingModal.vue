@@ -27,8 +27,8 @@
                 :class="`card-color-${(index % 3) + 1}`">
                 <div class="stat-icon">{{ stat.icon }}</div>
                 <div class="stat-content">
+                  <div class="stat-metric" v-if="stat.highlight">{{ stat.highlight }}</div>
                   <p class="stat-text">{{ stat.text }}</p>
-                  <div class="stat-highlight" v-if="stat.highlight">{{ stat.highlight }}</div>
                 </div>
               </div>
             </div>
@@ -125,11 +125,32 @@ const impactStats = [
   padding: 50px 40px;
   border-radius: 24px;
   max-width: 1200px;
-  width: 100%;
-  max-height: 90vh;
+  width: 95%;
+  max-height: 85vh;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
   animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 滚动条样式 */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
 @keyframes modalSlideIn {
@@ -250,10 +271,11 @@ const impactStats = [
 /* ==================== 示例图片 ==================== */
 .example-images {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
   margin: 30px auto 40px;
-  max-width: 900px;
+  max-width: 100%;
+  padding: 0 10px;
 }
 
 .example-image-card {
@@ -262,7 +284,8 @@ const impactStats = [
   overflow: hidden;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  height: 350px;
+  aspect-ratio: 4 / 3;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -313,15 +336,16 @@ const impactStats = [
 }
 
 .example-image-card:hover {
-  transform: translateY(-15px) scale(1.05) rotateZ(2deg);
-  box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
 }
 
 .example-image-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  padding: 10px;
 }
 
 .impact-title {
@@ -360,111 +384,173 @@ const impactStats = [
 
 .impact-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
-  margin-bottom: 35px;
-  margin-top: 35px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  padding: 0;
 }
 
 .impact-stat-card {
   background: white;
-  padding: 28px;
-  border-radius: 18px;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  border-left: 5px solid;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
+  overflow: visible;
+  min-height: 280px;
 }
 
 .impact-stat-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: linear-gradient(180deg, currentColor, transparent);
-  opacity: 0.3;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, currentColor, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.impact-stat-card::after {
+  display: none;
 }
 
 .card-color-1 {
-  border-left-color: #667eea;
+  color: #667eea;
 }
 
 .card-color-2 {
-  border-left-color: #ff6b6b;
+  color: #ff6b6b;
 }
 
 .card-color-3 {
-  border-left-color: #51cf66;
+  color: #51cf66;
 }
 
 .impact-stat-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.impact-stat-card:hover::before {
+  opacity: 0.15;
 }
 
 .stat-icon {
-  font-size: 2.5rem;
-  flex-shrink: 0;
+  font-size: 3.2rem;
   line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.impact-stat-card:hover .stat-icon {
+  transform: scale(1.1);
 }
 
 .stat-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
   flex: 1;
+  justify-content: flex-start;
+}
+
+.stat-metric {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  min-height: 44px;
+  flex-shrink: 0;
+}
+
+.card-color-1 .stat-metric {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-color-2 .stat-metric {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+.card-color-3 .stat-metric {
+  background: linear-gradient(135deg, #51cf66 0%, #4ade80 100%);
+}
+
+.stat-metric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2.5s infinite;
 }
 
 .stat-text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #333;
-  margin: 0 0 12px 0;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: #666;
+  margin: 0;
   word-break: keep-all;
   overflow-wrap: break-word;
+  font-weight: 400;
+  max-width: 100%;
+  hyphens: none;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
-.stat-highlight {
-  display: inline-block;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+@keyframes shimmer {
+  0% {
+    left: -100%;
   }
 
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+  100% {
+    left: 100%;
   }
 }
 
 .data-source {
   text-align: center;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: #999;
-  line-height: 1.7;
+  line-height: 1.8;
   margin: 0;
   padding: 25px 20px 0;
   border-top: 2px dashed rgba(0, 0, 0, 0.12);
   font-style: italic;
   background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.03), transparent);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .modal-fade-enter-active,
@@ -480,19 +566,36 @@ const impactStats = [
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 1024px) {
   .example-images {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 0 5px;
+  }
+
+  .example-image-card {
+    height: auto;
+  }
+
+  .impact-stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
-  .impact-stats-grid {
-    grid-template-columns: 1fr;
+  .impact-stat-card {
+    padding: 28px 20px;
+    min-height: 260px;
+  }
+
+  .stat-icon {
+    font-size: 2.8rem;
+    height: 56px;
   }
 }
 
 @media (max-width: 768px) {
   .modal-content {
     padding: 35px 20px;
-    max-width: 95%;
+    max-width: 96%;
+    max-height: 88vh;
   }
 
   .modal-close {
@@ -501,6 +604,41 @@ const impactStats = [
     font-size: 1.6rem;
     top: 15px;
     right: 15px;
+  }
+
+  .example-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .example-image-card {
+    height: auto;
+  }
+
+  .impact-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .impact-stat-card {
+    padding: 26px 20px;
+    gap: 16px;
+    min-height: 240px;
+  }
+
+  .stat-icon {
+    font-size: 2.8rem;
+    height: 52px;
+  }
+
+  .stat-metric {
+    font-size: 1.15rem;
+    padding: 9px 18px;
+    min-height: 40px;
+  }
+
+  .stat-text {
+    font-size: 0.88rem;
   }
 
   .modal-main-title {
@@ -519,7 +657,7 @@ const impactStats = [
   }
 
   .example-image-card {
-    height: 280px;
+    height: auto;
   }
 
   .impact-data-section {
@@ -539,22 +677,70 @@ const impactStats = [
     font-size: 0.95rem;
   }
 
+
+  .data-source {
+    font-size: 0.8rem;
+    padding: 20px 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 25px 15px;
+    max-width: 98%;
+  }
+
+  .modal-main-title {
+    font-size: 1.5rem;
+  }
+
+  .modal-main-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .example-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .example-image-card {
+    height: auto;
+  }
+
+  .impact-title {
+    font-size: 1.2rem;
+  }
+
+  .impact-intro {
+    font-size: 0.9rem;
+  }
+
+  .impact-stats-grid {
+    gap: 16px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
   .impact-stat-card {
-    padding: 20px;
-    gap: 15px;
+    padding: 22px 18px;
+    gap: 14px;
+    min-height: 220px;
   }
 
   .stat-icon {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    height: 48px;
+  }
+
+  .stat-metric {
+    font-size: 1.05rem;
+    padding: 8px 14px;
+    min-height: 38px;
   }
 
   .stat-text {
-    font-size: 0.95rem;
-  }
-
-  .stat-highlight {
-    font-size: 1rem;
-    padding: 6px 12px;
+    font-size: 0.82rem;
+    line-height: 1.6;
   }
 }
 </style>

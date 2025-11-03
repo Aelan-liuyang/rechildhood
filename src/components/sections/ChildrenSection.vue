@@ -39,7 +39,7 @@ let myChart5Instance = null
 let myChart6Instance = null
 
 onMounted(() => {
-  // chart4 - 堆叠面积图
+  // chart4 - 堆叠柱状图（参考图片样式）
   if (chart4.value) {
     myChart4Instance = echarts.init(chart4.value)
 
@@ -60,11 +60,7 @@ onMounted(() => {
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'line',
-          lineStyle: {
-            color: 'rgba(0,0,0,0.2)',
-            width: 2
-          }
+          type: 'shadow'
         },
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
         borderColor: '#ddd',
@@ -76,7 +72,7 @@ onMounted(() => {
         },
         formatter: (params) => {
           let result = `<div style="font-weight:bold;margin-bottom:8px;">${params[0].axisValue}年</div>`
-          params.reverse().forEach(item => {
+          params.forEach(item => {
             result += `<div style="margin:4px 0;">${item.marker} ${item.seriesName}: <span style="font-weight:bold;">${item.value}%</span></div>`
           })
           return result
@@ -84,27 +80,31 @@ onMounted(() => {
       },
       legend: {
         data: ['10岁以下', '10-19岁', '20-29岁', '30-39岁', '40-49岁', '50-59岁', '60岁及以上'],
-        top: 55,
-        right: 30,
+        top: 'middle',
+        right: '2%',
         orient: 'vertical',
         textStyle: {
-          fontSize: 13,
+          fontSize: 12,
           color: '#666'
         },
-        itemGap: 12,
-        itemWidth: 18,
-        itemHeight: 12
+        itemGap: 10,
+        itemWidth: 16,
+        itemHeight: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        padding: [10, 15],
+        borderRadius: 8
       },
       grid: {
-        left: '5%',
-        right: '18%',
-        bottom: '8%',
-        top: '100',
+        left: '8%',
+        right: '20%',
+        bottom: '10%',
+        top: '80',
         containLabel: true
       },
       xAxis: {
         type: 'category',
-        boundaryGap: false,
         data: ['2020', '2021', '2022', '2023'],
         axisLabel: {
           fontSize: 13,
@@ -115,6 +115,9 @@ onMounted(() => {
           lineStyle: {
             color: '#ddd'
           }
+        },
+        axisTick: {
+          show: false
         }
       },
       yAxis: {
@@ -128,7 +131,7 @@ onMounted(() => {
         splitLine: {
           lineStyle: {
             color: '#f0f0f0',
-            type: 'dashed'
+            type: 'solid'
           }
         },
         axisLine: {
@@ -138,219 +141,161 @@ onMounted(() => {
       series: [
         {
           name: '10岁以下',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
-          },
-          emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
+          type: 'bar',
+          stack: 'total',
+          barWidth: '60%',
           data: [3.1, 4.3, 4.4, 3.8],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
+          },
+          emphasis: {
+            focus: 'series'
           }
         },
         {
           name: '10-19岁',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
-          },
-          emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
-          data: [11.2, 13.5, 14.2, 13.7],
+          type: 'bar',
+          stack: 'total',
+          data: [11.2, 11.5, 14.2, 13.7],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
+          },
+          emphasis: {
+            focus: 'series'
           }
         },
         {
           name: '20-29岁',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
+          type: 'bar',
+          stack: 'total',
+          data: [13.5, 13.3, 14.3, 14.7],
+          label: {
+            show: true,
+            position: 'inside',
+            formatter: '{c}%',
+            fontSize: 12,
+            color: '#333',
+            fontWeight: 'bold'
           },
           emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
+            focus: 'series'
+          }
+        },
+        {
+          name: '30-39岁',
+          type: 'bar',
+          stack: 'total',
           data: [15.1, 15.3, 14.3, 15.6],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
-          }
-        },
-        {
-          name: '30-39岁',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
           },
           emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
-          data: [12.8, 17.3, 16.5, 16],
-          label: {
-            show: true,
-            position: 'inside',
-            formatter: '{c}%',
-            fontSize: 11,
-            color: '#333',
-            fontWeight: 'bold'
+            focus: 'series'
           }
         },
         {
           name: '40-49岁',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
-          },
-          emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
-          data: [18.8, 18.4, 14.3, 14.7],
+          type: 'bar',
+          stack: 'total',
+          data: [17.8, 17.3, 16.5, 16],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
+          },
+          emphasis: {
+            focus: 'series'
           }
         },
         {
           name: '50-59岁',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
-          },
-          emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
-          data: [18.6, 18.4, 16.7, 16.9],
+          type: 'bar',
+          stack: 'total',
+          data: [18.8, 18.4, 16.7, 16.9],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
+          },
+          emphasis: {
+            focus: 'series'
           }
         },
         {
           name: '60岁及以上',
-          type: 'line',
-          stack: 'Total',
-          smooth: true,
-          lineStyle: { width: 0 },
-          showSymbol: false,
-          areaStyle: {
-            opacity: 0.8
-          },
-          emphasis: {
-            focus: 'series',
-            areaStyle: {
-              opacity: 1
-            }
-          },
-          data: [20.3, 19.9, 19.6, 19.2],
+          type: 'bar',
+          stack: 'total',
+          data: [20.5, 19.9, 19.6, 19.2],
           label: {
             show: true,
             position: 'inside',
             formatter: '{c}%',
-            fontSize: 11,
+            fontSize: 12,
             color: '#333',
             fontWeight: 'bold'
+          },
+          emphasis: {
+            focus: 'series'
           }
         }
       ]
     })
   }
 
-  // chart5 - 示例图表(需要根据实际数据补充)
+  // 图表5：未成年人网民数量
   if (chart5.value) {
-    myChart5Instance = echarts.init(chart5.value)
-    myChart5Instance.setOption({
+    const myChart5 = echarts.init(chart5.value)
+    myChart5.setOption({
       title: {
-        text: '示例图表5',
-        left: 'center',
-        top: 10
+        text: '未成年人网民数量与普及率',
+        left: 'center'
       },
-      tooltip: {
-        trigger: 'item'
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['网民数量(万人)', '普及率(%)'], bottom: 10 },
+      xAxis: {
+        type: 'category',
+        data: ['2020', '2021', '2022', '2023']
       },
-      series: [{
-        type: 'pie',
-        radius: '50%',
-        data: [
-          { value: 1048, name: '类别A' },
-          { value: 735, name: '类别B' },
-          { value: 580, name: '类别C' },
-          { value: 484, name: '类别D' }
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
+      yAxis: [
+        { type: 'value', name: '网民数量(万人)' },
+        { type: 'value', name: '普及率(%)', max: 100 }
+      ],
+      series: [
+        {
+          name: '网民数量(万人)',
+          type: 'bar',
+          data: [18281, 19062, 19347, 19630],
+          itemStyle: { color: '#5470c6' }
+        },
+        {
+          name: '普及率(%)',
+          type: 'line',
+          yAxisIndex: 1,
+          data: [94.9, 96.8, 97.2, 97.3],
+          itemStyle: { color: '#ee6666' }
         }
-      }]
+      ]
     })
   }
 })
