@@ -3,27 +3,19 @@
     <section class="section">
       <h2 class="section-title">你每天有多少时间是在和短视频度过？</h2>
       <div class="time-options">
-        <div
-          class="time-option"
-          :class="{ selected: selectedTimeOption === '30-60min' }"
+        <div class="time-option" :class="{ selected: selectedTimeOption === '30-60min' }"
           @click="selectTimeOption('30-60min')">
           30-60min
         </div>
-        <div
-          class="time-option"
-          :class="{ selected: selectedTimeOption === '60-90min' }"
+        <div class="time-option" :class="{ selected: selectedTimeOption === '60-90min' }"
           @click="selectTimeOption('60-90min')">
           60-90min
         </div>
-        <div
-          class="time-option"
-          :class="{ selected: selectedTimeOption === '90-120min' }"
+        <div class="time-option" :class="{ selected: selectedTimeOption === '90-120min' }"
           @click="selectTimeOption('90-120min')">
           90-120min
         </div>
-        <div
-          class="time-option"
-          :class="{ selected: selectedTimeOption === '120min以上' }"
+        <div class="time-option" :class="{ selected: selectedTimeOption === '120min以上' }"
           @click="selectTimeOption('120min以上')">
           120min以上
         </div>
@@ -292,7 +284,7 @@ onMounted(() => {
 }
 
 .time-option {
-  padding: 12px 30px;
+  padding: var(--spacing-sm, 12px) var(--spacing-lg, 30px);
   font-size: 1.1rem;
   border: 2px solid #f39c12;
   background: white;
@@ -301,6 +293,7 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s;
   font-weight: 500;
+  min-height: var(--touch-target-min, 44px);
 }
 
 .time-option:hover {
@@ -429,6 +422,7 @@ onMounted(() => {
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  min-height: var(--touch-target-min, 44px);
 }
 
 .choice-btn::before {
@@ -534,7 +528,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .video-examples {
     flex-direction: column;
-    gap: 30px;
+    gap: var(--spacing-lg, 30px);
   }
 
   .video-card {
@@ -542,15 +536,41 @@ onMounted(() => {
   }
 
   .choice-buttons {
-    gap: 20px;
+    gap: var(--spacing-md, 20px);
     flex-wrap: wrap;
   }
 
   .choice-btn {
     padding: 15px 40px;
     font-size: 1.1rem;
+    min-height: var(--touch-target-min, 44px);
+  }
+
+  .time-option {
+    padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+    font-size: 1rem;
   }
 
   /* 移动端宽度由内联 + ECharts 自适应控制 */
+}
+
+@media (max-width: 480px) {
+  .video-examples {
+    gap: var(--spacing-md, 20px);
+  }
+
+  .choice-buttons {
+    gap: 15px;
+  }
+
+  .choice-btn {
+    padding: var(--spacing-sm, 12px) var(--spacing-lg, 30px);
+    font-size: 1rem;
+  }
+
+  .time-option {
+    padding: 10px 18px;
+    font-size: var(--font-size-small, 0.9rem);
+  }
 }
 </style>

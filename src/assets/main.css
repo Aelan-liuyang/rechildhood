@@ -1,3 +1,79 @@
+/* ==================== 设计 Token 系统 ==================== */
+:root {
+  /* 间距系统 */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 60px;
+
+  /* 容器内边距 */
+  --container-padding: 40px;
+
+  /* 图表高度 */
+  --chart-height: 450px;
+  --chart-height-large: 700px;
+
+  /* 字体大小 */
+  --font-size-h1: 3rem;
+  --font-size-h2: 2.2rem;
+  --font-size-h3: 1.8rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.9rem;
+
+  /* 触摸目标最小尺寸 */
+  --touch-target-min: 44px;
+
+  /* 边框圆角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  /* 导航栏高度 */
+  --nav-height: 80px;
+}
+
+/* 平板断点 */
+@media (max-width: 1024px) {
+  :root {
+    --container-padding: 25px;
+    --chart-height: 400px;
+    --chart-height-large: 600px;
+  }
+}
+
+/* 移动端断点 */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 20px;
+    --chart-height: 350px;
+    --chart-height-large: 500px;
+    --font-size-h1: 1.8rem;
+    --font-size-h2: 1.5rem;
+    --font-size-h3: 1.3rem;
+    --font-size-body: 0.95rem;
+    --font-size-small: 0.85rem;
+    --nav-height: 70px;
+  }
+}
+
+/* 小屏幕断点 */
+@media (max-width: 480px) {
+  :root {
+    --container-padding: 15px;
+    --chart-height: 300px;
+    --chart-height-large: 400px;
+    --font-size-h1: 1.5rem;
+    --font-size-h2: 1.3rem;
+    --font-size-h3: 1.1rem;
+    --font-size-body: 0.9rem;
+    --font-size-small: 0.8rem;
+    --nav-height: 65px;
+  }
+}
+
 /* 基础样式重置 */
 * {
   margin: 0;
@@ -7,7 +83,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: var(--nav-height);
 }
 
 body {
@@ -89,9 +165,115 @@ textarea:focus {
   outline-offset: 2px;
 }
 
+/* ==================== 响应式工具类 ==================== */
+/* 触摸友好按钮 */
+.touch-target {
+  min-width: var(--touch-target-min, 44px);
+  min-height: var(--touch-target-min, 44px);
+}
+
+/* 容器宽度 */
+.container-responsive {
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .container-responsive {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-responsive {
+    width: 100%;
+  }
+}
+
+/* 隐藏工具类 */
+.hide-mobile {
+  display: initial;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-desktop {
+    display: initial !important;
+  }
+}
+
+/* 文字大小工具类 */
+.text-responsive-h1 {
+  font-size: var(--font-size-h1);
+}
+
+.text-responsive-h2 {
+  font-size: var(--font-size-h2);
+}
+
+.text-responsive-h3 {
+  font-size: var(--font-size-h3);
+}
+
+.text-responsive-body {
+  font-size: var(--font-size-body);
+}
+
+.text-responsive-small {
+  font-size: var(--font-size-small);
+}
+
+/* 间距工具类 */
+.spacing-xs {
+  gap: var(--spacing-xs);
+}
+.spacing-sm {
+  gap: var(--spacing-sm);
+}
+.spacing-md {
+  gap: var(--spacing-md);
+}
+.spacing-lg {
+  gap: var(--spacing-lg);
+}
+.spacing-xl {
+  gap: var(--spacing-xl);
+}
+
+/* 移动端禁用复杂动画以提升性能 */
+@media (max-width: 768px) {
+  .disable-animation-mobile,
+  .disable-animation-mobile * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 触摸设备优化 - 移除装饰性悬停效果 */
+@media (hover: none) {
+  .hover-lift:hover {
+    transform: none !important;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1) !important;
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   html {
-    scroll-padding-top: 60px;
+    scroll-padding-top: var(--nav-height, 60px);
   }
 }

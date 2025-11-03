@@ -23,17 +23,7 @@
           <div class="chart-container half" ref="chartPhoneUsers" data-parallax="0.15"></div>
         </div>
       </transition>
-
-      <p v-if="showCharts" class="data-source">数据来源：国家统计局、中国互联网络信息中心（CNNIC）、QuestMobile</p>
     </div>
-
-    <!-- 第二个问题 - 增加间距 -->
-    <!-- <div class="question-container question-spacer" ref="question2">
-      <h1 class="main-title question-text" data-parallax="0.2">
-        你每天有多少时间是在和短视频度过？
-      </h1>
-      <p class="question-hint">（这部分内容将在短视频章节展示）</p>
-    </div> -->
   </section>
 </template>
 
@@ -71,10 +61,23 @@ const initCharts = () => {
     myChart1.setOption({
       title: { text: '中国居民每日平均互联网使用时间', left: 'center', textStyle: { fontSize: 18, fontWeight: 'bold', color: '#2c3e50' }, top: 20 },
       tooltip: { trigger: 'axis', backgroundColor: 'rgba(50, 50, 50, 0.9)', borderColor: '#333', borderWidth: 1, textStyle: { color: '#fff' }, formatter: '{b}<br/>使用时长: {c}小时' },
-      grid: { left: '3%', right: '4%', bottom: '3%', top: '20%', containLabel: true },
+      grid: { left: '3%', right: '4%', bottom: '15%', top: '20%', containLabel: true },
       xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024'], axisLabel: { fontSize: 12, color: '#666' }, axisLine: { lineStyle: { color: '#ddd' } } },
       yAxis: { type: 'value', name: '小时', nameTextStyle: { color: '#666' }, axisLabel: { formatter: '{value}h', color: '#666' }, splitLine: { lineStyle: { color: '#f0f0f0' } } },
       series: [{ data: [4.4, 4.07, 4.21, 5.33, 6.05], type: 'bar', barWidth: '45%', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#83bff6' }, { offset: 1, color: '#188df0' }]), borderRadius: [8, 8, 0, 0] }, label: { show: true, position: 'top', formatter: '{c}h', color: '#188df0', fontWeight: 'bold' }, emphasis: { itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#a0d1f7' }, { offset: 1, color: '#3fa3f5' }]) } } }],
+      graphic: [{
+        type: 'text',
+        left: 'center',
+        bottom: 5,
+        z: 100,
+        style: {
+          text: '数据来源：国家统计局、中国互联网络信息中心（CNNIC）',
+          textAlign: 'center',
+          fill: '#999',
+          fontSize: 11,
+          fontStyle: 'italic'
+        }
+      }],
       animationDuration: 1000, animationEasing: 'cubicOut'
     })
   }
@@ -91,8 +94,13 @@ const initCharts = () => {
     const radiusOuter = isNarrow ? '66%' : '72%'
     myChartPhone.setOption({
       title: { text: '截至2025年6月手机网民占比情况', subtext: '网民11.23亿 | 手机网民11.16亿 | 占99.4%', left: 'center', textStyle: { fontSize: 16, fontWeight: 'bold' }, subtextStyle: { fontSize: 11, color: '#666' } },
-      tooltip: { trigger: 'item', formatter: '{b}: {c}亿人 ({d}%)' }, legend: { bottom: 10, left: 'center' },
-      graphic: [{ type: 'text', left: 'center', top: '44%', style: { text: '99.4%', fontSize: percentFont, fontWeight: 800, fill: '#2c3e50' } }, { type: 'text', left: 'center', top: '56%', style: { text: '手机网民占比', fontSize: centerSubSize, fill: '#666' } }],
+      tooltip: { trigger: 'item', formatter: '{b}: {c}亿人 ({d}%)' },
+      legend: { bottom: 35, left: 'center' },
+      graphic: [
+        { type: 'text', left: 'center', top: '44%', style: { text: '99.4%', fontSize: percentFont, fontWeight: 800, fill: '#2c3e50' } },
+        { type: 'text', left: 'center', top: '56%', style: { text: '手机网民占比', fontSize: centerSubSize, fill: '#666' } },
+        { type: 'text', left: 'center', bottom: 5, z: 100, style: { text: '数据来源：中国互联网络信息中心（CNNIC）、QuestMobile', textAlign: 'center', fill: '#999', fontSize: 11, fontStyle: 'italic' } }
+      ],
       series: [{ type: 'pie', radius: [radiusInner, radiusOuter], center: ['50%', '50%'], startAngle: 60, clockwise: true, avoidLabelOverlap: false, itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 }, labelLayout: { hideOverlap: true }, label: { show: !isNarrow, formatter: (p) => `${p.name}：${p.value}亿人\n(${p.percent}%)`, fontSize: labelFont || 12, color: '#2c3e50' }, labelLine: { length: 12, length2: 10, lineStyle: { color: '#999' } }, emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' }, itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }, data: [{ value: 11.16, name: '手机网民', itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#667eea' }, { offset: 1, color: '#764ba2' }]) } }, { value: 0.07, name: '非手机网民', itemStyle: { color: '#e0e0e0' } }] }]
     })
   }
@@ -302,19 +310,19 @@ onUnmounted(() => {
 .charts-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+  gap: var(--spacing-lg, 30px);
   width: 90%;
   max-width: 1100px;
-  margin: 30px auto;
+  margin: var(--spacing-lg, 30px) auto;
 }
 
 .chart-container.half {
   width: 100%;
-  height: 450px;
+  height: var(--chart-height, 450px);
   background: white;
-  border-radius: 20px;
+  border-radius: var(--radius-lg, 20px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: var(--spacing-md, 20px);
 }
 
 .slide-down-enter-active {
@@ -358,15 +366,18 @@ onUnmounted(() => {
   .time-option {
     padding: 10px 20px;
     font-size: 1rem;
+    min-height: var(--touch-target-min, 44px);
   }
 
   .charts-row {
     grid-template-columns: 1fr;
-    gap: 20px;
+    /* 改为单列 */
+    gap: var(--spacing-md, 20px);
+    width: 95%;
   }
 
   .chart-container.half {
-    height: 350px;
+    height: 320px;
     padding: 15px;
   }
 }
@@ -386,17 +397,22 @@ onUnmounted(() => {
   }
 
   .question-hint {
-    font-size: 0.9rem;
+    font-size: var(--font-size-small, 0.9rem);
   }
 
   .time-option {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+    font-size: var(--font-size-small, 0.9rem);
+    min-height: var(--touch-target-min, 44px);
+  }
+
+  .charts-row {
+    width: 100%;
   }
 
   .chart-container.half {
-    height: 300px;
-    padding: 10px;
+    height: 280px;
+    padding: 12px;
   }
 }
 </style>

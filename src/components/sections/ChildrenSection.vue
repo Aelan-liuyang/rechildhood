@@ -24,6 +24,10 @@
     <p class="data-note small">
       截至2024年6月,10岁以前首次"触网"的未成年人占比达52%,较上年提高7.4%。村镇儿童过早接触直播/短视频的比例(82.3%)远高于城市儿童(51.6%)。以刚进入幼儿园的3岁儿童为例,78.6%的儿童屏幕时间超过了每天1小时的指南推荐标准。
     </p>
+
+    <p class="data-source">
+      数据来源：中国互联网络信息中心（CNNIC）《第53次中国互联网络发展状况统计报告》、《中国儿童发展报告（2024）》
+    </p>
   </section>
 </template>
 
@@ -311,18 +315,56 @@ onUnmounted(() => {
 .chart-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+  gap: var(--spacing-lg, 30px);
   width: 90%;
-  margin: 30px auto;
+  margin: var(--spacing-lg, 30px) auto;
 }
 
 .chart-container {
   width: 100%;
-  height: 450px;
+  height: var(--chart-height, 450px);
   background: white;
-  border-radius: 20px;
+  border-radius: var(--radius-lg, 20px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: var(--spacing-md, 20px);
+}
+
+/* 平板优化 */
+@media (max-width: 1024px) {
+  .chart-row {
+    gap: 20px;
+    width: 92%;
+  }
+}
+
+/* 移动端优化 - 改为单列布局 */
+@media (max-width: 768px) {
+  .chart-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md, 20px);
+    width: 95%;
+    margin: var(--spacing-md, 20px) auto;
+  }
+
+  .chart-container {
+    height: 350px;
+    padding: 15px;
+  }
+}
+
+/* 小屏幕优化 */
+@media (max-width: 480px) {
+  .chart-row {
+    width: 100%;
+    gap: 15px;
+    margin: 15px auto;
+  }
+
+  .chart-container {
+    height: 280px;
+    padding: 12px;
+    border-radius: var(--radius-md, 12px);
+  }
 }
 
 .highlight-box {
@@ -374,15 +416,65 @@ onUnmounted(() => {
   margin: 30px auto;
 }
 
+.data-source {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin: 20px auto;
+  max-width: 900px;
+  font-style: italic;
+  padding: 0 20px;
+}
+
 .section {
-  padding: 40px 20px;
+  padding: var(--container-padding, 40px) var(--spacing-md, 20px);
 }
 
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: var(--font-size-h2, 2.2rem);
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-lg, 30px);
   font-weight: bold;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .section {
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-md, 20px);
+  }
+
+  .chart-subtitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: var(--spacing-md, 20px) 15px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .chart-subtitle {
+    font-size: 1.6rem;
+  }
+
+  .highlight-box {
+    padding: 20px;
+    font-size: 1.1rem;
+  }
+
+  .data-note.small {
+    font-size: 0.88rem;
+    padding: 15px 18px;
+  }
 }
 </style>

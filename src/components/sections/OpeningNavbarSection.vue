@@ -527,38 +527,63 @@ onMounted(() => {
   }
 
   .nav-container {
-    padding: 0 20px;
-    height: 70px;
+    padding: 0 var(--spacing-md, 20px);
+    height: var(--nav-height, 70px);
   }
 
   .nav-menu {
     position: fixed;
-    top: 80px;
+    top: var(--nav-height, 70px);
     left: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.98);
     flex-direction: column;
     gap: 0;
-    padding: 20px 0;
+    padding: var(--spacing-md, 20px) 0;
     transform: translateX(-100%);
     transition: transform 0.3s;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  /* 添加遮罩层 */
+  .nav-menu::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: -1;
   }
 
   .nav-menu.active {
     transform: translateX(0);
   }
 
+  .nav-menu.active::before {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .nav-link {
-    padding: 15px 30px;
+    padding: 15px var(--spacing-lg, 30px);
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #f0f0f0;
     border-radius: 0;
+    min-height: var(--touch-target-min, 44px);
   }
 
   .nav-toggle {
     display: flex;
+    padding: var(--spacing-sm, 12px);
+    min-width: var(--touch-target-min, 44px);
+    min-height: var(--touch-target-min, 44px);
   }
 }
 </style>

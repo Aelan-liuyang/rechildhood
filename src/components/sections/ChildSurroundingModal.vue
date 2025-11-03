@@ -273,7 +273,7 @@ const impactStats = [
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
-  margin: 30px auto 40px;
+  margin: var(--spacing-lg, 30px) auto var(--spacing-xl, 40px);
   max-width: 100%;
   padding: 0 10px;
 }
@@ -394,7 +394,7 @@ const impactStats = [
 .impact-stat-card {
   background: white;
   padding: 32px 24px;
-  border-radius: 16px;
+  border-radius: var(--radius-md, 16px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   display: flex;
@@ -599,8 +599,8 @@ const impactStats = [
   }
 
   .modal-close {
-    width: 45px;
-    height: 45px;
+    width: var(--touch-target-min, 44px);
+    height: var(--touch-target-min, 44px);
     font-size: 1.6rem;
     top: 15px;
     right: 15px;
@@ -623,7 +623,8 @@ const impactStats = [
   .impact-stat-card {
     padding: 26px 20px;
     gap: 16px;
-    min-height: 240px;
+    min-height: 200px;
+    /* 减小最小高度 */
   }
 
   .stat-icon {
@@ -691,20 +692,23 @@ const impactStats = [
   }
 
   .modal-main-title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-h2, 1.5rem);
   }
 
   .modal-main-subtitle {
-    font-size: 0.9rem;
+    font-size: var(--font-size-small, 0.9rem);
   }
 
   .example-images {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
+    /* 改为单列 */
+    gap: 12px;
   }
 
   .example-image-card {
     height: auto;
+    aspect-ratio: 16 / 9;
+    /* 更适合单列显示 */
   }
 
   .impact-title {
@@ -717,14 +721,15 @@ const impactStats = [
 
   .impact-stats-grid {
     gap: 16px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: var(--spacing-lg, 30px);
+    margin-bottom: var(--spacing-lg, 30px);
   }
 
   .impact-stat-card {
     padding: 22px 18px;
     gap: 14px;
-    min-height: 220px;
+    min-height: auto;
+    /* 移除固定高度，自适应内容 */
   }
 
   .stat-icon {

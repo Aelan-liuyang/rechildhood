@@ -104,6 +104,10 @@
       <p>观众的每一次点击、每一个赞，都在无形中鼓励着更多父母将孩子推向镜头。而平台的算法会进一步放大这种效应，让"萌娃"内容获得更多曝光，形成正反馈循环。</p>
       <p><strong>作为观众，我们需要意识到：</strong>我们的关注和互动，可能在无意中成为了儿童被过度曝光的推手。理性消费内容，拒绝猎奇和消费儿童隐私的视频，是每个观众应有的责任。</p>
     </div>
+
+    <p class="data-source">
+      数据来源：QuestMobile《2024短视频用户研究报告》、巨量算数《萌娃内容观众洞察报告》
+    </p>
   </div>
 </template>
 
@@ -802,6 +806,16 @@ onUnmounted(() => {
 .responsibility-box strong {
   color: #ff9800;
   font-weight: 700;
+}
+
+.data-source {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin: 30px auto 20px;
+  max-width: 900px;
+  font-style: italic;
+  padding: 0 20px;
 }
 
 /* ==================== 响应式设计 ==================== */

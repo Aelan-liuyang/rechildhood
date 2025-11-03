@@ -8,8 +8,14 @@
     <div class="chart-container" ref="chart7"></div>
 
     <p class="key-message">
-      传统童工数量大幅下降，而新型童工——数字童工开始显现，尤其是其中的"网红儿童"更应引起人们重视。当孩子们开始赚钱，或者当他们在成年人指导下对着镜头说特定的内容时，这种行为就不再只是游戏或爱好，而是工作。
-      有调查发现，部分平台上粉丝量超20万的“亲子类”账号，其视频中儿童出镜时间占比普遍在70%以上，多数甚至超过95%。这直观反映了儿童才是这些账号的绝对主角。且这些账号发布短视频的频率较高，有不少保持日更节奏，有时甚至日更两条。
+      传统童工数量大幅下降，而<span class="highlight-keyword">新型童工——数字童工</span>开始显现，尤其是其中的<span
+        class="highlight-keyword important">"网红儿童"</span>更应引起人们重视。当孩子们<span
+        class="highlight-action">开始赚钱</span>，或者当他们在成年人指导下对着镜头说特定的内容时，这种行为就不再只是<span
+        class="highlight-contrast">游戏或爱好</span>，而是<span class="highlight-warning">工作</span>。
+      有调查发现，部分平台上粉丝量<span class="highlight-number">超20万</span>的"亲子类"账号，其视频中儿童出镜时间占比普遍在<span
+        class="highlight-number strong">70%以上</span>，多数甚至<span class="highlight-number strong">超过95%</span>。这直观反映了<span
+        class="highlight-keyword">儿童才是这些账号的绝对主角</span>。且这些账号发布短视频的<span class="highlight-action">频率较高</span>，有不少保持<span
+        class="highlight-emphasis">日更节奏</span>，有时甚至<span class="highlight-emphasis">日更两条</span>。
     </p>
 
     <div class="chart-container table-container">
@@ -186,6 +192,62 @@ onUnmounted(() => {
   line-height: 1.8;
   max-width: 800px;
   margin: 30px 0;
+  color: #2c3e50;
+}
+
+/* 关键词高亮样式 - 简约版 */
+.highlight-keyword {
+  color: #667eea;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+}
+
+.highlight-keyword.important {
+  color: #e74c3c;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(231, 76, 60, 0.4);
+}
+
+/* 数字高亮 */
+.highlight-number {
+  color: #f39c12;
+  font-weight: 700;
+}
+
+.highlight-number.strong {
+  color: #e74c3c;
+  font-weight: 800;
+}
+
+/* 行为动作高亮 */
+.highlight-action {
+  color: #9b59b6;
+  font-weight: 600;
+}
+
+/* 对比概念高亮 */
+.highlight-contrast {
+  color: #95a5a6;
+  opacity: 0.7;
+}
+
+/* 警示性高亮 */
+.highlight-warning {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+/* 强调高亮 */
+.highlight-emphasis {
+  color: #16a085;
+  font-weight: 600;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .key-message {
+    font-size: 1.1rem;
+  }
 }
 
 /* 表格容器 */

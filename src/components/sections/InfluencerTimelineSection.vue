@@ -4,8 +4,7 @@
 
     <div class="timeline">
       <!-- 首条视频（特殊处理，包含动画） -->
-      <div class="timeline-item first-video-item"
-        :class="{ 'timeline-visible': timelineVisible[0] }">
+      <div class="timeline-item first-video-item" :class="{ 'timeline-visible': timelineVisible[0] }">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <div class="step-badge">1</div>
@@ -27,15 +26,13 @@
       </div>
 
       <!-- 其他时间线项 -->
-      <div v-for="(item, index) in timeline.slice(1)" :key="index + 1"
-        class="timeline-item"
+      <div v-for="(item, index) in timeline.slice(1)" :key="index + 1" class="timeline-item"
         :class="{ 'timeline-visible': timelineVisible[index + 1] }">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <div class="step-badge">{{ index + 2 }}</div>
           <h3>{{ item.title }}</h3>
-          <img v-if="item.image" :src="item.image" :alt="item.title"
-            class="timeline-image" />
+          <img v-if="item.image" :src="item.image" :alt="item.title" class="timeline-image" />
           <p>{{ item.desc }}</p>
           <div class="timeline-icon">{{ item.icon }}</div>
         </div>
@@ -43,17 +40,12 @@
     </div>
 
     <p class="insight-text">
-      当<span class="keyword-highlight">"养娃"</span>变成了<span
-        class="keyword-highlight">"养号"</span>，<span
+      当<span class="keyword-highlight">"养娃"</span>变成了<span class="keyword-highlight">"养号"</span>，<span
         class="keyword-highlight">爱</span>就开始有了回报率。很多账号最初确实是出于分享和记录的目的。然而，一旦<span
-        class="keyword-highlight">流量</span>涌入，<span
-        class="keyword-highlight">MCN机构</span>伸出橄榄枝，<span
-        class="keyword-highlight">商业合作</span>接踵而至，最初的<span
-        class="keyword-highlight">"爱"</span>就可能被异化。<span
-        class="keyword-highlight">家长</span>的角色可能悄然转变为<span
-        class="keyword-highlight">"经纪人"</span>，而<span
-        class="keyword-highlight">孩子</span>则可能成为家庭中的<span
-        class="keyword-highlight">"数字劳工"</span>。
+        class="keyword-highlight">流量</span>涌入，<span class="keyword-highlight">MCN机构</span>伸出橄榄枝，<span
+        class="keyword-highlight">商业合作</span>接踵而至，最初的<span class="keyword-highlight">"爱"</span>就可能被异化。<span
+        class="keyword-highlight">家长</span>的角色可能悄然转变为<span class="keyword-highlight">"经纪人"</span>，而<span
+        class="keyword-highlight">孩子</span>则可能成为家庭中的<span class="keyword-highlight">"数字劳工"</span>。
     </p>
   </section>
 </template>
@@ -461,30 +453,9 @@ onMounted(() => {
 }
 
 .keyword-highlight {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  animation: keywordPulse 2s ease-in-out infinite;
-}
-
-@keyframes keywordPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  100% {
-    transform: scale(1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
+  color: #667eea;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
 }
 
 @media (max-width: 768px) {

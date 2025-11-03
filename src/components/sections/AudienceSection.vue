@@ -52,6 +52,9 @@
     <h3 class="subsection-title">评论区的声音</h3>
     <div class="chart-container large" ref="chartWordCloud"></div>
 
+    <p class="data-source">
+      数据来源：QuestMobile《2024短视频用户研究报告》、巨量算数《萌娃内容观众洞察报告》
+    </p>
   </section>
 </template>
 
@@ -473,6 +476,16 @@ onUnmounted(() => {
   height: 500px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.data-source {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin: 30px auto 20px;
+  max-width: 900px;
+  font-style: italic;
+  padding: 0 20px;
 }
 
 @media (max-width: 768px) {
