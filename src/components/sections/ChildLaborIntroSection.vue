@@ -27,63 +27,162 @@
 </script>
 
 <style scoped>
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .dark-section {
   background: linear-gradient(to bottom, #2c3e50, #34495e);
   color: white;
+  position: relative;
+  overflow: hidden;
 }
 
+.dark-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
+/* ==================== 标题样式 ==================== */
+.section-title {
+  text-align: center;
+  font-size: var(--font-size-h2, 2.4rem);
+  color: #fff;
+  margin-bottom: var(--spacing-2xl, 60px);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+/* ==================== 类型卡片 ==================== */
 .childlabor-types {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-xl, 40px);
   width: 100%;
-  max-width: 900px;
-  margin: 40px 0;
+  max-width: 1200px;
+  margin: var(--spacing-2xl, 60px) auto;
 }
 
 .type-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 30px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.12);
+  padding: var(--spacing-2xl, 40px) var(--spacing-xl, 35px);
+  border-radius: var(--radius-lg, 20px);
+  backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.type-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
 }
 
 .type-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
+  font-size: 1.8rem;
+  margin-bottom: var(--spacing-lg, 25px);
   color: #3498db;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
 }
 
+.type-card p {
+  font-size: 1.1rem;
+  line-height: 2;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ==================== 关键信息 ==================== */
 .key-message {
   font-size: 1.3rem;
-  text-align: center;
-  line-height: 1.8;
-  max-width: 800px;
-  margin: 30px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  line-height: 2;
+  max-width: 1200px;
+  margin: var(--spacing-2xl, 60px) auto;
+  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 20px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
 .highlight {
   color: #f39c12;
-  font-weight: bold;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
 }
 
+/* ==================== 统计框 ==================== */
 .stat-box {
   background: rgba(255, 255, 255, 0.15);
-  padding: 40px;
-  border-radius: 15px;
-  text-align: center;
+  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  border-radius: var(--radius-lg, 20px);
+  text-align: justify;
+  text-justify: inter-ideograph;
   font-size: 1.2rem;
-  max-width: 800px;
-  margin-top: 40px;
+  line-height: 2;
+  max-width: 1200px;
+  margin: var(--spacing-2xl, 60px) auto 0;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .big-num {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #f39c12;
-  margin: 0 10px;
+  margin: 0 8px;
   animation: metricPulse 4s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
 }
 
 @keyframes metricPulse {
@@ -98,85 +197,139 @@
   }
 }
 
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
-  .dark-section {
-    padding: 50px 20px;
+  .section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
   }
 
   .section-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .section-title::after {
+    width: 60px;
+    height: 3px;
   }
 
   .childlabor-types {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--spacing-lg, 30px);
+    max-width: 100%;
+    margin: var(--spacing-xl, 40px) auto;
+  }
+
+  .type-card {
+    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
+    border-radius: 16px;
   }
 
   .type-card h3 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md, 20px);
   }
 
   .type-card p {
-    font-size: 0.95rem;
+    font-size: 1rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .key-message {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
+    margin: var(--spacing-xl, 40px) auto;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .stat-box {
-    font-size: 1rem;
+    font-size: 1.05rem;
+    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
+    margin: var(--spacing-xl, 40px) auto 0;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .big-num {
-    font-size: 1.6rem;
+    font-size: 1.9rem;
+    margin: 0 6px;
   }
 }
 
 @media (max-width: 480px) {
-  .dark-section {
-    padding: 40px 12px;
+  .section {
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
   }
 
   .section-title {
-    font-size: 1.3rem;
-    padding: 0 8px;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .section-title::after {
+    width: 50px;
+    height: 3px;
   }
 
   .childlabor-types {
-    gap: 18px;
-    padding: 0 5px;
+    gap: var(--spacing-md, 20px);
+    max-width: 100%;
+    margin: var(--spacing-lg, 30px) auto;
   }
 
   .type-card {
-    padding: 18px 15px;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    border-radius: 14px;
   }
 
   .type-card h3 {
-    font-size: 1.15rem;
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-sm, 18px);
   }
 
   .type-card p {
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .key-message {
-    font-size: 1rem;
-    padding: 0 8px;
+    font-size: 1.05rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    margin: var(--spacing-lg, 30px) auto;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    line-height: 1.9;
   }
 
   .highlight {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 
   .stat-box {
     font-size: 0.95rem;
-    padding: 20px 15px;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    margin: var(--spacing-lg, 30px) auto 0;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    line-height: 1.9;
   }
 
   .big-num {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    margin: 0 5px;
   }
 }
 </style>

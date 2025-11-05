@@ -32,11 +32,16 @@
       <transition name="chart-fade">
         <div v-if="showChart2" class="chart-container animated-chart" ref="chart2"></div>
       </transition>
+      <transition name="chart-fade">
+        <p v-if="showChart2" class="data-note chart-explanation">
+          2024年，中国居民人均单日观看短视频时长超2.5小时，较2020年提升0.8小时。如今，短视频因其碎片化、场景适配性已超越电视、网络视频，成为使用率最高，具有高渗透率、高使用粘度的视频形式。
+        </p>
+      </transition>
     </section>
 
     <section class="section video-section">
       <h2 class="section-title gradient-title-light">这样的视频有在你的喜欢列表吗？</h2>
-      <p class="section-subtitle-light">向下滑动查看典型的儿童短视频内容</p>
+      <p class="section-subtitle-light animate-float">向下滑动查看典型的儿童短视频内容</p>
       <div class="video-examples">
         <div class="video-card floating-card" @mouseenter="activeCard = 0" @mouseleave="activeCard = null">
           <div class="video-badge">热门</div>
@@ -88,7 +93,7 @@
         <div v-if="showChart" class="chart-reveal">
           <div class="chart-container large" ref="chart3"></div>
           <p class="data-note">
-            截至2025年10月23日，某短视频社交媒体平台发布293个作品获得点赞数4.8亿的亲子剧情类达人@朱***凭借3633.8w的粉丝数量位居平台51，超越一众官媒和娱乐明星。
+            在某短视频社交媒体平台，亲子类视频的平均点赞量超1w，在众多视频类型里稳居前列。且在该平台粉丝量排行榜中，获得总点赞数4.8亿的亲子类达人@朱***凭借3633.8w的粉丝数量位居平台51，超越一众官媒和娱乐明星。
           </p>
         </div>
       </transition>
@@ -125,7 +130,7 @@ const selectTimeOption = (option) => {
       const myChart2 = echarts.init(chart2.value)
       myChart2.setOption({
         title: {
-          text: '中国居民每日平均短视频使用时间',
+          text: '中国居民人均单日观看短视频时长',
           left: 'center',
           textStyle: { fontSize: titleFontSize, fontWeight: 'bold' },
           top: isMobile ? 10 : 15
@@ -234,7 +239,9 @@ onMounted(() => {
     const skipIndex = originalCategories.indexOf('随拍')
     const categories = originalCategories.filter((_, index) => index !== skipIndex)
     const values = originalValues.filter((_, index) => index !== skipIndex)
-
+    const isMobile = window.innerWidth <= 480
+    const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
+    const sourceFontSize = isMobile ? 9 : isTablet ? 10 : 12
     myChart3.setOption({
       title: { text: '各类型视频平均点赞数', subtext: '截至2025年10月23日', left: 'center' },
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
@@ -291,6 +298,18 @@ onMounted(() => {
               fontSize: 14
             }
           }
+        }
+      }],
+      graphic: [{
+        type: 'text',
+        left: 'center',
+        bottom: 0,
+        z: 100,
+        style: {
+          text: '数据来源：抖查查（短视频第三方数据采集平台）',
+          textAlign: 'center',
+          fill: '#666',
+          fontSize: sourceFontSize
         }
       }]
     })
@@ -360,6 +379,12 @@ onMounted(() => {
 
 <style scoped>
 /* ==================== Section 样式 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .time-section {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   position: relative;
@@ -385,6 +410,30 @@ onMounted(() => {
   to {
     transform: rotate(360deg);
   }
+}
+
+.section-title {
+  text-align: center;
+  font-size: var(--font-size-h2, 2.4rem);
+  color: #2c3e50;
+  margin-bottom: var(--spacing-2xl, 60px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
 }
 
 .gradient-title {
@@ -418,7 +467,7 @@ onMounted(() => {
   text-align: center;
   color: #f39412;
   font-size: 1.15rem;
-  font-style: italic;
+  /* font-style: italic; */
   font-weight: 500;
   letter-spacing: 0.5px;
 }
@@ -444,7 +493,7 @@ onMounted(() => {
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.9);
   margin: -15px 0 var(--spacing-xl, 40px);
-  font-style: italic;
+  /* font-style: italic; */
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -454,7 +503,7 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-lg, 30px);
   margin: var(--spacing-2xl, 60px) auto;
-  max-width: 1000px;
+  max-width: 1200px;
   padding: 0 var(--spacing-md, 20px);
   position: relative;
   z-index: 1;
@@ -584,7 +633,7 @@ onMounted(() => {
   gap: var(--spacing-2xl, 60px);
   justify-content: center;
   margin: var(--spacing-2xl, 60px) auto;
-  max-width: 1000px;
+  max-width: 1200px;
   padding: 0 var(--spacing-md, 20px);
 }
 
@@ -791,8 +840,10 @@ onMounted(() => {
 .choice-buttons {
   display: flex;
   gap: var(--spacing-2xl, 60px);
-  margin: var(--spacing-2xl, 60px) 0;
+  margin: var(--spacing-2xl, 60px) auto;
   justify-content: center;
+  max-width: 1200px;
+  padding: 0 var(--spacing-md, 20px);
 }
 
 .choice-btn {
@@ -989,11 +1040,35 @@ onMounted(() => {
   animation: chartFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) reverse;
 }
 
+/* ==================== 图表容器样式 ==================== */
+.chart-container {
+  width: 100%;
+  max-width: 1200px;
+  height: var(--chart-height, 450px);
+  background: white;
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-md, 20px);
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container.large {
+  height: 500px;
+}
+
 .chart-reveal {
   margin-top: var(--spacing-2xl, 60px);
   animation: chartRevealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   width: 100%;
-  max-width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @keyframes chartRevealAnimation {
@@ -1029,22 +1104,61 @@ onMounted(() => {
 }
 
 .data-note {
-  padding: var(--spacing-lg, 30px);
-  background: rgba(255, 255, 255, 0.95);
+  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
   border-radius: var(--radius-lg, 20px);
-  margin-top: var(--spacing-lg, 30px);
-  line-height: 1.8;
+  margin-top: var(--spacing-xl, 40px);
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 2;
   font-size: 1.05rem;
   color: #555;
   border-left: 4px solid #667eea;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.data-note.chart-explanation {
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
+  .section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .section-title::after {
+    width: 60px;
+    height: 3px;
+  }
+
   .time-options {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md, 20px);
+    max-width: 100%;
   }
 
   .time-option {
@@ -1087,22 +1201,57 @@ onMounted(() => {
     margin-top: var(--spacing-xl, 40px);
   }
 
+  .chart-container {
+    max-width: 100%;
+    height: 380px;
+    padding: 18px;
+    border-radius: 16px;
+  }
+
   .chart-container.large {
-    height: 500px;
+    height: 400px;
+  }
+
+  .chart-reveal {
+    max-width: 100%;
   }
 
   .data-note {
-    padding: var(--spacing-md, 20px);
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
     font-size: 1rem;
-    margin-top: var(--spacing-md, 20px);
+    margin-top: var(--spacing-lg, 30px);
+    max-width: 100%;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .data-note.chart-explanation {
+    text-align: justify;
+    text-justify: inter-ideograph;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
+    max-width: 100%;
+  }
+
+  .choice-buttons {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
+  }
 
-  .time-section,
-  .video-section {
-    padding: 40px 10px;
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .section-title::after {
+    width: 50px;
+    height: 3px;
   }
 
   .time-options {
@@ -1199,20 +1348,41 @@ onMounted(() => {
   }
 
   .chart-container {
-    padding: 12px 10px;
+    max-width: 100%;
+    height: 320px;
+    padding: 15px 12px;
+    border-radius: 14px;
   }
 
   .chart-container.large {
-    height: 380px;
-    padding: 15px 10px;
+    height: 350px;
+    padding: 15px 12px;
+  }
+
+  .chart-reveal {
+    max-width: 100%;
   }
 
   .data-note {
-    padding: 15px 12px;
-    font-size: 0.88rem;
-    line-height: 1.7;
-    margin-top: 18px;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-top: var(--spacing-md, 25px);
     border-radius: var(--radius-md, 12px);
+    max-width: 100%;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .data-note.chart-explanation {
+    text-align: justify;
+    text-justify: inter-ideograph;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    max-width: 100%;
+  }
+
+  .choice-buttons {
+    max-width: 100%;
   }
 }
 </style>

@@ -448,6 +448,8 @@ onUnmounted(() => {
   line-height: 1.8;
   color: #555;
   margin-bottom: 25px;
+  text-align: justify;
+  text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -638,7 +640,8 @@ onUnmounted(() => {
 }
 
 .data-note {
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   color: #666;
   font-size: 1rem;
   line-height: 1.6;

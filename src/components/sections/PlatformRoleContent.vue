@@ -68,6 +68,8 @@
   line-height: 2;
   color: #444;
   margin-bottom: 25px;
+  text-align: justify;
+  text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -76,6 +78,8 @@
   font-size: 1.05rem;
   line-height: 2;
   color: #2c3e50;
+  text-align: justify;
+  text-justify: inter-ideograph;
   margin-top: 30px;
   padding: 20px;
   background: rgba(102, 126, 234, 0.05);
@@ -146,6 +150,8 @@
   line-height: 2.1;
   color: #2c3e50;
   margin: 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -203,6 +209,8 @@
   line-height: 2.1;
   color: #2c3e50;
   margin: 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
 }

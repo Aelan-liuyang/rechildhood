@@ -210,7 +210,8 @@ const impactStats = [
 }
 
 .modal-main-subtitle {
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   color: #666;
   font-size: 1.15rem;
   margin: 0 auto 40px;
@@ -371,7 +372,8 @@ const impactStats = [
 }
 
 .impact-intro {
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   font-size: 1.05rem;
   color: #555;
   line-height: 1.8;

@@ -43,6 +43,17 @@
           </div>
         </div>
       </transition>
+
+      <!-- 图表说明文字 -->
+      <transition name="fade-in">
+        <div v-if="showCharts" class="chart-explanation">
+          <p class="explanation-text">
+            随着移动互联网技术的快速发展，无论是通勤途中的 15 分钟短视频浏览，还是睡前 1 小时的社交软件互动，手机以其便携性将互联网使用时间 "绑定" 在指尖，推动整体时长攀升。<span
+              class="highlight-emphasis">当 "手机不离手" 从生活调侃变为普遍现实，手机已成为当代中国居民接入数字世界、消耗日常时间的重要载体，中国居民的
+              "屏幕时间"早已高度聚焦于手机屏幕。</span>
+          </p>
+        </div>
+      </transition>
     </div>
   </section>
 </template>
@@ -575,7 +586,6 @@ onUnmounted(() => {
   color: #667eea;
   font-size: 1.15rem;
   margin-top: var(--spacing-lg, 30px);
-  font-style: italic;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
@@ -865,6 +875,63 @@ onUnmounted(() => {
   }
 }
 
+/* ==================== 图表说明文字 ==================== */
+.chart-explanation {
+  max-width: 1000px;
+  margin: var(--spacing-2xl, 60px) auto 0;
+  padding: 0 var(--spacing-xl, 40px);
+}
+
+.explanation-text {
+  font-size: 1.1rem;
+  line-height: 2.2;
+  color: #2c3e50;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding: var(--spacing-xl, 40px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
+  border: 2px solid rgba(102, 126, 234, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.highlight-emphasis {
+  font-weight: 700;
+  color: #5e35b1;
+  background: linear-gradient(135deg, #5e35b1 0%, #7e57c2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  padding: 0 2px;
+  text-shadow: 0 2px 8px rgba(94, 53, 177, 0.2);
+}
+
+.fade-in-enter-active {
+  animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+.fade-in-leave-active {
+  animation: fadeInUp 0.5s ease-out reverse;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ==================== 响应式样式 ==================== */
 @media (max-width: 768px) {
   .intro-section {
@@ -923,6 +990,19 @@ onUnmounted(() => {
   .chart-badge {
     font-size: 0.75rem;
     padding: 6px 15px;
+  }
+
+  .chart-explanation {
+    margin: var(--spacing-xl, 40px) auto 0;
+    padding: 0 15px;
+  }
+
+  .explanation-text {
+    font-size: 1rem;
+    line-height: 2.1;
+    padding: 25px 20px;
+    border-radius: 16px;
+    letter-spacing: 0.3px;
   }
 
   .chart-container.half {
@@ -1008,6 +1088,19 @@ onUnmounted(() => {
   .chart-container.half {
     height: 280px;
     padding: 15px;
+  }
+
+  .chart-explanation {
+    margin: 30px auto 0;
+    padding: 0 10px;
+  }
+
+  .explanation-text {
+    font-size: 0.95rem;
+    line-height: 2.2;
+    padding: 20px 16px;
+    border-radius: 12px;
+    letter-spacing: 0.2px;
   }
 }
 </style>

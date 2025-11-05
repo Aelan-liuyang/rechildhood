@@ -40,12 +40,8 @@
     </div>
 
     <p class="insight-text">
-      当<span class="keyword-highlight">"养娃"</span>变成了<span class="keyword-highlight">"养号"</span>，<span
-        class="keyword-highlight">爱</span>就开始有了回报率。很多账号最初确实是出于分享和记录的目的。然而，一旦<span
-        class="keyword-highlight">流量</span>涌入，<span class="keyword-highlight">MCN机构</span>伸出橄榄枝，<span
-        class="keyword-highlight">商业合作</span>接踵而至，最初的<span class="keyword-highlight">"爱"</span>就可能被异化。<span
-        class="keyword-highlight">家长</span>的角色可能悄然转变为<span class="keyword-highlight">"经纪人"</span>，而<span
-        class="keyword-highlight">孩子</span>则可能成为家庭中的<span class="keyword-highlight">"数字劳工"</span>。
+      当"养娃"变成了"养号"，爱就开始有了回报率。很多账号最初确实是出于分享和记录的目的。然而，一旦流量涌入，MCN机构伸出橄榄枝，商业合作接踵而至，最初的"爱"就可能被异化。<span
+        class="highlight-emphasis">家长的角色可能悄然转变为"经纪人"，而孩子则可能成为家庭中的"数字劳工"。</span>
     </p>
   </section>
 </template>
@@ -63,10 +59,10 @@ const liveStreamImg2 = new URL('@/assets/images/shangye.png', import.meta.url).h
 const liveStreamImg3 = new URL('@/assets/images/mcn.png', import.meta.url).href
 
 const timeline = [
-  { title: '短视频第一条视频发布', desc: '当流量涌入', icon: '📱', image: firstVideoSrc },
-  { title: '直播变现', desc: '开启直播带货', icon: '💰', image: liveStreamImg },
-  { title: '商业合作接踵而至', desc: '第一个广告来了', icon: '📢', image: liveStreamImg2 },
-  { title: 'MCN抛出橄榄枝', desc: '签约MCN机构', icon: '🤝', image: liveStreamImg3 }
+  { title: '第一条视频发布', desc: '当流量涌入', icon: '📱', image: firstVideoSrc },
+  { title: '第一场直播', desc: '当直播变现', icon: '💰', image: liveStreamImg },
+  { title: '第一个广告', desc: '当商业合作接踵而至', icon: '📢', image: liveStreamImg2 },
+  { title: '签约MCN机构', desc: 'MCN抛出橄榄枝', icon: '🤝', image: liveStreamImg3 }
 ]
 const timelineVisible = ref([false, false, false, false])
 
@@ -294,10 +290,12 @@ onMounted(() => {
 
 .timeline-image {
   width: 100%;
-  max-height: 100%;
+  max-width: 400px;
+  height: 280px;
   object-fit: cover;
   border-radius: var(--radius-md, 12px);
-  margin: var(--spacing-md, 20px) 0;
+  margin: var(--spacing-md, 20px) auto;
+  display: block;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   border: 2px solid rgba(102, 126, 234, 0.1);
@@ -362,19 +360,18 @@ onMounted(() => {
 }
 
 .first-video-anim {
-  width: 100%;
-  margin: 20px 0;
+  max-width: 400px;
+  margin: 20px auto;
 }
 
 .first-video-anim .video-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  height: 280px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   background: #000;
-  min-height: 250px;
 }
 
 .timeline-video-img {
@@ -557,23 +554,28 @@ onMounted(() => {
 
 .insight-text {
   font-size: 1.3rem;
-  line-height: 1.8;
+  line-height: 2;
   max-width: 920px;
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   margin: var(--spacing-2xl, 60px) auto;
   color: #2c3e50;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-weight: 400;
   padding: var(--spacing-lg, 30px);
   background: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-lg, 20px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-.keyword-highlight {
-  color: #667eea;
-  font-weight: 600;
-  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+.highlight-emphasis {
+  color: #5e35b1;
+  font-weight: 700;
+  background: linear-gradient(135deg, #5e35b1 0%, #7e57c2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @media (max-width: 768px) {
@@ -635,10 +637,24 @@ onMounted(() => {
     font-size: 0.95rem;
   }
 
+  .timeline-image {
+    max-width: 100%;
+    height: 250px;
+  }
+
+  .first-video-anim {
+    max-width: 100%;
+  }
+
+  .first-video-anim .video-frame {
+    height: 250px;
+  }
+
   .insight-text {
     font-size: 1.05rem;
     padding: var(--spacing-md, 20px);
     margin: var(--spacing-xl, 40px) auto;
+    text-align: justify;
   }
 }
 
@@ -698,7 +714,16 @@ onMounted(() => {
 
   .timeline-image {
     max-width: 100%;
-    margin: 15px 0;
+    height: 220px;
+    margin: 15px auto;
+  }
+
+  .first-video-anim {
+    max-width: 100%;
+  }
+
+  .first-video-anim .video-frame {
+    height: 220px;
   }
 
   .timeline-icon {
@@ -709,6 +734,8 @@ onMounted(() => {
     font-size: 0.95rem;
     padding: 15px;
     margin: 30px auto;
+    text-align: justify;
+    line-height: 2.1;
   }
 }
 </style>

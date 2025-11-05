@@ -672,8 +672,11 @@ onMounted(() => {
   font-size: 1.15rem;
   line-height: 2;
   color: #2c3e50;
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   margin: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* 移动端适配 */

@@ -560,7 +560,7 @@ watch(showMindmap, async (v) => {
     font-size: 1.1rem;
     line-height: 2.1;
     padding: 0 15px;
-    text-align: left;
+    text-align: justify;
   }
 
   .motivation-flow {
@@ -653,7 +653,7 @@ watch(showMindmap, async (v) => {
     padding: 0 10px;
     margin: 25px auto;
     max-width: 100%;
-    text-align: left;
+    text-align: justify;
     color: #333;
   }
 

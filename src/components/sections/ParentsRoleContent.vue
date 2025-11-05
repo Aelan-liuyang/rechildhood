@@ -545,7 +545,8 @@ onUnmounted(() => {
   color: #555;
   font-size: 1rem;
   line-height: 1.8;
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   max-width: 900px;
   margin: 0 auto 40px;
   padding: 0 20px;

@@ -19,128 +19,246 @@
 </script>
 
 <style scoped>
-.highlight-text {
-  font-size: 2rem;
-  text-align: center;
-  color: #e74c3c;
-  margin-bottom: 30px;
-}
-
-.highlight-text2 {
-  font-size: 1.5rem;
-  text-align: center;
-  color: #f1c40f;
-  margin-bottom: 30px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.highlight-text2:hover {
-  transform: scale(1.05);
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .concept-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.concept-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
+/* ==================== 标题样式 ==================== */
+.highlight-text {
+  font-size: 2.4rem;
+  text-align: center;
+  color: #fff;
+  margin-bottom: var(--spacing-xl, 40px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-text::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+  border-radius: 2px;
+}
+
+.highlight-text2 {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #fff;
+  margin-bottom: var(--spacing-2xl, 60px);
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-md, 20px);
+}
+
+.highlight-text2:hover {
+  transform: translateY(-3px);
 }
 
 .concept-intro {
   font-size: 1.3rem;
-  text-align: center;
-  margin-bottom: 40px;
-  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  margin-bottom: var(--spacing-xl, 40px);
+  line-height: 2;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-md, 20px);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
+/* ==================== 概念框样式 ==================== */
 .concept-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  max-width: 900px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  border-radius: var(--radius-lg, 20px);
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .concept-box h3 {
   font-size: 1.8rem;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg, 30px);
   color: #ffd700;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
 }
 
 .concept-detail,
 .concept-explain {
   font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
+  line-height: 2;
+  margin-bottom: var(--spacing-lg, 30px);
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.concept-explain {
+  margin-bottom: 0;
+}
+
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
 }
 
 @media (max-width: 768px) {
-  .concept-section {
-    padding: 50px 20px;
+  .section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
   }
 
   .highlight-text {
-    font-size: 1.6rem;
-    margin-bottom: 25px;
-    padding: 0 10px;
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .highlight-text::after {
+    width: 60px;
+    height: 3px;
   }
 
   .highlight-text2 {
-    font-size: 1.2rem;
-    margin-bottom: 25px;
-    padding: 0 10px;
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding: 0 var(--spacing-md, 20px);
+  }
+
+  .concept-intro {
+    font-size: 1.15rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 var(--spacing-md, 20px);
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .concept-box {
-    padding: 30px 25px;
+    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
+    border-radius: 16px;
   }
 
   .concept-box h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-md, 25px);
   }
 
   .concept-detail,
   .concept-explain {
     font-size: 1rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    margin-bottom: var(--spacing-md, 25px);
   }
 }
 
 @media (max-width: 480px) {
-  .concept-section {
-    padding: 40px 15px;
+  .section {
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
   }
 
   .highlight-text {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    padding: 0 5px;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .highlight-text::after {
+    width: 50px;
+    height: 3px;
   }
 
   .highlight-text2 {
-    font-size: 1.05rem;
-    margin-bottom: 20px;
-    padding: 0 5px;
+    font-size: 1.15rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 12px;
   }
 
   .concept-intro {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
+    font-size: 1.05rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 12px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    line-height: 1.9;
   }
 
   .concept-box {
-    padding: 20px 18px;
-    border-radius: 15px;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    border-radius: 14px;
   }
 
   .concept-box h3 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
+    font-size: 1.4rem;
+    margin-bottom: var(--spacing-md, 20px);
   }
 
   .concept-detail,
   .concept-explain {
     font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 15px;
+    line-height: 1.9;
+    margin-bottom: var(--spacing-md, 20px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .concept-explain {
+    margin-bottom: 0;
   }
 }
 </style>

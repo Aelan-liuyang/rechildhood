@@ -2354,7 +2354,7 @@ onUnmounted(() => {
   color: #7f8c8d;
   margin-top: 10px;
   font-size: 0.9rem;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 /* ==================== 息屏效果 ==================== */
@@ -2762,7 +2762,7 @@ onUnmounted(() => {
   font-size: 1rem;
   color: #666;
   text-align: center;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .modal-body .cost-legend {
