@@ -129,9 +129,42 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ==================== 标题样式 ==================== */
+.main-title {
+  text-align: center;
+  font-size: var(--font-size-h2, 2.4rem);
+  color: #2c3e50;
+  margin-bottom: var(--spacing-2xl, 60px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
+}
+
+.main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+/* ==================== 时间线 ==================== */
 .timeline {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   margin: var(--spacing-2xl, 60px) auto;
   position: relative;
   padding: var(--spacing-lg, 30px) 0;
@@ -284,8 +317,12 @@ onMounted(() => {
 
 .timeline-content p {
   color: #555;
-  line-height: 1.7;
+  line-height: 2;
   font-size: 1.05rem;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .timeline-image {
@@ -552,19 +589,21 @@ onMounted(() => {
   }
 }
 
+/* ==================== 洞察文本 ==================== */
 .insight-text {
   font-size: 1.3rem;
   line-height: 2;
-  max-width: 920px;
+  max-width: 1200px;
   text-align: justify;
   text-justify: inter-ideograph;
   margin: var(--spacing-2xl, 60px) auto;
   color: #2c3e50;
   font-weight: 400;
-  padding: var(--spacing-lg, 30px);
-  background: rgba(255, 255, 255, 0.7);
+  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
   border-radius: var(--radius-lg, 20px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #667eea;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -578,10 +617,33 @@ onMounted(() => {
   -webkit-text-fill-color: transparent;
 }
 
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
+  .section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .main-title::after {
+    width: 60px;
+    height: 3px;
+  }
+
   .timeline {
     padding: var(--spacing-md, 20px) 0;
     max-width: 100%;
+    margin: var(--spacing-xl, 40px) auto;
   }
 
   .timeline::before {
@@ -635,6 +697,8 @@ onMounted(() => {
 
   .timeline-content p {
     font-size: 0.95rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .timeline-image {
@@ -651,16 +715,35 @@ onMounted(() => {
   }
 
   .insight-text {
-    font-size: 1.05rem;
-    padding: var(--spacing-md, 20px);
+    font-size: 1.15rem;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
     margin: var(--spacing-xl, 40px) auto;
     text-align: justify;
+    text-justify: inter-ideograph;
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .main-title::after {
+    width: 50px;
+    height: 3px;
+  }
+
   .timeline {
     padding: 30px 10px;
+    margin: var(--spacing-lg, 30px) auto;
   }
 
   .timeline::before {
@@ -682,7 +765,7 @@ onMounted(() => {
   }
 
   .timeline-item {
-    margin-bottom: 35px;
+    margin-bottom: var(--spacing-lg, 35px);
   }
 
   .timeline-item:nth-child(odd) .timeline-content,
@@ -698,24 +781,26 @@ onMounted(() => {
   }
 
   .timeline-content {
-    padding: 16px;
+    padding: var(--spacing-md, 16px);
     border-radius: 16px;
   }
 
   .timeline-content h3 {
     font-size: 1.05rem;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-xs, 8px);
   }
 
   .timeline-content p {
     font-size: 0.88rem;
-    line-height: 1.6;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .timeline-image {
     max-width: 100%;
     height: 220px;
-    margin: 15px auto;
+    margin: var(--spacing-sm, 15px) auto;
   }
 
   .first-video-anim {
@@ -731,11 +816,13 @@ onMounted(() => {
   }
 
   .insight-text {
-    font-size: 0.95rem;
-    padding: 15px;
-    margin: 30px auto;
+    font-size: 1.05rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    margin: var(--spacing-lg, 30px) auto;
     text-align: justify;
-    line-height: 2.1;
+    text-justify: inter-ideograph;
+    line-height: 1.9;
+    max-width: 100%;
   }
 }
 </style>

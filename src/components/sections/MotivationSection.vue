@@ -2,11 +2,11 @@
   <section class="section">
     <h1 class="main-title">动机溯源，爱与利益的罗生门</h1>
 
-    <!-- <p class="section-intro">
-      <span class="highlight-quote">"晒娃"</span>行为并非由<span class="highlight-emphasis">单一因素</span>驱动，而是<span
-        class="highlight-key">家长心理</span>、<span class="highlight-key">儿童意愿</span>与<span
-        class="highlight-key">社会压力</span>三方互动的结果。
-    </p> -->
+    <p class="insight-text">
+      "晒娃"行为并非由单一因素驱动，而是家长心理、儿童意愿与社会压力三方互动的结果。
+      当行为主要由"记录成长"、"自我表达"和"亲子陪伴"驱动时，它更多地表现为才华展示与亲子互动，守护了童年的本真。
+      而当"经济压力"和"MCN机构"等商业驱动成为主导力量时，"晒娃"就容易异化为表演，最终导向消费童年的负面结局。
+    </p>
 
     <div class="motivation-flow">
       <div class="flow-left">
@@ -30,18 +30,8 @@
       </div>
     </div>
 
-    <p class="insight-text">
-      <span class="highlight-quote">"晒娃"</span>行为并非由<span class="highlight-emphasis">单一因素</span>驱动，而是<span
-        class="highlight-key">家长心理</span>、<span class="highlight-key">儿童意愿</span>与<span
-        class="highlight-key">社会压力</span>三方互动的结果。
-      当行为主要由<span class="highlight-positive">"记录成长"</span>、<span class="highlight-positive">"自我表达"</span>和<span
-        class="highlight-positive">"亲子陪伴"</span>驱动时，它更多地表现为<span class="highlight-positive">才华展示与亲子互动</span>，<span
-        class="highlight-success">守护了童年的本真</span>。
-      而当<span class="highlight-negative">"经济压力"</span>和<span class="highlight-negative">"MCN机构"</span>等<span
-        class="highlight-warning">商业驱动</span>成为主导力量时，<span class="highlight-quote">"晒娃"</span>就容易<span
-        class="highlight-warning">异化为表演</span>，最终导向<span class="highlight-danger">消费童年</span>的负面结局。
-    </p>
-    <div style="margin-top:20px;">
+
+    <div class="button-container">
       <button class="add-candy-btn" @click="showMindmap = true">查看思维导图</button>
     </div>
 
@@ -238,60 +228,64 @@ watch(showMindmap, async (v) => {
 </script>
 
 <style scoped>
-/* ==================== 关键词高亮样式 ==================== */
-.highlight-quote {
-  color: #667eea;
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ==================== 标题样式 ==================== */
+.main-title {
+  text-align: center;
+  font-size: var(--font-size-h2, 2.4rem);
+  color: #2c3e50;
+  margin-bottom: var(--spacing-2xl, 60px);
   font-weight: 700;
-  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
 }
 
-.highlight-key {
-  color: #764ba2;
-  font-weight: 600;
-  border-bottom: 2px solid rgba(118, 75, 162, 0.3);
+.main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
 }
 
-.highlight-emphasis {
-  color: #f39c12;
-  font-weight: 600;
-}
-
-.highlight-positive {
-  color: #27ae60;
-  font-weight: 600;
-}
-
-.highlight-success {
-  color: #16a085;
-  font-weight: 700;
-  background: linear-gradient(to bottom, transparent 60%, rgba(22, 160, 133, 0.15) 60%);
-  padding: 0 3px;
-}
-
-.highlight-negative {
-  color: #e74c3c;
-  font-weight: 600;
-}
-
-.highlight-warning {
-  color: #e67e22;
-  font-weight: 600;
-}
-
-.highlight-danger {
-  color: #c0392b;
-  font-weight: 700;
-  background: linear-gradient(to bottom, transparent 60%, rgba(192, 57, 43, 0.15) 60%);
-  padding: 0 3px;
+/* ==================== 洞察文本 ==================== */
+.insight-text {
+  font-size: 1.3rem;
+  line-height: 2;
+  max-width: 1200px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  margin: var(--spacing-2xl, 60px) auto;
+  color: #2c3e50;
+  font-weight: 400;
+  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: var(--radius-lg, 20px);
+  border-left: 4px solid #667eea;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ==================== 动机流程卡片 ==================== */
 .motivation-flow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: var(--card-gap, 30px);
+  gap: var(--spacing-xl, 40px);
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: var(--spacing-2xl, 60px) auto;
 }
 
@@ -370,6 +364,36 @@ watch(showMindmap, async (v) => {
 .flow-result.negative {
   background: rgba(231, 76, 60, 0.1);
   color: #e74c3c;
+}
+
+/* ==================== 按钮容器 ==================== */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-2xl, 60px) auto;
+  max-width: 1200px;
+}
+
+.add-candy-btn {
+  padding: var(--spacing-md, 16px) var(--spacing-xl, 40px);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: var(--radius-lg, 30px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.add-candy-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.add-candy-btn:active {
+  transform: translateY(-1px);
 }
 
 .modal-overlay {
@@ -538,35 +562,43 @@ watch(showMindmap, async (v) => {
   }
 }
 
-/* ==================== 移动端适配 ==================== */
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
   .section {
-    padding: 60px 25px;
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
   }
 
-  h2 {
+  .main-title {
     font-size: 1.8rem;
-    padding: 0 15px;
-    line-height: 1.6;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding-bottom: var(--spacing-md, 20px);
   }
 
-  .section-intro {
-    font-size: 1.1rem;
-    padding: 0 15px;
-    line-height: 2;
+  .main-title::after {
+    width: 60px;
+    height: 3px;
   }
 
   .insight-text {
-    font-size: 1.1rem;
-    line-height: 2.1;
-    padding: 0 15px;
+    font-size: 1.15rem;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
+    margin: var(--spacing-xl, 40px) auto;
     text-align: justify;
+    text-justify: inter-ideograph;
+    max-width: 100%;
   }
 
   .motivation-flow {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg, 30px);
     margin: var(--spacing-xl, 40px) auto;
+    max-width: 100%;
   }
 
   .flow-left,
@@ -577,6 +609,16 @@ watch(showMindmap, async (v) => {
   .flow-left h3,
   .flow-right h3 {
     font-size: 1.5rem;
+  }
+
+  .button-container {
+    margin: var(--spacing-xl, 40px) auto;
+    max-width: 100%;
+  }
+
+  .add-candy-btn {
+    padding: var(--spacing-sm, 14px) var(--spacing-lg, 28px);
+    font-size: 1.1rem;
   }
 
   .modal-content {
@@ -630,93 +672,55 @@ watch(showMindmap, async (v) => {
 
 @media (max-width: 480px) {
   .section {
-    padding: 45px 16px;
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
   }
 
-  h2 {
+  .main-title {
     font-size: 1.5rem;
-    padding: 0 10px;
-    line-height: 1.6;
-    margin-bottom: 25px;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
   }
 
-  .section-intro {
-    font-size: 1rem;
-    padding: 0 10px;
-    line-height: 2;
-    margin-bottom: 25px;
+  .main-title::after {
+    width: 50px;
+    height: 3px;
   }
 
   .insight-text {
     font-size: 1.05rem;
-    line-height: 2.2;
-    padding: 0 10px;
-    margin: 25px auto;
-    max-width: 100%;
+    line-height: 1.9;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    margin: var(--spacing-lg, 30px) auto;
     text-align: justify;
-    color: #333;
-  }
-
-  /* 移动端关键词高亮优化 */
-  .highlight-quote {
-    font-size: 1.08rem;
-    padding: 0 3px;
-  }
-
-  .highlight-key {
-    font-size: 1.05rem;
-    padding: 0 2px;
-  }
-
-  .highlight-emphasis {
-    font-size: 1.05rem;
-    padding: 0 2px;
-  }
-
-  .highlight-positive {
-    font-size: 1.05rem;
-    padding: 0 2px;
-  }
-
-  .highlight-success {
-    font-size: 1.08rem;
-    padding: 0 4px;
-  }
-
-  .highlight-negative {
-    font-size: 1.05rem;
-    padding: 0 2px;
-  }
-
-  .highlight-warning {
-    font-size: 1.05rem;
-    padding: 0 2px;
-  }
-
-  .highlight-danger {
-    font-size: 1.08rem;
-    padding: 0 4px;
+    text-justify: inter-ideograph;
+    max-width: 100%;
   }
 
   .motivation-flow {
-    margin: 30px auto;
-    gap: 20px;
+    margin: var(--spacing-lg, 30px) auto;
+    gap: var(--spacing-md, 20px);
+    max-width: 100%;
   }
 
   .flow-left,
   .flow-right {
-    padding: 20px 16px;
-    font-size: 1rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 16px);
   }
 
   .flow-left h3,
   .flow-right h3 {
     font-size: 1.2rem;
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-sm, 15px);
   }
 
-  .mindmap-btn {
-    padding: 14px 28px;
+  .button-container {
+    margin: var(--spacing-xl, 40px) auto;
+    max-width: 100%;
+  }
+
+  .add-candy-btn {
+    padding: var(--spacing-sm, 14px) var(--spacing-lg, 28px);
     font-size: 1.05rem;
   }
 

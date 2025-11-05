@@ -2,8 +2,8 @@
   <section id="solution" class="section expert-section">
     <canvas ref="particleCanvas" class="particle-bg"></canvas>
 
-    <h1 class="main-title anim-reveal" style="color: white;">把童年还给孩子，让爱回到现实</h1>
-    <p class="section-intro" style="color: white;">
+    <h1 class="main-title anim-reveal">把童年还给孩子，让爱回到现实</h1>
+    <p class="section-intro">
       要整治"网红儿童"背后的流量牟利乱象，必须多方协同发力。
     </p>
 
@@ -218,12 +218,59 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .expert-section {
   position: relative;
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
   padding: var(--section-padding-top, 80px) var(--container-padding, 40px) var(--section-padding-bottom, 80px);
   text-align: center;
   overflow: hidden;
+}
+
+/* ==================== 标题样式 ==================== */
+.main-title {
+  text-align: center;
+  font-size: var(--font-size-h2, 2.4rem);
+  color: #fff;
+  margin-bottom: var(--spacing-xl, 40px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--spacing-lg, 30px);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffcc33, #ffeb3b);
+  border-radius: 2px;
+}
+
+/* ==================== 介绍文本 ==================== */
+.section-intro {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #fff;
+  margin-bottom: var(--spacing-2xl, 60px);
+  line-height: 1.8;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-md, 20px);
 }
 
 .particle-bg {
@@ -373,16 +420,16 @@ onMounted(() => {
   opacity: 1;
 }
 
-/* 平台建议对话样式 */
+/* ==================== 平台建议对话样式 ==================== */
 .platform-dialogue {
   position: relative;
   z-index: 2;
-  max-width: 1000px;
-  margin: 60px auto 40px;
-  padding: 40px 50px;
+  max-width: 1200px;
+  margin: var(--spacing-2xl, 60px) auto var(--spacing-xl, 40px);
+  padding: var(--spacing-2xl, 40px) var(--spacing-xl, 50px);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
   backdrop-filter: blur(20px);
-  border-radius: 20px;
+  border-radius: var(--radius-lg, 20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -391,7 +438,9 @@ onMounted(() => {
   color: #fff;
   font-size: 1.15rem;
   line-height: 2;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg, 20px);
+  text-align: justify;
+  text-justify: inter-ideograph;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -456,14 +505,41 @@ onMounted(() => {
   overflow-wrap: break-word;
 }
 
-/* 小屏幕适配 */
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
+  .section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .main-title::after {
+    width: 60px;
+    height: 3px;
+  }
+
+  .section-intro {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding: 0 var(--spacing-md, 20px);
+  }
+
   .expert-slide {
     height: 400px;
   }
 
   .expert-content {
-    padding: 20px;
+    padding: var(--spacing-md, 20px);
   }
 
   .expert-content h3 {
@@ -476,6 +552,8 @@ onMounted(() => {
 
   .expert-advice {
     font-size: 1rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .swiper-button-next,
@@ -490,26 +568,95 @@ onMounted(() => {
   }
 
   .platform-dialogue {
-    margin: 40px 20px 30px;
-    padding: 30px 25px;
+    margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 30px);
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 25px);
+    max-width: 100%;
   }
 
   .dialogue-content p {
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .parent-advice-section {
-    padding: 0 15px;
+    padding: 0 var(--spacing-sm, 15px);
+    max-width: 100%;
   }
 
   .advice-text {
-    padding: 20px 25px;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 25px);
   }
 
   .advice-text p {
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .expert-swiper {
+    margin: var(--spacing-xl, 40px) auto 0;
+    padding-bottom: var(--spacing-xl, 50px);
+    max-width: 100%;
+  }
+
+  .rights-table-section {
+    max-width: 100%;
+    margin: var(--spacing-xl, 40px) auto 0;
+    padding: 0 var(--spacing-md, 20px);
+  }
+
+  .table-section-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg, 30px);
+  }
+
+  .rights-table-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .age-column {
+    min-height: 250px;
+  }
+
+  .age-header {
+    font-size: 1.6rem;
+    padding: var(--spacing-md, 20px);
+  }
+
+  .age-content {
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+    gap: var(--spacing-md, 20px);
+  }
+
+  .content-text {
+    font-size: 1rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .parent-advice-text {
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+    max-width: 100%;
+    margin: var(--spacing-xl, 40px) auto 0;
+  }
+
+  .advice-title {
+    font-size: 1.5rem;
+  }
+
+  .parent-advice-text p {
+    font-size: 1rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 }
 
@@ -575,10 +722,13 @@ onMounted(() => {
 
 .content-text {
   font-size: 1.1rem;
-  line-height: 1.6;
-  text-align: center;
+  line-height: 2;
+  text-align: justify;
+  text-justify: inter-ideograph;
   font-weight: 600;
   margin: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .icon-wrapper {
@@ -647,9 +797,9 @@ onMounted(() => {
 .parent-advice-text {
   position: relative;
   z-index: 2;
-  max-width: 900px;
+  max-width: 1200px;
   margin: var(--spacing-2xl, 60px) auto 0;
-  padding: var(--spacing-xl, 40px);
+  padding: var(--spacing-xl, 40px) var(--spacing-lg, 35px);
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: var(--radius-lg, 20px);
@@ -679,104 +829,33 @@ onMounted(() => {
   overflow-wrap: break-word;
 }
 
-/* 移动端适配 */
-@media (max-width: 768px) {
-  .section {
-    padding: 60px 25px;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-    padding: 0 15px;
-    line-height: 1.6;
-    margin-bottom: 30px;
-  }
-
-  .expert-swiper {
-    margin: 40px auto 0;
-    padding-bottom: 50px;
-  }
-
-  .expert-slide {
-    height: 420px;
-    border-radius: 14px;
-  }
-
-  .expert-content {
-    padding: 25px 20px;
-    max-width: 100%;
-  }
-
-  .expert-content h3 {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-  }
-
-  .expert-title {
-    font-size: 0.95rem;
-  }
-
-  .expert-advice {
-    font-size: 1.05rem;
-    line-height: 2;
-  }
-
-  .rights-table-wrapper {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-
-  .age-column {
-    min-height: 250px;
-  }
-
-  .age-header {
-    font-size: 1.6rem;
-    padding: var(--spacing-md, 20px);
-  }
-
-  .age-content {
-    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
-    gap: var(--spacing-md, 20px);
-  }
-
-  .content-text {
-    font-size: 1rem;
-  }
-
-  .icon-wrapper {
-    width: 60px;
-    height: 60px;
-  }
-
-  .parent-advice-text {
-    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
-  }
-
-  .advice-title {
-    font-size: 1.5rem;
-  }
-
-  .parent-advice-text p {
-    font-size: 1rem;
-  }
-}
-
 @media (max-width: 480px) {
   .section {
-    padding: 45px 16px;
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
   }
 
-  h2 {
+  .main-title {
     font-size: 1.5rem;
-    padding: 0 10px;
-    line-height: 1.6;
-    margin-bottom: 25px;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding-bottom: var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .main-title::after {
+    width: 50px;
+    height: 3px;
+  }
+
+  .section-intro {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 12px;
   }
 
   .expert-swiper {
-    margin: 30px 0 0;
-    padding-bottom: 45px;
+    margin: var(--spacing-lg, 30px) auto 0;
+    padding-bottom: var(--spacing-lg, 45px);
+    max-width: 100%;
   }
 
   .expert-slide {
@@ -785,23 +864,25 @@ onMounted(() => {
   }
 
   .expert-content {
-    padding: 20px 16px;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 16px);
     max-width: 100%;
   }
 
   .expert-content h3 {
     font-size: 1.4rem;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-xs, 8px);
   }
 
   .expert-title {
     font-size: 0.9rem;
-    margin-bottom: 12px;
+    margin-bottom: var(--spacing-sm, 12px);
   }
 
   .expert-advice {
     font-size: 1rem;
-    line-height: 2.1;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   /* Swiper 控制优化 */
@@ -831,10 +912,33 @@ onMounted(() => {
     background: #fff !important;
   }
 
+  .platform-dialogue {
+    margin: var(--spacing-lg, 30px) auto;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    max-width: 100%;
+  }
+
+  .dialogue-content p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .rights-table-section {
+    max-width: 100%;
+    margin: var(--spacing-lg, 30px) auto 0;
+    padding: 0 12px;
+  }
+
+  .table-section-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md, 25px);
+  }
+
   .rights-table-wrapper {
     grid-template-columns: 1fr;
     gap: 2px;
-    margin: 25px 0;
   }
 
   .age-column {
@@ -843,17 +947,19 @@ onMounted(() => {
 
   .age-header {
     font-size: 1.4rem;
-    padding: 18px;
+    padding: var(--spacing-sm, 18px);
   }
 
   .age-content {
-    padding: 25px 18px;
-    gap: 18px;
+    padding: var(--spacing-md, 25px) var(--spacing-sm, 18px);
+    gap: var(--spacing-sm, 18px);
   }
 
   .content-text {
     font-size: 0.95rem;
     line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .icon-wrapper {
@@ -862,19 +968,21 @@ onMounted(() => {
   }
 
   .parent-advice-text {
-    padding: 28px 18px;
+    padding: var(--spacing-lg, 28px) var(--spacing-sm, 18px);
+    max-width: 100%;
+    margin: var(--spacing-lg, 30px) auto 0;
   }
 
   .advice-title {
     font-size: 1.35rem;
-    padding: 0 10px;
-    margin-bottom: 18px;
+    margin-bottom: var(--spacing-sm, 18px);
   }
 
   .parent-advice-text p {
     font-size: 1rem;
-    padding: 0 10px;
-    line-height: 2;
+    line-height: 1.9;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   /* SVG 表格响应式 */

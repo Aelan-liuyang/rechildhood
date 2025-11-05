@@ -109,7 +109,10 @@ const addCandy = () => {
       fallingCandies.value.shift()
       jarPulse.value = true
       setTimeout(() => { jarPulse.value = false }, 600)
-      allowScreenOff.value = true
+      // 只有存满后才允许熄屏
+      if (candyCount.value >= 20) {
+        allowScreenOff.value = true
+      }
     }, 800)
 
     const btn = document.querySelector('.add-candy-btn')
@@ -130,12 +133,16 @@ const addCandy = () => {
 
 const restart = () => {
   screenOff.value = false
+  candyCount.value = 0
+  allowScreenOff.value = false
+  fallingCandies.value = []
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const onScroll = () => {
   const atBottom = (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 2)
-  if (atBottom && allowScreenOff.value && !screenOff.value) {
+  // 只有存满且滚动到底部时才触发熄屏
+  if (atBottom && candyCount.value >= 20 && allowScreenOff.value && !screenOff.value) {
     setTimeout(() => { screenOff.value = true }, 300)
   }
 }
@@ -150,6 +157,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* ==================== 基础布局 ==================== */
+.section {
+  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 /* 结尾主区域 */
 .final-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -158,6 +172,9 @@ onUnmounted(() => {
   color: white;
   position: relative;
   overflow: hidden;
+  padding: var(--section-padding-top, 80px) var(--container-padding, 40px) var(--section-padding-bottom, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 @keyframes finalGradientShift {
@@ -230,23 +247,36 @@ onUnmounted(() => {
   }
 }
 
-/* 问题标题 */
+/* ==================== 问题标题 ==================== */
 .final-question {
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-size: var(--font-size-h2, 2.4rem);
   text-align: center;
-  margin-bottom: clamp(40px, 8vh, 60px);
-  line-height: 1.8;
+  margin-bottom: var(--spacing-2xl, 60px);
+  line-height: 1.6;
   position: relative;
   z-index: 1;
   text-shadow:
     0 2px 10px rgba(0, 0, 0, 0.3),
     0 0 30px rgba(255, 255, 255, 0.2);
-  padding: 0 20px;
-  max-width: 950px;
+  padding: 0 var(--spacing-md, 20px) var(--spacing-lg, 30px);
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   font-weight: 700;
+  letter-spacing: -0.02em;
   animation: questionFadeIn 1.5s ease-out;
+}
+
+.final-question::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffeb3b);
+  border-radius: 2px;
 }
 
 @keyframes questionFadeIn {
@@ -261,13 +291,17 @@ onUnmounted(() => {
   }
 }
 
+/* ==================== 储蓄罐容器 ==================== */
 .savings-jar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: var(--spacing-xl, 40px);
   position: relative;
   z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md, 20px);
 }
 
 .jar-container {
@@ -1056,21 +1090,32 @@ onUnmounted(() => {
   }
 }
 
-/* 最终信息 */
+/* ==================== 最终信息 ==================== */
 .final-message {
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
-  text-align: center;
-  margin-top: 60px;
+  font-size: 1.3rem;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  margin-top: var(--spacing-2xl, 60px);
+  margin-left: auto;
+  margin-right: auto;
   opacity: 0;
   transition: opacity 1.5s ease-out, transform 1.5s ease-out;
-  line-height: 1.9;
-  max-width: 850px;
+  line-height: 2;
+  max-width: 1200px;
+  padding: var(--spacing-xl, 40px) var(--spacing-lg, 35px);
   text-shadow:
     0 2px 10px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(255, 255, 255, 0.3);
   transform: translateY(20px);
   font-weight: 600;
   letter-spacing: 0.5px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: var(--radius-lg, 20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .final-message.show {
@@ -1256,7 +1301,7 @@ onUnmounted(() => {
   left: 50%;
   transform: translateX(-50%);
   width: auto;
-  padding: 16px 40px;
+  /* padding: 16px 40px; */
   border-radius: 50px;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
   border: 2px solid rgba(255, 255, 255, 0.4);
@@ -1283,22 +1328,45 @@ onUnmounted(() => {
     inset 0 0 30px rgba(255, 255, 255, 0.2);
 }
 
-/* 平板响应式 */
+/* ==================== 响应式样式 ==================== */
+@media (max-width: 1024px) {
+  .final-section {
+    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+  }
+}
+
 @media (max-width: 768px) {
+  .final-section {
+    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
+  }
+
   .final-question {
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
-    margin-bottom: 50px;
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xl, 40px);
+    padding: 0 var(--spacing-md, 20px) var(--spacing-md, 20px);
+  }
+
+  .final-question::after {
+    width: 60px;
+    height: 3px;
+  }
+
+  .savings-jar {
+    max-width: 100%;
+    padding: 0 var(--spacing-md, 20px);
   }
 
   .jar {
-    padding: 20px;
+    padding: var(--spacing-md, 20px);
     max-width: 350px;
   }
 
   .final-message {
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    padding: 0 20px;
-    margin-top: 50px;
+    font-size: 1.1rem;
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 25px);
+    margin-top: var(--spacing-xl, 40px);
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .jar-label {
@@ -1314,7 +1382,7 @@ onUnmounted(() => {
   }
 
   .add-candy-btn {
-    padding: 18px 40px;
+    padding: var(--spacing-md, 18px) var(--spacing-xl, 40px);
     font-size: 1.2rem;
   }
 
@@ -1330,16 +1398,30 @@ onUnmounted(() => {
   }
 }
 
-/* 手机响应式 */
 @media (max-width: 480px) {
+  .final-section {
+    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
+  }
+
   .final-question {
-    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
-    margin-bottom: 40px;
-    padding: 0 15px;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 12px var(--spacing-sm, 15px);
+    line-height: 1.5;
+  }
+
+  .final-question::after {
+    width: 50px;
+    height: 3px;
+  }
+
+  .savings-jar {
+    max-width: 100%;
+    padding: 0 12px;
   }
 
   .jar {
-    padding: 15px;
+    padding: var(--spacing-sm, 15px);
     max-width: 280px;
   }
 
@@ -1357,22 +1439,21 @@ onUnmounted(() => {
     height: 100px;
   }
 
+  .final-message {
+    font-size: 1rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
+    margin-top: var(--spacing-lg, 30px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
   .btn-text {
     font-size: 0.95em;
   }
 
   .add-candy-btn {
-    padding: 16px 30px;
-    gap: 8px;
-  }
-
-  .final-section {
-    padding: 40px 15px;
-  }
-
-  .final-message {
-    padding: 0 15px;
-    margin-top: 40px;
+    padding: var(--spacing-md, 16px) var(--spacing-lg, 30px);
+    gap: var(--spacing-xs, 8px);
   }
 
   .star-decoration,
