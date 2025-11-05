@@ -1,12 +1,7 @@
 <template>
   <div>
-    <h3>观众：流量的源头与推手</h3>
-    <p class="intro-text">每一个点赞、评论、分享，都在为"网红儿童"产业添砖加瓦。观众的注意力和互动，是这个生态系统的基石。</p>
-
-    <div class="data-highlight">
-      <p>儿童短视频的平均播放量比成人内容高出<span class="big">3-5倍</span></p>
-      <p>带有"萌娃"标签的视频互动率提升<span class="big">40%</span></p>
-    </div>
+    <h3>观众：流量的推手</h3>
+    <p class="intro-text">流量的源头是基本流量，基本流量应该取决于作品本身制作的好坏而非观众。</p>
 
     <!-- 观众画像分析 -->
     <h4 class="section-subtitle">谁在观看萌娃视频？</h4>
@@ -19,7 +14,9 @@
         <li><strong>地域：</strong>广东占比最高，辽宁偏好度（TGI指数）最高</li>
       </ul>
     </div>
-
+    <p class="data-source">
+      数据来源：QuestMobile《2024短视频用户研究报告》、巨量算数《萌娃内容观众洞察报告》
+    </p>
     <div class="audience-charts">
       <!-- 年龄分布图 -->
       <div class="chart-card">
@@ -69,7 +66,7 @@
     <!-- 观众心理分析 -->
     <div class="audience-psychology">
       <div class="psychology-positive">
-        <p>观看者中不乏真正喜爱孩子、通过视频获得情感慰藉的用户。一个有趣的现象是，不少头部萌娃账号的粉丝中，<strong>18-23岁的年轻人对萌娃视频的偏好度最高</strong>。</p>
+        <p>观看者中不乏真正喜爱孩子、通过视频获得情感慰藉的用户。</p>
         <p>
           从进化心理学角度解释，这种现象是因为人类天生会对具有"婴儿图式"（如圆脸、大眼等特征）的幼崽产生保护欲和亲密感，这是一种本能反应，而女性通常对此更为敏感。萌娃们天真无邪的言行和温馨的家庭互动场景，为年轻观众提供了一个逃离现实压力、获得情绪疗愈的窗口。观看这些内容能有效缓解焦虑，带来轻松和快乐。
         </p>
@@ -102,12 +99,11 @@
     <!-- 观众责任提示 -->
     <div class="responsibility-box">
       <p>观众的每一次点击、每一个赞，都在无形中鼓励着更多父母将孩子推向镜头。而平台的算法会进一步放大这种效应，让"萌娃"内容获得更多曝光，形成正反馈循环。</p>
-      <p><strong>作为观众，我们需要意识到：</strong>我们的关注和互动，可能在无意中成为了儿童被过度曝光的推手。理性消费内容，拒绝猎奇和消费儿童隐私的视频，是每个观众应有的责任。</p>
+      <p>作为观众，我们需要意识到：我们的关注和互动，可能在无意中成为了儿童被过度曝光的推手。<strong>理性消费内容，拒绝猎奇和消费儿童隐私的视频，是每个观众应有的责任。</strong>
+      </p>
     </div>
 
-    <p class="data-source">
-      数据来源：QuestMobile《2024短视频用户研究报告》、巨量算数《萌娃内容观众洞察报告》
-    </p>
+
   </div>
 </template>
 
@@ -443,15 +439,61 @@ onUnmounted(() => {
 
 <style scoped>
 /* ==================== 文本样式 ==================== */
+h3 {
+  font-size: var(--font-size-h2, 2.2rem);
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 var(--spacing-xl, 40px) 0;
+  padding-bottom: var(--spacing-lg, 25px);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #ff6b6b, #51cf66, #667eea);
+  background-size: 200% 100%;
+  border-radius: 2px;
+  animation: gradientShift 3s ease infinite;
+}
+
 .intro-text {
-  font-size: 1.05rem;
-  line-height: 1.8;
+  font-size: 1.15rem;
+  line-height: 2;
   color: #555;
-  margin-bottom: 25px;
+  margin: 0 auto var(--spacing-xl, 40px);
+  max-width: 1400px;
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
   text-align: justify;
   text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-md, 16px);
+  border-left: 4px solid #667eea;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* ==================== 数据高亮样式 ==================== */
@@ -482,24 +524,39 @@ onUnmounted(() => {
 
 /* ==================== 小标题样式 ==================== */
 .section-subtitle {
-  font-size: 1.5rem;
+  font-size: var(--font-size-h3, 1.8rem);
   font-weight: 700;
   color: #2c3e50;
-  margin: 40px 0 25px;
-  padding-bottom: 12px;
-  border-bottom: 3px solid transparent;
-  border-image: linear-gradient(90deg, #667eea, #764ba2) 1;
+  margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 25px);
+  padding-bottom: var(--spacing-md, 20px);
   position: relative;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
 }
 
 /* ==================== 观众总结框 ==================== */
 .audience-summary {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
-  padding: 20px 25px;
-  border-radius: 14px;
-  margin: 20px 0 30px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  border-radius: var(--radius-md, 16px);
+  margin: var(--spacing-lg, 25px) auto var(--spacing-xl, 40px);
+  max-width: 1400px;
   border-left: 4px solid #667eea;
-  box-shadow: 0 3px 15px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .audience-summary p {
@@ -516,11 +573,15 @@ onUnmounted(() => {
 }
 
 .audience-summary li {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #555;
   line-height: 2;
   padding-left: 25px;
   position: relative;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .audience-summary li::before {
@@ -540,22 +601,30 @@ onUnmounted(() => {
 /* ==================== 图表容器样式 ==================== */
 .audience-charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 25px;
-  margin: 25px 0 40px;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: var(--spacing-lg, 24px);
+  margin: var(--spacing-xl, 40px) auto;
+  max-width: 1400px;
+  padding: 0 var(--spacing-md, 20px);
 }
 
 .chart-card {
   background: white;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s;
+  border-radius: var(--radius-lg, 20px);
+  padding: var(--spacing-xl, 30px);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .chart-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 50px rgba(102, 126, 234, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .chart-header {
@@ -573,14 +642,19 @@ onUnmounted(() => {
 }
 
 .chart-summary {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 15px;
-  line-height: 1.7;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  padding: var(--spacing-md, 15px) var(--spacing-lg, 20px);
+  border-radius: var(--radius-sm, 12px);
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: var(--spacing-md, 20px);
+  line-height: 2;
   border-left: 4px solid #667eea;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .highlight-text {
@@ -623,50 +697,77 @@ onUnmounted(() => {
 .map-chart {
   height: 450px;
   background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px 0 40px;
+  border-radius: var(--radius-lg, 20px);
+  padding: var(--spacing-lg, 25px);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: var(--spacing-xl, 40px) auto;
+  max-width: 1400px;
+  transition: all 0.3s ease;
+}
+
+.map-chart:hover {
+  box-shadow:
+    0 12px 40px rgba(102, 126, 234, 0.15),
+    0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .wordcloud-chart {
   height: 550px;
   background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px 0 30px;
+  border-radius: var(--radius-lg, 20px);
+  padding: var(--spacing-lg, 25px);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+  margin: var(--spacing-xl, 40px) auto;
+  max-width: 1400px;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.wordcloud-chart:hover {
+  box-shadow:
+    0 12px 40px rgba(102, 126, 234, 0.15),
+    0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .data-note {
   text-align: justify;
   text-justify: inter-ideograph;
-  color: #666;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin: 20px auto;
-  padding: 15px 20px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-  border-radius: 12px;
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 2;
+  margin: var(--spacing-lg, 25px) auto var(--spacing-xl, 40px);
+  max-width: 1400px;
+  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-md, 16px);
   border-left: 4px solid #667eea;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ==================== 观众心理分析 ==================== */
 .audience-psychology {
-  margin: 25px 0 30px;
+  margin: var(--spacing-xl, 40px) auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--spacing-lg, 24px);
+  max-width: 1400px;
 }
 
 .psychology-positive {
-  background: linear-gradient(135deg, rgba(91, 143, 249, 0.08), rgba(90, 216, 166, 0.08));
-  padding: 25px 30px;
-  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  border-radius: var(--radius-lg, 20px);
   border-left: 5px solid #5B8FF9;
   box-shadow: 0 4px 15px rgba(91, 143, 249, 0.1);
   position: relative;
+  backdrop-filter: blur(10px);
 }
 
 .psychology-positive::before {
@@ -680,11 +781,13 @@ onUnmounted(() => {
 
 .psychology-positive p {
   color: #555;
-  font-size: 1.05rem;
-  line-height: 1.9;
-  margin: 12px 0;
+  font-size: 1.1rem;
+  line-height: 2;
+  margin: var(--spacing-md, 15px) 0;
   word-break: keep-all;
   overflow-wrap: break-word;
+  text-align: justify;
+  text-justify: inter-ideograph;
 }
 
 .psychology-positive strong {
@@ -693,12 +796,13 @@ onUnmounted(() => {
 }
 
 .psychology-negative {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.08), rgba(255, 152, 0, 0.08));
-  padding: 25px 30px;
-  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  border-radius: var(--radius-lg, 20px);
   border-left: 5px solid #ff6b6b;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.1);
   position: relative;
+  backdrop-filter: blur(10px);
 }
 
 .psychology-negative::before {
@@ -712,11 +816,13 @@ onUnmounted(() => {
 
 .psychology-negative p {
   color: #555;
-  font-size: 1.05rem;
-  line-height: 1.9;
+  font-size: 1.1rem;
+  line-height: 2;
   margin: 0;
   word-break: keep-all;
   overflow-wrap: break-word;
+  text-align: justify;
+  text-justify: inter-ideograph;
 }
 
 .psychology-negative strong {
@@ -726,20 +832,26 @@ onUnmounted(() => {
 
 /* ==================== 流量狂潮案例 ==================== */
 .traffic-craze {
-  margin: 40px 0;
-  padding: 30px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-  border-radius: 18px;
+  margin: var(--spacing-xl, 40px) auto;
+  padding: var(--spacing-xl, 35px) var(--spacing-2xl, 40px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-lg, 20px);
   border: 2px dashed rgba(102, 126, 234, 0.3);
+  max-width: 1400px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .craze-intro {
-  font-size: 1.1rem;
-  line-height: 1.8;
+  font-size: 1.15rem;
+  line-height: 2;
   color: #555;
-  text-align: center;
-  margin: 0 0 30px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  margin: 0 0 var(--spacing-xl, 35px) 0;
   font-weight: 500;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .craze-case {
@@ -776,34 +888,41 @@ onUnmounted(() => {
 }
 
 .case-caption {
-  padding: 25px 30px;
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
   font-size: 1.1rem;
-  line-height: 1.9;
+  line-height: 2;
   color: #2c3e50;
   font-weight: 600;
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   margin: 0;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   border-top: 3px solid #667eea;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ==================== 责任提示框 ==================== */
 .responsibility-box {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
-  padding: 25px 30px;
-  border-radius: 16px;
-  margin: 40px 0 20px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  border-radius: var(--radius-lg, 20px);
+  margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 25px);
+  max-width: 1400px;
   border-left: 5px solid #ff9800;
   box-shadow: 0 4px 15px rgba(255, 152, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .responsibility-box p {
   color: #555;
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin: 12px 0;
+  font-size: 1.1rem;
+  line-height: 2;
+  margin: var(--spacing-md, 15px) 0;
   word-break: keep-all;
   overflow-wrap: break-word;
+  text-align: justify;
+  text-justify: inter-ideograph;
 }
 
 .responsibility-box strong {
@@ -812,36 +931,89 @@ onUnmounted(() => {
 }
 
 .data-source {
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-ideograph;
   color: #666;
-  font-size: 0.85rem;
-  margin: 30px auto 20px;
-  max-width: 900px;
-  padding: 0 20px;
+  font-size: 0.95rem;
+  margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 25px);
+  max-width: 1400px;
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: var(--radius-md, 16px);
+  border-top: 2px dashed rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-height: 2;
 }
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 1024px) {
+  h3 {
+    font-size: var(--font-size-h2, 2rem);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .intro-text {
+    font-size: 1.1rem;
+    padding: var(--spacing-md, 20px) var(--spacing-lg, 25px);
+  }
+
+  .section-subtitle {
+    font-size: var(--font-size-h3, 1.6rem);
+  }
+
   .audience-charts {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md, 20px);
+  }
+
+  .chart-card {
+    padding: var(--spacing-lg, 25px);
+  }
+
+  .chart-container {
+    height: 320px;
+  }
+
+  .map-chart,
+  .wordcloud-chart {
+    padding: var(--spacing-md, 20px);
   }
 }
 
 @media (max-width: 768px) {
-  .data-highlight {
-    padding: 20px 25px;
+  h3 {
+    font-size: var(--font-size-h2, 1.8rem);
+    padding-bottom: var(--spacing-md, 18px);
+    margin-bottom: var(--spacing-lg, 30px);
   }
 
-  .data-highlight .big {
-    font-size: 1.5rem;
+  h3::after {
+    width: 60px;
+    height: 3px;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+    padding: var(--spacing-md, 18px) var(--spacing-sm, 15px);
+    margin-bottom: var(--spacing-lg, 30px);
   }
 
   .section-subtitle {
-    font-size: 1.3rem;
+    font-size: var(--font-size-h3, 1.4rem);
+    padding-bottom: var(--spacing-sm, 15px);
+  }
+
+  .section-subtitle::after {
+    width: 60px;
+    height: 3px;
   }
 
   .audience-summary {
-    padding: 18px 20px;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 15px);
+    margin: var(--spacing-md, 20px) auto var(--spacing-lg, 30px);
   }
 
   .audience-summary p {
@@ -850,64 +1022,135 @@ onUnmounted(() => {
 
   .audience-summary li {
     font-size: 0.95rem;
-    line-height: 1.8;
+    line-height: 1.9;
   }
 
   .chart-card {
-    padding: 20px;
+    padding: var(--spacing-md, 20px);
   }
 
   .chart-container {
-    height: 300px;
+    height: 280px;
+  }
+
+  .gender-chart {
+    height: 280px;
   }
 
   .map-chart {
     height: 350px;
+    padding: var(--spacing-sm, 15px);
   }
 
   .wordcloud-chart {
-    height: 450px;
+    height: 400px;
+    padding: var(--spacing-sm, 15px);
+  }
+
+  .data-note {
+    font-size: 1rem;
+    padding: var(--spacing-sm, 15px) var(--spacing-md, 18px);
+    margin: var(--spacing-md, 20px) auto var(--spacing-lg, 30px);
   }
 
   .psychology-positive,
   .psychology-negative {
-    padding: 20px 25px;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
   }
 
   .psychology-positive::before,
   .psychology-negative::before {
     font-size: 1.5rem;
-    top: 15px;
-    right: 20px;
+    top: var(--spacing-sm, 15px);
+    right: var(--spacing-md, 20px);
   }
 
   .psychology-positive p,
   .psychology-negative p {
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.9;
   }
 
   .traffic-craze {
-    padding: 25px 20px;
-    margin: 30px 0;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    margin: var(--spacing-lg, 30px) auto;
   }
 
   .craze-intro {
     font-size: 1rem;
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-lg, 25px);
   }
 
   .case-caption {
-    padding: 20px 25px;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 15px);
     font-size: 1rem;
   }
 
   .responsibility-box {
-    padding: 20px 20px;
+    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    margin: var(--spacing-lg, 30px) auto var(--spacing-md, 20px);
   }
 
   .responsibility-box p {
     font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .data-source {
+    font-size: 0.85rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 15px);
+    margin: var(--spacing-lg, 30px) auto var(--spacing-md, 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  h3 {
+    font-size: var(--font-size-h2, 1.6rem);
+  }
+
+  .intro-text {
+    font-size: 0.95rem;
+    padding: var(--spacing-sm, 15px);
+  }
+
+  .section-subtitle {
+    font-size: var(--font-size-h3, 1.3rem);
+  }
+
+  .audience-charts {
+    padding: 0 var(--spacing-xs, 10px);
+  }
+
+  .chart-card {
+    padding: var(--spacing-sm, 15px);
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .gender-chart {
+    height: 250px;
+  }
+
+  .map-chart {
+    height: 300px;
+    padding: var(--spacing-xs, 10px);
+  }
+
+  .wordcloud-chart {
+    height: 350px;
+    padding: var(--spacing-xs, 10px);
+  }
+
+  .psychology-positive p,
+  .psychology-negative p {
+    font-size: 0.95rem;
+  }
+
+  .data-source {
+    font-size: 0.8rem;
+    padding: var(--spacing-sm, 15px) var(--spacing-xs, 10px);
   }
 }
 </style>

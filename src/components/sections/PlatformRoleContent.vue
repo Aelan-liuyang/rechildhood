@@ -14,7 +14,7 @@
       </p>
     </div>
 
-    <div class="data-highlight">
+    <!-- <div class="data-highlight">
       <div class="data-row">
         <span class="data-label">算法倾向于推荐</span>
         <span class="big">高互动率</span>
@@ -24,7 +24,7 @@
         <span class="data-label">儿童内容的推荐权重比普通内容高</span>
         <span class="big">1.5-2倍</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="research-box">
       <div class="research-icon">📊</div>

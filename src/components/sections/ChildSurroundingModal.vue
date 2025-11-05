@@ -28,7 +28,7 @@
                 <div class="stat-icon">{{ stat.icon }}</div>
                 <div class="stat-content">
                   <div class="stat-metric" v-if="stat.highlight">{{ stat.highlight }}</div>
-                  <p class="stat-text">{{ stat.text }}</p>
+                  <p class="stat-text" v-html="processText(stat.text)"></p>
                 </div>
               </div>
             </div>
@@ -57,6 +57,19 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+// ==================== 处理文本，防止数字和文字分开 ====================
+const processText = (text) => {
+  // 匹配数字（包括百分号、小数点等）和紧跟的中文字符，用 span 包裹
+  // 匹配模式：
+  // 1. 数字+百分号+汉字（如"54%的"）
+  // 2. 数字+小数点+数字+单位+汉字（如"1小时的"）
+  // 3. 数字+汉字（如"6岁前"）
+  return text
+    .replace(/(\d+[%％])([\u4e00-\u9fa5]{1,2})/g, '<span class="no-break">$1$2</span>')
+    .replace(/(\d+\.?\d*)([小时岁分][\u4e00-\u9fa5]{0,2})/g, '<span class="no-break">$1$2</span>')
+    .replace(/(\d+)([岁前以上][\u4e00-\u9fa5]{0,1})/g, '<span class="no-break">$1$2</span>')
+}
 
 // ==================== 示例图片 ====================
 const exampleImages = [
@@ -122,15 +135,16 @@ const impactStats = [
 .modal-content {
   position: relative;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 50px 40px;
-  border-radius: 24px;
-  max-width: 1200px;
+  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  border-radius: var(--radius-lg, 24px);
+  max-width: 1400px;
   width: 95%;
   max-height: 85vh;
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
   animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin: 0 auto;
 }
 
 /* 滚动条样式 */
@@ -198,27 +212,43 @@ const impactStats = [
 .modal-main-title {
   text-align: center;
   color: #2c3e50;
-  font-size: 2.2rem;
+  font-size: var(--font-size-h2, 2.4rem);
   font-weight: 700;
-  margin: 0 0 15px 0;
+  margin: 0 0 var(--spacing-md, 20px) 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 1px;
+  letter-spacing: -0.02em;
+  padding-bottom: var(--spacing-lg, 30px);
+  position: relative;
   animation: titleFadeIn 0.6s ease-out;
+}
+
+.modal-main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
 }
 
 .modal-main-subtitle {
   text-align: justify;
   text-justify: inter-ideograph;
   color: #666;
-  font-size: 1.15rem;
-  margin: 0 auto 40px;
-  line-height: 1.6;
-  max-width: 700px;
-  padding: 0 20px;
-  font-weight: 500;
+  font-size: 1.2rem;
+  margin: 0 auto var(--spacing-xl, 40px);
+  line-height: 2;
+  max-width: 1400px;
+  padding: 0 var(--spacing-md, 20px);
+  font-weight: 400;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   animation: subtitleFadeIn 0.8s ease-out;
 }
 
@@ -249,12 +279,43 @@ const impactStats = [
 /* ==================== 影响数据区域 ==================== */
 .impact-data-section {
   margin-top: 0;
-  padding: 45px 35px;
-  background: linear-gradient(135deg, rgba(255, 245, 235, 0.7) 0%, rgba(255, 235, 238, 0.7) 100%);
-  border-radius: 24px;
-  border: 2px solid rgba(255, 200, 200, 0.35);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  background: linear-gradient(135deg, rgba(255, 250, 245, 0.95) 0%, rgba(255, 245, 250, 0.95) 100%);
+  border-radius: var(--radius-lg, 24px);
+  border: 1px solid rgba(255, 200, 200, 0.2);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   animation: sectionFadeIn 1s ease-out;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.impact-data-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #ff6b6b, #51cf66, #667eea);
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes sectionFadeIn {
@@ -273,17 +334,24 @@ const impactStats = [
 .example-images {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin: var(--spacing-lg, 30px) auto var(--spacing-xl, 40px);
-  max-width: 100%;
-  padding: 0 10px;
+  gap: var(--spacing-lg, 20px);
+  margin: var(--spacing-xl, 40px) auto var(--spacing-2xl, 50px);
+  max-width: 1400px;
+  padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg, 20px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 .example-image-card {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--radius-md, 16px);
   overflow: hidden;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   aspect-ratio: 4 / 3;
   height: auto;
@@ -292,6 +360,7 @@ const impactStats = [
   justify-content: center;
   position: relative;
   animation: imageCardReveal 0.8s ease-out backwards;
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .example-image-card:nth-child(1) {
@@ -326,10 +395,11 @@ const impactStats = [
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
   opacity: 0;
   transition: opacity 0.4s;
   z-index: 1;
+  border-radius: var(--radius-md, 16px);
 }
 
 .example-image-card:hover::before {
@@ -337,8 +407,11 @@ const impactStats = [
 }
 
 .example-image-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 20px 50px rgba(102, 126, 234, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .example-image-card img {
@@ -351,12 +424,14 @@ const impactStats = [
 
 .impact-title {
   text-align: center;
-  font-size: 1.7rem;
+  font-size: var(--font-size-h3, 2rem);
   font-weight: 700;
   color: #2c3e50;
-  margin: 0 0 18px 0;
+  margin: 0 0 var(--spacing-lg, 25px) 0;
   position: relative;
-  padding-bottom: 15px;
+  padding-bottom: var(--spacing-lg, 25px);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .impact-title::after {
@@ -365,67 +440,89 @@ const impactStats = [
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 100px;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #667eea, #ff6b6b, #51cf66, #667eea);
+  background-size: 200% 100%;
   border-radius: 2px;
+  animation: gradientShift 3s ease infinite;
 }
 
 .impact-intro {
   text-align: justify;
   text-justify: inter-ideograph;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   color: #555;
-  line-height: 1.8;
-  margin: 0 auto 35px;
-  max-width: 900px;
-  padding: 0 20px;
+  line-height: 2;
+  margin: 0 auto var(--spacing-xl, 45px);
+  max-width: 1400px;
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
   word-break: keep-all;
   overflow-wrap: break-word;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-md, 16px);
+  border-left: 4px solid #667eea;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .impact-stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 40px;
-  margin-top: 40px;
+  gap: var(--spacing-lg, 24px);
+  margin-bottom: var(--spacing-xl, 40px);
+  margin-top: var(--spacing-xl, 40px);
   padding: 0;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .impact-stat-card {
   background: white;
-  padding: 32px 24px;
-  border-radius: var(--radius-md, 16px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  padding: var(--spacing-xl, 38px) var(--spacing-lg, 28px) var(--spacing-xl, 35px);
+  border-radius: var(--radius-lg, 20px);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--spacing-lg, 22px);
   align-items: center;
   text-align: center;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.8);
   position: relative;
-  overflow: visible;
-  min-height: 280px;
+  overflow: hidden;
+  min-height: 320px;
+  backdrop-filter: blur(10px);
 }
 
 .impact-stat-card::before {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, currentColor, transparent);
-  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, currentColor, transparent);
+  opacity: 0.6;
   transition: opacity 0.3s ease;
-  z-index: -1;
+  z-index: 1;
 }
 
 .impact-stat-card::after {
-  display: none;
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .card-color-1 {
@@ -441,55 +538,76 @@ const impactStats = [
 }
 
 .impact-stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 25px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 1);
 }
 
 .impact-stat-card:hover::before {
-  opacity: 0.15;
+  opacity: 1;
+  height: 5px;
+}
+
+.impact-stat-card:hover::after {
+  opacity: 1;
 }
 
 .stat-icon {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   line-height: 1;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
-  transition: transform 0.3s ease;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
-  height: 60px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .impact-stat-card:hover .stat-icon {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.2));
 }
 
 .stat-content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-lg, 20px);
   align-items: center;
   flex: 1;
-  justify-content: flex-start;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  padding: var(--spacing-xs, 5px) 0;
 }
 
 .stat-metric {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
+  padding: var(--spacing-sm, 14px) var(--spacing-xl, 28px);
   border-radius: 50px;
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  letter-spacing: 0.5px;
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.8px;
   position: relative;
   overflow: hidden;
-  min-height: 44px;
+  min-height: 52px;
   flex-shrink: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .card-color-1 .stat-metric {
@@ -504,6 +622,20 @@ const impactStats = [
   background: linear-gradient(135deg, #51cf66 0%, #4ade80 100%);
 }
 
+.impact-stat-card:hover .stat-metric {
+  transform: scale(1.05);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.impact-stat-card:hover .stat-text {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
 .stat-metric::before {
   content: '';
   position: absolute;
@@ -511,23 +643,36 @@ const impactStats = [
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   animation: shimmer 2.5s infinite;
 }
 
 .stat-text {
-  font-size: 0.92rem;
-  line-height: 1.75;
-  color: #666;
+  font-size: 1.05rem;
+  line-height: 2;
+  color: #555;
   margin: 0;
   word-break: keep-all;
   overflow-wrap: break-word;
   font-weight: 400;
   max-width: 100%;
-  hyphens: none;
+  text-align: justify;
+  text-justify: inter-ideograph;
   flex: 1;
-  display: flex;
-  align-items: center;
+  display: block;
+  padding: var(--spacing-md, 15px) var(--spacing-lg, 20px);
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-sm, 12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.stat-text :deep(.no-break) {
+  white-space: nowrap;
 }
 
 @keyframes shimmer {
@@ -541,17 +686,32 @@ const impactStats = [
 }
 
 .data-source {
-  text-align: center;
-  font-size: 0.85rem;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  font-size: 0.95rem;
   color: #666;
-  line-height: 1.8;
-  margin: 0;
-  padding: 25px 20px 0;
-  border-top: 2px dashed rgba(0, 0, 0, 0.12);
-  background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.03), transparent);
+  line-height: 2;
+  margin: var(--spacing-xl, 40px) 0 0;
+  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px) var(--spacing-lg, 25px) var(--spacing-2xl, 50px);
+  border-top: 2px dashed rgba(102, 126, 234, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-md, 16px);
   word-break: keep-all;
   overflow-wrap: break-word;
   max-width: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.data-source::before {
+  /* content: '📊'; */
+  position: absolute;
+  left: var(--spacing-lg, 25px);
+  top: var(--spacing-lg, 25px);
+  font-size: 1.2rem;
+  opacity: 0.6;
+  line-height: 2;
 }
 
 .modal-fade-enter-active,
@@ -566,10 +726,29 @@ const impactStats = [
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 1024px) {
+  .modal-content {
+    padding: var(--spacing-xl, 40px) var(--spacing-lg, 30px);
+  }
+
+  .modal-main-title {
+    font-size: 2rem;
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .modal-main-title::after {
+    width: 70px;
+    height: 3px;
+  }
+
+  .modal-main-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg, 30px);
+  }
+
   .example-images {
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 0 5px;
+    gap: var(--spacing-sm, 12px);
+    padding: 0 var(--spacing-xs, 5px);
   }
 
   .example-image-card {
@@ -578,11 +757,11 @@ const impactStats = [
 
   .impact-stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: var(--spacing-md, 20px);
   }
 
   .impact-stat-card {
-    padding: 28px 20px;
+    padding: var(--spacing-lg, 28px) var(--spacing-md, 20px);
     min-height: 260px;
   }
 
@@ -590,11 +769,17 @@ const impactStats = [
     font-size: 2.8rem;
     height: 56px;
   }
+
+  .stat-text {
+    font-size: 0.95rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
 }
 
 @media (max-width: 768px) {
   .modal-content {
-    padding: 35px 20px;
+    padding: var(--spacing-xl, 35px) var(--spacing-md, 20px);
     max-width: 96%;
     max-height: 88vh;
   }
@@ -603,59 +788,35 @@ const impactStats = [
     width: var(--touch-target-min, 44px);
     height: var(--touch-target-min, 44px);
     font-size: 1.6rem;
-    top: 15px;
-    right: 15px;
-  }
-
-  .example-images {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .example-image-card {
-    height: auto;
-  }
-
-  .impact-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .impact-stat-card {
-    padding: 26px 20px;
-    gap: 16px;
-    min-height: 200px;
-    /* 减小最小高度 */
-  }
-
-  .stat-icon {
-    font-size: 2.8rem;
-    height: 52px;
-  }
-
-  .stat-metric {
-    font-size: 1.15rem;
-    padding: 9px 18px;
-    min-height: 40px;
-  }
-
-  .stat-text {
-    font-size: 0.88rem;
+    top: var(--spacing-sm, 15px);
+    right: var(--spacing-sm, 15px);
   }
 
   .modal-main-title {
-    font-size: 1.7rem;
-    margin-bottom: 12px;
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-sm, 12px);
+    padding-bottom: var(--spacing-md, 20px);
+  }
+
+  .modal-main-title::after {
+    width: 60px;
+    height: 3px;
   }
 
   .modal-main-subtitle {
     font-size: 1rem;
-    margin-bottom: 30px;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: 0 var(--spacing-sm, 15px);
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 
   .example-images {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md, 15px);
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 12px);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--radius-md, 16px);
   }
 
   .example-image-card {
@@ -663,11 +824,12 @@ const impactStats = [
   }
 
   .impact-data-section {
-    padding: 30px 20px;
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 20px);
   }
 
   .impact-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md, 18px);
   }
 
   .impact-title::after {
@@ -676,77 +838,195 @@ const impactStats = [
   }
 
   .impact-intro {
-    font-size: 0.95rem;
-  }
-
-
-  .data-source {
-    font-size: 0.8rem;
-    padding: 20px 15px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-content {
-    padding: 25px 15px;
-    max-width: 98%;
-  }
-
-  .modal-main-title {
-    font-size: var(--font-size-h2, 1.5rem);
-  }
-
-  .modal-main-subtitle {
-    font-size: var(--font-size-small, 0.9rem);
-  }
-
-  .example-images {
-    grid-template-columns: 1fr;
-    /* 改为单列 */
-    gap: 12px;
-  }
-
-  .example-image-card {
-    height: auto;
-    aspect-ratio: 16 / 9;
-    /* 更适合单列显示 */
-  }
-
-  .impact-title {
-    font-size: 1.2rem;
-  }
-
-  .impact-intro {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg, 30px);
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 15px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid #667eea;
+    border-radius: var(--radius-md, 16px);
   }
 
   .impact-stats-grid {
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md, 18px);
     margin-top: var(--spacing-lg, 30px);
     margin-bottom: var(--spacing-lg, 30px);
   }
 
   .impact-stat-card {
-    padding: 22px 18px;
-    gap: 14px;
+    padding: var(--spacing-lg, 28px) var(--spacing-md, 20px) var(--spacing-lg, 26px);
+    gap: var(--spacing-lg, 20px);
     min-height: auto;
-    /* 移除固定高度，自适应内容 */
+  }
+
+  .stat-content {
+    gap: var(--spacing-md, 18px);
+    padding: var(--spacing-xs, 5px) 0;
   }
 
   .stat-icon {
-    font-size: 2.5rem;
-    height: 48px;
+    font-size: 2.8rem;
+    height: 55px;
+  }
+
+  .stat-metric {
+    font-size: 1.15rem;
+    padding: var(--spacing-sm, 12px) var(--spacing-lg, 22px);
+    min-height: 44px;
+    letter-spacing: 0.6px;
+  }
+
+  .stat-text {
+    font-size: 0.95rem;
+    line-height: 2;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    padding: var(--spacing-sm, 12px) var(--spacing-md, 16px);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-sm, 12px);
+    width: 100%;
+  }
+
+  .data-source {
+    font-size: 0.85rem;
+    padding: var(--spacing-md, 20px) var(--spacing-sm, 15px) var(--spacing-md, 20px) var(--spacing-xl, 40px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+    margin-top: var(--spacing-lg, 30px);
+  }
+
+  .data-source::before {
+    left: var(--spacing-md, 20px);
+    top: var(--spacing-md, 20px);
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: var(--spacing-lg, 25px) var(--spacing-sm, 15px);
+    max-width: 98%;
+  }
+
+  .modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+    top: var(--spacing-xs, 10px);
+    right: var(--spacing-xs, 10px);
+  }
+
+  .modal-main-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs, 10px);
+    padding-bottom: var(--spacing-sm, 15px);
+  }
+
+  .modal-main-title::after {
+    width: 50px;
+    height: 3px;
+  }
+
+  .modal-main-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-md, 25px);
+    padding: 0 var(--spacing-xs, 10px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  .example-images {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md, 15px);
+    padding: var(--spacing-md, 18px) var(--spacing-xs, 10px);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--radius-md, 16px);
+  }
+
+  .example-image-card {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .impact-data-section {
+    padding: var(--spacing-md, 25px) var(--spacing-sm, 15px);
+  }
+
+  .impact-title {
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-sm, 15px);
+  }
+
+  .impact-title::after {
+    width: 50px;
+    height: 3px;
+  }
+
+  .impact-intro {
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-md, 25px);
+    padding: var(--spacing-sm, 15px) var(--spacing-xs, 10px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid #667eea;
+    border-radius: var(--radius-md, 16px);
+  }
+
+  .impact-stats-grid {
+    gap: var(--spacing-md, 16px);
+    margin-top: var(--spacing-md, 25px);
+    margin-bottom: var(--spacing-md, 25px);
+  }
+
+  .impact-stat-card {
+    padding: var(--spacing-md, 24px) var(--spacing-sm, 18px) var(--spacing-md, 22px);
+    gap: var(--spacing-md, 16px);
+    min-height: auto;
+  }
+
+  .stat-content {
+    gap: var(--spacing-md, 16px);
+    padding: var(--spacing-xs, 5px) 0;
+  }
+
+  .stat-icon {
+    font-size: 2.4rem;
+    height: 50px;
   }
 
   .stat-metric {
     font-size: 1.05rem;
-    padding: 8px 14px;
-    min-height: 38px;
+    padding: var(--spacing-xs, 10px) var(--spacing-md, 18px);
+    min-height: 40px;
+    letter-spacing: 0.5px;
   }
 
   .stat-text {
-    font-size: 0.82rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 2;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    padding: var(--spacing-sm, 12px) var(--spacing-sm, 14px);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-sm, 12px);
+    width: 100%;
+  }
+
+  .data-source {
+    font-size: 0.8rem;
+    padding: var(--spacing-md, 18px) var(--spacing-xs, 10px) var(--spacing-md, 18px) var(--spacing-lg, 35px);
+    text-align: justify;
+    text-justify: inter-ideograph;
+    margin-top: var(--spacing-md, 25px);
+  }
+
+  .data-source::before {
+    left: var(--spacing-sm, 15px);
+    top: var(--spacing-md, 18px);
+    font-size: 0.9rem;
   }
 }
 </style>
