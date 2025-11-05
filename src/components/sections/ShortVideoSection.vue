@@ -2,7 +2,7 @@
   <div>
     <section class="section time-section">
       <h2 class="section-title gradient-title">你每天有多少时间是在和短视频度过？</h2>
-      <p class="section-subtitle">选择你的平均使用时长</p>
+      <p class="section-subtitle animate-float">选择你的平均使用时长</p>
       <div class="time-options">
         <div class="time-option" :class="{ selected: selectedTimeOption === '30-60min' }"
           @click="selectTimeOption('30-60min')">
@@ -36,7 +36,7 @@
 
     <section class="section video-section">
       <h2 class="section-title gradient-title-light">这样的视频有在你的喜欢列表吗？</h2>
-      <p class="section-subtitle-light">滑动查看典型的儿童短视频内容</p>
+      <p class="section-subtitle-light">向下滑动查看典型的儿童短视频内容</p>
       <div class="video-examples">
         <div class="video-card floating-card" @mouseenter="activeCard = 0" @mouseleave="activeCard = null">
           <div class="video-badge">热门</div>
@@ -175,8 +175,7 @@ const selectTimeOption = (option) => {
             text: '数据来源：中国互联网络信息中心（CNNIC）、《2020中国网络视听发展研究报告》等',
             textAlign: 'center',
             fill: '#666',
-            fontSize: sourceFontSize,
-            fontStyle: 'italic'
+            fontSize: sourceFontSize
           }
         }]
       })
@@ -417,10 +416,27 @@ onMounted(() => {
 
 .section-subtitle {
   text-align: center;
-  font-size: 1.1rem;
-  color: #666;
-  margin: -15px 0 var(--spacing-xl, 40px);
+  color: #f39412;
+  font-size: 1.15rem;
   font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.animate-float {
+  animation: gentleFloat 3s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .section-subtitle-light {
@@ -721,6 +737,8 @@ onMounted(() => {
   font-size: 1.5rem;
   animation: heartBeat 1.5s ease-in-out infinite;
 }
+
+
 
 @keyframes heartBeat {
 

@@ -367,7 +367,7 @@ onUnmounted(() => {
 
 .chart-source {
   text-align: center;
-  color: #999;
+  color: #666;
   margin-top: 10px;
   font-size: 0.9rem;
 }

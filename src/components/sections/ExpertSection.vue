@@ -641,7 +641,6 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   margin-top: var(--spacing-md, 20px);
-  font-style: italic;
 }
 
 /* ==================== 家长建议文本样式 ==================== */

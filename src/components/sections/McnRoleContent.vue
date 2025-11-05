@@ -956,7 +956,6 @@ ul li::before {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.85rem;
   margin: 0 0 15px 0;
-  font-style: italic;
 }
 
 /* 弹幕容器 */

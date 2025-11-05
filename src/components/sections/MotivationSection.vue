@@ -438,9 +438,8 @@ watch(showMindmap, async (v) => {
 .modal-subtitle {
   margin: 0 0 var(--spacing-md, 20px) 0;
   font-size: 0.95rem;
-  color: #7f8c8d;
+  color: #666;
   text-align: center;
-  font-style: italic;
   flex-shrink: 0;
 }
 

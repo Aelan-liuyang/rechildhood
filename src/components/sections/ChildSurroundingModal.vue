@@ -541,12 +541,11 @@ const impactStats = [
 .data-source {
   text-align: center;
   font-size: 0.85rem;
-  color: #999;
+  color: #666;
   line-height: 1.8;
   margin: 0;
   padding: 25px 20px 0;
   border-top: 2px dashed rgba(0, 0, 0, 0.12);
-  font-style: italic;
   background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.03), transparent);
   word-break: keep-all;
   overflow-wrap: break-word;

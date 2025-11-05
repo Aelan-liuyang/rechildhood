@@ -159,8 +159,7 @@ onMounted(() => {
             text: '数据来源：国际劳工组织（ILO）、联合国儿童基金会（UNICEF）',
             textAlign: 'center',
             fill: '#666',
-            fontSize: 12,
-            fontStyle: 'italic'
+            fontSize: 12
           }
         }
       ]
@@ -315,7 +314,6 @@ onUnmounted(() => {
   font-size: 13px;
   color: #666;
   margin-top: 10px;
-  font-style: italic;
   letter-spacing: 0.5px;
 }
 

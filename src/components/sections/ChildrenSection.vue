@@ -420,11 +420,10 @@ onUnmounted(() => {
 
 .data-source {
   text-align: center;
-  color: #999;
+  color: #666;
   font-size: 0.85rem;
   margin: 20px auto;
   max-width: 900px;
-  font-style: italic;
   padding: 0 20px;
 }
 

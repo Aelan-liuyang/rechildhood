@@ -153,9 +153,8 @@ const initCharts = () => {
         style: {
           text: '数据来源：国家统计局、中国互联网络信息中心（CNNIC）',
           textAlign: 'center',
-          fill: '#999',
-          fontSize: sourceFontSize,
-          fontStyle: 'italic'
+          fill: '#666',
+          fontSize: sourceFontSize
         }
       }],
       animationDuration: 1000,
@@ -232,9 +231,8 @@ const initCharts = () => {
           style: {
             text: '数据来源：中国互联网络信息中心（CNNIC）、QuestMobile',
             textAlign: 'center',
-            fill: '#999',
-            fontSize: sourceFontSize,
-            fontStyle: 'italic'
+            fill: '#666',
+            fontSize: sourceFontSize
           }
         }
       ],
@@ -601,16 +599,16 @@ onUnmounted(() => {
 /* ==================== 时间选项 ==================== */
 .time-options {
   display: flex;
-  gap: var(--spacing-lg, 30px);
+  gap: 15px;
   margin: var(--spacing-2xl, 60px) auto;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  max-width: 900px;
+  max-width: 1100px;
 }
 
 .time-option {
-  padding: var(--spacing-md, 20px) var(--spacing-xl, 40px);
-  font-size: 1.2rem;
+  padding: 14px 24px;
+  font-size: 1rem;
   border: 3px solid transparent;
   background: linear-gradient(white, white) padding-box,
     linear-gradient(135deg, #667eea, #764ba2) border-box;
@@ -619,16 +617,17 @@ onUnmounted(() => {
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   font-weight: 600;
-  min-height: var(--touch-target-min, 44px);
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm, 12px);
+  gap: 8px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
   animation: optionFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
 @keyframes optionFadeIn {
@@ -644,7 +643,7 @@ onUnmounted(() => {
 }
 
 .option-icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   filter: grayscale(30%);
 }
@@ -901,17 +900,18 @@ onUnmounted(() => {
   }
 
   .time-options {
-    gap: var(--spacing-md, 20px);
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
   .time-option {
-    padding: var(--spacing-md, 20px) var(--spacing-lg, 30px);
-    font-size: 1.1rem;
-    min-height: var(--touch-target-min, 44px);
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    min-height: 44px;
   }
 
   .option-icon {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .charts-row {
@@ -967,19 +967,21 @@ onUnmounted(() => {
   }
 
   .time-options {
-    gap: 12px;
+    gap: 10px;
     margin: 30px auto;
     padding: 0 5px;
+    flex-wrap: wrap;
   }
 
   .time-option {
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    padding: 10px 16px;
+    font-size: 0.85rem;
     min-height: 44px;
+    gap: 6px;
   }
 
   .option-icon {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .option-text {

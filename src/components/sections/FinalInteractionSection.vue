@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="section final-section fullscreen">
-      <h2 class="final-question">如果这些"工作"时间被归还给孩子，他们本可以拥有多少自由玩耍的时光？</h2>
+      <h2 class="final-question">如果这些"屏幕"时间被归还给孩子，他们本可以拥有多少自由玩耍的时光？</h2>
       <div class="savings-jar">
         <div class="jar-container">
           <div class="jar" :class="{ pulse: jarPulse, full: candyCount >= 20 }">

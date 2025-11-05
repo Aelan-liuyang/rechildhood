@@ -37,16 +37,31 @@
           <div class="screen-shine"></div>
 
           <div class="opening-text">
-            <span class="char" :class="{ 'char-show': charVisible[0] }" :style="{ animationDelay: '0s' }">你</span>
-            <span class="char" :class="{ 'char-show': charVisible[1] }" :style="{ animationDelay: '0.1s' }">好</span>
-            <span class="char" :class="{ 'char-show': charVisible[2] }" :style="{ animationDelay: '0.2s' }">，</span>
+            <span class="char" :class="{ 'char-show': charVisible[0] }" :style="{ animationDelay: '0s' }">屏</span>
+            <span class="char" :class="{ 'char-show': charVisible[1] }" :style="{ animationDelay: '0.1s' }">幕</span>
+            <span class="char" :class="{ 'char-show': charVisible[2] }" :style="{ animationDelay: '0.2s' }">后</span>
+            <span class="char" :class="{ 'char-show': charVisible[3] }" :style="{ animationDelay: '0.3s' }">的</span>
+            <span class="char" :class="{ 'char-show': charVisible[4] }" :style="{ animationDelay: '0.4s' }">小</span>
+            <span class="char" :class="{ 'char-show': charVisible[5] }" :style="{ animationDelay: '0.5s' }">劳</span>
+            <span class="char" :class="{ 'char-show': charVisible[6] }" :style="{ animationDelay: '0.6s' }">工</span>
+            <span class="char highlight" :class="{ 'char-show': charVisible[7] }"
+              :style="{ animationDelay: '0.7s' }">：</span>
             <br>
-            <span class="char" :class="{ 'char-show': charVisible[3] }" :style="{ animationDelay: '0.3s' }">屏</span>
-            <span class="char" :class="{ 'char-show': charVisible[4] }" :style="{ animationDelay: '0.4s' }">幕</span>
-            <span class="char" :class="{ 'char-show': charVisible[5] }" :style="{ animationDelay: '0.5s' }">里</span>
-            <span class="char" :class="{ 'char-show': charVisible[6] }" :style="{ animationDelay: '0.6s' }">的</span>
-            <span class="char" :class="{ 'char-show': charVisible[7] }" :style="{ animationDelay: '0.7s' }">童</span>
-            <span class="char" :class="{ 'char-show': charVisible[8] }" :style="{ animationDelay: '0.8s' }">年</span>
+            <span class="char quote" :class="{ 'char-show': charVisible[8] }"
+              :style="{ animationDelay: '0.8s' }">"</span>
+            <span class="char" :class="{ 'char-show': charVisible[9] }" :style="{ animationDelay: '0.9s' }">网</span>
+            <span class="char" :class="{ 'char-show': charVisible[10] }" :style="{ animationDelay: '1.0s' }">红</span>
+            <span class="char" :class="{ 'char-show': charVisible[11] }" :style="{ animationDelay: '1.1s' }">儿</span>
+            <span class="char" :class="{ 'char-show': charVisible[12] }" :style="{ animationDelay: '1.2s' }">童</span>
+            <span class="char quote" :class="{ 'char-show': charVisible[13] }"
+              :style="{ animationDelay: '1.3s' }">"</span>
+            <span class="char" :class="{ 'char-show': charVisible[14] }" :style="{ animationDelay: '1.4s' }">账</span>
+            <span class="char" :class="{ 'char-show': charVisible[15] }" :style="{ animationDelay: '1.5s' }">号</span>
+            <span class="char" :class="{ 'char-show': charVisible[16] }" :style="{ animationDelay: '1.6s' }">的</span>
+            <span class="char" :class="{ 'char-show': charVisible[17] }" :style="{ animationDelay: '1.7s' }">流</span>
+            <span class="char" :class="{ 'char-show': charVisible[18] }" :style="{ animationDelay: '1.8s' }">量</span>
+            <span class="char" :class="{ 'char-show': charVisible[19] }" :style="{ animationDelay: '1.9s' }">密</span>
+            <span class="char" :class="{ 'char-show': charVisible[20] }" :style="{ animationDelay: '2.0s' }">码</span>
           </div>
 
           <!-- 文字光效 -->
@@ -120,7 +135,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const phoneVisible = ref(false)
 const indicatorVisible = ref(false)
-const charVisible = ref([false, false, false, false, false, false, false, false, false])
+const charVisible = ref(Array(21).fill(false))
 const starsCanvas = ref(null)
 
 const showNav = ref(false)
@@ -223,18 +238,15 @@ onMounted(() => {
 
   setTimeout(() => { phoneVisible.value = true }, 500)
   const chars = charVisible.value
+
+  // 逐个显示21个字符
   setTimeout(() => { chars[0] = true }, 1500)
   setTimeout(() => {
-    setTimeout(() => { chars[1] = true }, 1650)
-    setTimeout(() => { chars[2] = true }, 1800)
-    setTimeout(() => { chars[3] = true }, 1950)
-    setTimeout(() => { chars[4] = true }, 2100)
-    setTimeout(() => { chars[5] = true }, 2250)
-    setTimeout(() => { chars[6] = true }, 2400)
-    setTimeout(() => { chars[7] = true }, 2550)
-    setTimeout(() => { chars[8] = true }, 2700)
-    setTimeout(() => { indicatorVisible.value = true }, 3200)
-    setTimeout(() => { showNav.value = true }, 3500)
+    for (let i = 1; i < 21; i++) {
+      setTimeout(() => { chars[i] = true }, 1500 + i * 150)
+    }
+    setTimeout(() => { indicatorVisible.value = true }, 1500 + 21 * 150 + 500)
+    setTimeout(() => { showNav.value = true }, 1500 + 21 * 150 + 800)
   })
   window.addEventListener('scroll', onScroll)
   onScroll()
@@ -612,13 +624,13 @@ onUnmounted(() => {
 /* 文字样式 */
 .opening-text {
   color: white;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 900;
   text-align: center;
   line-height: 1.8;
   position: relative;
   z-index: 6;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
 .opening-text .char {
@@ -638,6 +650,64 @@ onUnmounted(() => {
     0 0 40px rgba(102, 126, 234, 0.6),
     0 5px 15px rgba(0, 0, 0, 0.5);
   animation: charGlow 3s ease-in-out infinite;
+}
+
+/* 高亮冒号 */
+.opening-text .char.highlight {
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow:
+    0 0 30px rgba(255, 215, 0, 0.9),
+    0 0 50px rgba(255, 215, 0, 0.6),
+    0 5px 20px rgba(255, 215, 0, 0.4);
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+/* 引号样式 */
+.opening-text .char.quote {
+  color: #ff6b9d;
+  font-weight: bold;
+  font-size: 1.3em;
+  text-shadow:
+    0 0 25px rgba(255, 107, 157, 0.8),
+    0 0 45px rgba(255, 107, 157, 0.5);
+  animation: quotePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+
+  0%,
+  100% {
+    text-shadow:
+      0 0 30px rgba(255, 215, 0, 0.9),
+      0 0 50px rgba(255, 215, 0, 0.6),
+      0 5px 20px rgba(255, 215, 0, 0.4);
+    transform: scale(1);
+  }
+
+  50% {
+    text-shadow:
+      0 0 40px rgba(255, 215, 0, 1),
+      0 0 70px rgba(255, 215, 0, 0.8),
+      0 5px 30px rgba(255, 215, 0, 0.6);
+    transform: scale(1.1);
+  }
+}
+
+@keyframes quotePulse {
+
+  0%,
+  100% {
+    text-shadow:
+      0 0 25px rgba(255, 107, 157, 0.8),
+      0 0 45px rgba(255, 107, 157, 0.5);
+  }
+
+  50% {
+    text-shadow:
+      0 0 35px rgba(255, 107, 157, 1),
+      0 0 60px rgba(255, 107, 157, 0.7);
+  }
 }
 
 @keyframes charGlow {
@@ -1300,9 +1370,10 @@ onUnmounted(() => {
   }
 
   .opening-text {
-    font-size: 1.5rem;
-    padding: 20px 15px;
-    line-height: 1.6;
+    font-size: 1.3rem;
+    padding: 20px 10px;
+    line-height: 1.7;
+    letter-spacing: 1px;
   }
 
   .text-particles {
@@ -1477,9 +1548,10 @@ onUnmounted(() => {
   }
 
   .opening-text {
-    font-size: 1.2rem;
-    padding: 15px 10px;
-    letter-spacing: 0px;
+    font-size: 1.05rem;
+    padding: 15px 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.8;
   }
 
   .scroll-indicator {
