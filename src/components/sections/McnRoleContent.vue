@@ -1,16 +1,19 @@
 <template>
   <div>
     <h3>MCN机构：流量公式的制造者</h3>
-    <p>"网红儿童"内容的制作者远不止是分享生活的父母，其背后通常有专业的推手。MCN机构看到了儿童群体在线上商业变现上的潜力。</p>
+    <p>"网红儿童"内容的制作者远不止是分享生活的父母，其背后通常有专业的推手——<span class="tooltip-trigger">多频道网络<span
+          class="tooltip-text">MCN机构是与内容创作者合作或直接生产各种独特内容的任何实体或组织，并在发布内容的网络平台上执行业务和营销功能。其核心角色是充当创作者的"经纪人"或"服务商"，通过专业化运营帮助创作者扩大影响力并实现商业变现。</span></span>（Multi-Channel
+      Network，MCN）机构。</p>
+
+    <p class="questmobile-intro">
+      QuestMobile数据显示，截止2025年3月，有孩家庭人群线上千元以上消费能力占比达85.5%，有孩家庭人群线上消费能力及意愿表现突出，且线上消费更青睐达人推荐、短视频种草。而出售儿童物品以儿童本人来带货将更具说服力，因此MCN机构看到了儿童群体在商业变现潜力，愿意充当该类创作者的"经纪人"。
+    </p>
 
     <!-- 两个图表横向布局 -->
     <div class="charts-row">
       <div class="chart-item">
         <h4 class="chart-title">2023年3月 有孩家庭人群线上消费能力</h4>
         <div ref="chart1" class="chart-container-small"></div>
-        <!-- <p class="chart-note">注：1、有孩家庭人群指图像标签为已婚且家庭有孩子（0-18岁）的活跃用户;2、世代父母指95后+00后中标签为已婚且
-          家庭有孩子(0-18岁)的活跃用户;3、活跃占比TG1:目标人群某个标签属性的月活跃占比除以全网具有该标签属性的月活跃比*100
-        </p> -->
       </div>
       <div class="chart-item">
         <h4 class="chart-title">2023年3月 有孩家庭人群线上消费意愿</h4>
@@ -50,6 +53,11 @@
             <span class="note-label">5.</span>
             <span class="note-text"><strong>活跃占比TGI</strong>：目标人群某个标签属性的月活跃占比 ÷ 全网具有该标签属性的月活跃占比 × 100</span>
           </div>
+          <div class="note-item">
+            <span class="note-label">6.</span>
+            <span
+              class="note-text"><strong>目标群体指数（TGI）</strong>：是通过量化特定群体在某一特征上的表现强度，反映其相对于总体倾向性的分析工具。其计算公式为（目标群体特征比例/总体特征比例）×100，当TGI=100时表示处于平均水平，数值越大表明目标群体偏好度越强。</span>
+          </div>
         </div>
         <div class="note-source">
           <span class="source-icon">📊</span>
@@ -63,21 +71,21 @@
       <p class="formula">萌娃(40%) + 冲突剧情(30%) + 商品植入(30%) = 爆款模板</p>
     </div>
 
-    <p>MCN常会套用这样的流量公式，主动签约有潜力的素人账号，提供从人设定位、剧本编写到拍摄剪辑、商业变现的全套服务。</p>
+    <p>MCN机构为了获得更多流量常会套用这样的流量公式，主动签约有潜力的素人账号，提供从人设定位、剧本编写到拍摄剪辑、商业变现的全套服务。粉丝量百万以上账号中，<span
+        class="highlight-percentage">54.9%</span>已与MCN签约。</p>
 
-    <div class="data-highlight">
-      <p>粉丝量百万以上账号中，<span class="big">54.9%</span>已与MCN签约</p>
-    </div>
     <p class="warning">但是MCN资质参差不齐，签约后伴随着的是：</p>
     <ul>
       <li>高频率的视频发表（亲子类头部达人月发布视频最高达96条）</li>
       <li>不平等的分成比例（自营模式分成最低仅30%）</li>
       <li>困难的解约方式以及高昂的违约金（最高可达单月流水的24倍）</li>
     </ul>
+
+    <p class="conclusion-text">这促使着父母不得不将儿童账号的商业性提高。</p>
     <h4 style="margin-top: 30px; color: #2c3e50; font-size: 1.4rem;">MCN合作模式与分成比例</h4>
     <div class="mcn-revenue-chart">
       <div class="revenue-model" v-for="model in mcnModels" :key="model.name">
-        <div class="model-header" :style="{ background: model.gradient }">
+        <div class="model-header" :style="{ background: model.gradient, color: model.headerTextColor }">
           <h5>{{ model.name }}</h5>
           <p class="model-desc">{{ model.desc }}</p>
         </div>
@@ -89,7 +97,7 @@
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'white',
+              color: '#333',
               fontWeight: '700',
               fontSize: '1.05rem',
               height: '100%',
@@ -101,7 +109,7 @@
             </div>
             <div class="mcn-share" :style="{
               width: model.mcnShare,
-              background: '#3498db',
+              background: model.mcnColor,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -153,7 +161,6 @@
       </div>
     </div>
 
-    <p class="conclusion-text">这促使着父母不得不将儿童账号的商业性提高。</p>
   </div>
 </template>
 
@@ -183,25 +190,31 @@ const mcnModels = [
     name: '自营模式',
     desc: 'MCN全程运营',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    headerTextColor: 'white',
     creatorShare: '30%',
     mcnShare: '70%',
-    creatorColor: '#e74c3c'
+    creatorColor: '#FFC107', // 黄色
+    mcnColor: '#FF8F00' // 深黄色
   },
   {
     name: '联营模式',
     desc: '共同运营管理',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    headerTextColor: 'white',
     creatorShare: '50%',
     mcnShare: '50%',
-    creatorColor: '#e74c3c'
+    creatorColor: '#FFC107', // 黄色
+    mcnColor: '#FF8F00' // 深黄色
   },
   {
     name: '签约模式',
     desc: '创作者主导运营',
-    gradient: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    headerTextColor: 'white',
     creatorShare: '70%',
     mcnShare: '30%',
-    creatorColor: '#27ae60'
+    creatorColor: '#FFC107', // 黄色
+    mcnColor: '#FF8F00' // 深黄色
   }
 ]
 
@@ -576,12 +589,99 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* ==================== 基础段落样式 ==================== */
+p {
+  text-align: justify;
+  line-height: 1.8;
+}
+
+/* ==================== 百分比高亮样式 ==================== */
+.highlight-percentage {
+  font-weight: 700;
+  color: #e74c3c;
+  font-size: 1.1em;
+}
+
+/* ==================== 工具提示样式 ==================== */
+.tooltip-trigger {
+  position: relative;
+  color: #667eea;
+  font-weight: 600;
+  cursor: help;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  transition: color 0.3s ease;
+}
+
+.tooltip-trigger:hover {
+  color: #764ba2;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  margin-right: 8px;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 15px 18px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90vw;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  font-weight: 400;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  text-align: justify;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.tooltip-trigger:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translateY(-50%);
+  border: 8px solid transparent;
+  border-left-color: #2c3e50;
+}
+
+/* ==================== QuestMobile介绍段落样式 ==================== */
+.questmobile-intro {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  padding: 20px 25px;
+  border-radius: 12px;
+  border-left: 5px solid #4caf50;
+  margin: 25px 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #2e7d32;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-align: justify;
+}
+
 /* ==================== 图表布局样式 ==================== */
 .charts-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin: 25px 0;
+  width: 100%;
 }
 
 .chart-item {
@@ -589,6 +689,8 @@ onUnmounted(() => {
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .chart-full {
@@ -597,6 +699,8 @@ onUnmounted(() => {
   padding: 20px;
   margin: 25px 0;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .chart-title {
@@ -610,11 +714,13 @@ onUnmounted(() => {
 .chart-container-small {
   width: 100%;
   height: 320px;
+  box-sizing: border-box;
 }
 
 .chart-container-large {
   width: 100%;
   height: 380px;
+  box-sizing: border-box;
 }
 
 .chart-note {
@@ -690,6 +796,7 @@ onUnmounted(() => {
   color: #495057;
   word-break: keep-all;
   overflow-wrap: break-word;
+  text-align: justify;
 }
 
 .note-text strong {
@@ -805,6 +912,8 @@ onUnmounted(() => {
   margin: 0;
   font-size: 0.95rem;
   opacity: 0.95;
+  text-align: center;
+  color: #e9ecef;
 }
 
 .revenue-split {
@@ -857,6 +966,7 @@ onUnmounted(() => {
   color: #856404;
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.2);
+  text-align: justify;
 }
 
 ul {
@@ -953,7 +1063,7 @@ ul li::before {
 
 .penalty-hint {
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(33, 33, 33, 0.6);
   font-size: 0.85rem;
   margin: 0 0 15px 0;
 }
@@ -1132,7 +1242,7 @@ ul li::before {
   font-size: 1.15rem;
   font-weight: 600;
   color: #e65100;
-  text-align: center;
+  text-align: left;
   box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
   letter-spacing: 0.5px;
   line-height: 1.8;
@@ -1142,6 +1252,18 @@ ul li::before {
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 768px) {
+  .tooltip-text {
+    width: 320px;
+    font-size: 0.85rem;
+    padding: 12px 15px;
+  }
+
+  .questmobile-intro {
+    padding: 18px 20px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
   .charts-row {
     grid-template-columns: 1fr;
   }
@@ -1289,6 +1411,18 @@ ul li::before {
 }
 
 @media (max-width: 480px) {
+  .tooltip-text {
+    width: 280px;
+    font-size: 0.8rem;
+    padding: 10px 12px;
+  }
+
+  .questmobile-intro {
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
   .chart-note-box {
     padding: 16px 15px;
     margin-top: 15px;

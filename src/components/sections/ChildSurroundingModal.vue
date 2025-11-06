@@ -247,8 +247,9 @@ const impactStats = [
   max-width: 1400px;
   padding: 0 var(--spacing-md, 20px);
   font-weight: 400;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  line-break: strict;
   animation: subtitleFadeIn 0.8s ease-out;
 }
 
@@ -457,8 +458,9 @@ const impactStats = [
   margin: 0 auto var(--spacing-xl, 45px);
   max-width: 1400px;
   padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  line-break: strict;
   background: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-md, 16px);
   border-left: 4px solid #667eea;
@@ -652,8 +654,9 @@ const impactStats = [
   line-height: 2;
   color: #555;
   margin: 0;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  line-break: strict;
   font-weight: 400;
   max-width: 100%;
   text-align: justify;
@@ -696,8 +699,9 @@ const impactStats = [
   border-top: 2px dashed rgba(102, 126, 234, 0.2);
   background: rgba(255, 255, 255, 0.6);
   border-radius: var(--radius-md, 16px);
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  line-break: strict;
   max-width: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
