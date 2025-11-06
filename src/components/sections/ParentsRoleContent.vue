@@ -357,6 +357,7 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
+  align-items: start;
 }
 
 .map-section,
@@ -366,6 +367,8 @@ onUnmounted(() => {
   border-radius: 0;
   box-shadow: none;
   transition: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .map-section:hover,
@@ -394,11 +397,14 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: stretch;
   gap: 10px;
+  margin-top: 0;
 }
 
 .money-bag-icon {
-  width: 60px;
-  height: 60px;
+  width: auto;
+  height: auto;
+  min-width: 100px;
+  min-height: 100px;
   margin: 0 auto 8px;
   display: flex;
   align-items: center;
@@ -419,8 +425,9 @@ onUnmounted(() => {
 }
 
 .money-icon {
-  font-size: 3rem;
+  font-size: 23rem;
   display: block;
+  line-height: 1;
 }
 
 .revenue-data-box {
@@ -437,7 +444,7 @@ onUnmounted(() => {
   line-height: 1.5;
   color: #495057;
   margin: 0 0 6px 0;
-  text-align: justify;
+  text-align: left;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -446,7 +453,7 @@ onUnmounted(() => {
   font-size: 0.72rem;
   color: #6c757d;
   margin: 0;
-  text-align: right;
+  text-align: left;
 }
 
 .cost-legend {
@@ -619,13 +626,15 @@ onUnmounted(() => {
   }
 
   .money-bag-icon {
-    width: 50px;
-    height: 50px;
+    width: auto;
+    height: auto;
+    min-width: 80px;
+    min-height: 80px;
     margin-bottom: 6px;
   }
 
   .money-icon {
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
 
   .cost-average,
