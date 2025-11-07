@@ -1058,7 +1058,7 @@ p {
   line-height: 1.6;
   text-align: justify;
   text-justify: inter-ideograph;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto 16px;
   padding: 0;
   word-break: keep-all;

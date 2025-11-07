@@ -145,7 +145,7 @@ watch(() => props.selectedRole, async (newRole) => {
 .modal-body p {
   margin: 15px 0;
   font-size: 1.05rem;
-  line-height: 1.9;
+  line-height: 1.7;
   color: #555;
 }
 

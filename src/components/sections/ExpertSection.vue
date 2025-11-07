@@ -267,7 +267,7 @@ onMounted(() => {
   text-align: center;
   color: #fff;
   margin-bottom: var(--spacing-2xl, 60px);
-  line-height: 1.8;
+  line-height: 1.7;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   max-width: 1200px;
   margin-left: auto;
@@ -365,7 +365,7 @@ onMounted(() => {
 /* 建议/段落 */
 .expert-advice {
   font-size: 1.1rem;
-  line-height: 1.9;
+  line-height: 1.7;
   color: #ffe082;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   animation: fadeUp 1s ease 0.4s forwards;
@@ -439,7 +439,7 @@ onMounted(() => {
 .dialogue-content p {
   color: #fff;
   font-size: 1.15rem;
-  line-height: 2;
+  line-height: 1.8;
   margin-bottom: var(--spacing-lg, 20px);
   text-align: justify;
   text-justify: inter-ideograph;
@@ -456,7 +456,7 @@ onMounted(() => {
 .parent-advice-section {
   position: relative;
   z-index: 2;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 40px auto 0;
   padding: 0 20px;
 }
@@ -497,7 +497,7 @@ onMounted(() => {
 .advice-text p {
   color: #fff;
   font-size: 1.2rem;
-  line-height: 2;
+  line-height: 1.8;
   margin: 0;
   text-align: center;
   font-weight: 500;
@@ -577,7 +577,7 @@ onMounted(() => {
 
   .dialogue-content p {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -593,7 +593,7 @@ onMounted(() => {
 
   .advice-text p {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -724,7 +724,7 @@ onMounted(() => {
 
 .content-text {
   font-size: 1.1rem;
-  line-height: 2;
+  line-height: 1.7;
   text-align: justify;
   text-justify: inter-ideograph;
   font-weight: 600;
@@ -822,7 +822,7 @@ onMounted(() => {
 
 .parent-advice-text p {
   font-size: 1.15rem;
-  line-height: 2;
+  line-height: 1.7;
   color: #2c3e50;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -882,7 +882,7 @@ onMounted(() => {
 
   .expert-advice {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -922,7 +922,7 @@ onMounted(() => {
 
   .dialogue-content p {
     font-size: 0.95rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -959,7 +959,7 @@ onMounted(() => {
 
   .content-text {
     font-size: 0.95rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -982,7 +982,7 @@ onMounted(() => {
 
   .parent-advice-text p {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }

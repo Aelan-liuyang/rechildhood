@@ -691,9 +691,12 @@ p {
 .charts-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin: 25px 0;
-  width: 100%;
+  gap: var(--spacing-lg, 25px);
+  margin: var(--spacing-lg, 30px) 0;
+  width: 95%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .chart-item {
@@ -709,10 +712,11 @@ p {
   background: white;
   border-radius: 12px;
   padding: 20px;
-  margin: 25px 0;
+  margin: var(--spacing-lg, 30px) auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
-  width: 100%;
+  width: 95%;
+  max-width: 1200px;
 }
 
 .chart-title {
@@ -1583,7 +1587,7 @@ ul li::before {
   .conclusion-text {
     font-size: 0.95rem;
     padding: 16px 16px;
-    line-height: 2;
+    line-height: 1.7;
   }
 }
 </style>

@@ -263,7 +263,7 @@ watch(showMindmap, async (v) => {
 /* ==================== 洞察文本 ==================== */
 .insight-text {
   font-size: 1.3rem;
-  line-height: 2;
+  line-height: 1.8;
   max-width: 1200px;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -417,9 +417,9 @@ watch(showMindmap, async (v) => {
 }
 
 .modal-content {
-  max-width: 1300px;
+  max-width: 1200px;
   max-height: 85vh;
-  width: 90%;
+  width: 95%;
   background: white;
   border-radius: var(--radius-xl, 24px);
   padding: var(--spacing-xl, 40px) var(--spacing-lg, 30px);
@@ -690,7 +690,7 @@ watch(showMindmap, async (v) => {
 
   .insight-text {
     font-size: 1.05rem;
-    line-height: 1.9;
+    line-height: 1.7;
     padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
     margin: var(--spacing-lg, 30px) auto;
     text-align: justify;

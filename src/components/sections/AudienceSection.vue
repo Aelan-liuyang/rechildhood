@@ -460,7 +460,7 @@ onUnmounted(() => {
   text-align: center;
   color: #666;
   font-size: 1rem;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 30px auto;
 }
 
@@ -483,7 +483,7 @@ onUnmounted(() => {
   color: #666;
   font-size: 0.85rem;
   margin: 30px auto 20px;
-  max-width: 900px;
+  max-width: 1200px;
   padding: 0 20px;
 }
 

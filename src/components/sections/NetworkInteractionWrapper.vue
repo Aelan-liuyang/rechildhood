@@ -407,7 +407,7 @@ watch(allRolesViewed, async (newVal) => {
   border-radius: 25px;
   border: 2px solid rgba(102, 126, 234, 0.3);
   display: block;
-  max-width: 90%;
+  max-width: 95%;
   line-height: 1.4;
   animation: hintFadeIn 0.5s ease-out;
   font-weight: 500;

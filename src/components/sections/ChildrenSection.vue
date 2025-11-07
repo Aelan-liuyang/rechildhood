@@ -661,10 +661,10 @@ onUnmounted(() => {
 .chart-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-xl, 40px);
-  width: 100%;
+  gap: var(--spacing-lg, 25px);
+  width: 95%;
   max-width: 1200px;
-  margin: 0 auto var(--spacing-2xl, 60px);
+  margin: 0 auto var(--spacing-lg, 30px);
   align-items: start;
 }
 
@@ -704,7 +704,7 @@ onUnmounted(() => {
   font-size: 1.3rem;
   max-width: 1200px;
   margin: 0 auto var(--spacing-2xl, 60px);
-  line-height: 2;
+  line-height: 1.8;
   word-break: keep-all;
   overflow-wrap: break-word;
   box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
@@ -766,7 +766,7 @@ onUnmounted(() => {
 /* ==================== 数据说明 ==================== */
 .data-note.small {
   font-size: 1rem;
-  line-height: 2;
+  line-height: 1.7;
   color: #555;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   border-radius: 16px;
@@ -794,9 +794,9 @@ onUnmounted(() => {
 
 /* ==================== 儿童使用数字设备统计图表 ==================== */
 .device-usage-chart {
-  width: 100%;
+  width: 95%;
   max-width: 1200px;
-  margin: var(--spacing-2xl, 60px) auto;
+  margin: var(--spacing-lg, 30px) auto;
 }
 
 .device-usage-chart .chart-container {
@@ -851,8 +851,9 @@ onUnmounted(() => {
 
   .chart-row {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg, 30px);
-    margin-bottom: var(--spacing-xl, 40px);
+    gap: var(--spacing-md, 20px);
+    margin-bottom: var(--spacing-lg, 30px);
+    width: 100%;
   }
 
   .chart-container {
@@ -878,7 +879,8 @@ onUnmounted(() => {
   }
 
   .device-usage-chart {
-    margin: var(--spacing-xl, 40px) auto;
+    margin: var(--spacing-lg, 30px) auto;
+    width: 100%;
   }
 
   .chart-title-small {
@@ -946,7 +948,7 @@ onUnmounted(() => {
     font-size: 1.05rem;
     margin-bottom: var(--spacing-lg, 30px);
     border-radius: 14px;
-    line-height: 1.9;
+    line-height: 1.7;
   }
 
   .highlight-num {
@@ -955,7 +957,7 @@ onUnmounted(() => {
   }
 
   .device-usage-chart {
-    margin: var(--spacing-lg, 30px) auto;
+    margin: var(--spacing-md, 25px) auto;
     max-width: 100%;
   }
 
@@ -981,7 +983,7 @@ onUnmounted(() => {
     padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
     margin: var(--spacing-lg, 30px) auto;
     border-radius: 12px;
-    line-height: 1.9;
+    line-height: 1.7;
   }
 }
 </style>

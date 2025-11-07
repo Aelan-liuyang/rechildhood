@@ -1038,14 +1038,14 @@ onMounted(() => {
 
 /* ==================== 图表容器样式 ==================== */
 .chart-container {
-  width: 100%;
+  width: 95%;
   max-width: 1200px;
   height: var(--chart-height, 450px);
   background: white;
   border-radius: var(--radius-lg, 20px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   padding: var(--spacing-md, 20px);
-  margin: 0 auto;
+  margin: var(--spacing-lg, 30px) auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1059,7 +1059,7 @@ onMounted(() => {
 }
 
 .chart-reveal {
-  margin-top: var(--spacing-2xl, 60px);
+  margin-top: var(--spacing-lg, 30px);
   animation: chartRevealAnimation 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   width: 100%;
   max-width: 1200px;
@@ -1106,7 +1106,7 @@ onMounted(() => {
   margin-top: var(--spacing-xl, 40px);
   margin-left: auto;
   margin-right: auto;
-  line-height: 2;
+  line-height: 1.7;
   font-size: 1.05rem;
   color: #555;
   border-left: 4px solid #667eea;
@@ -1362,7 +1362,7 @@ onMounted(() => {
   .data-note {
     padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
     font-size: 0.9rem;
-    line-height: 1.9;
+    line-height: 1.7;
     margin-top: var(--spacing-md, 25px);
     border-radius: var(--radius-md, 12px);
     max-width: 100%;

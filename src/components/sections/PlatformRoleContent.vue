@@ -65,7 +65,7 @@
 /* ==================== 基础文本样式 ==================== */
 .intro-text {
   font-size: 1.1rem;
-  line-height: 2;
+  line-height: 1.7;
   color: #444;
   margin-bottom: 25px;
   text-align: justify;
@@ -76,7 +76,7 @@
 
 .conclusion-text {
   font-size: 1.05rem;
-  line-height: 2;
+  line-height: 1.7;
   color: #2c3e50;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -147,7 +147,7 @@
 
 .algorithm-text {
   font-size: 1.05rem;
-  line-height: 2.1;
+  line-height: 1.7;
   color: #2c3e50;
   margin: 0;
   text-align: justify;
@@ -206,7 +206,7 @@
 
 .research-text {
   font-size: 1.05rem;
-  line-height: 2.1;
+  line-height: 1.7;
   color: #2c3e50;
   margin: 0;
   text-align: justify;
@@ -409,7 +409,7 @@
 
   .algorithm-text {
     font-size: 1rem;
-    line-height: 2;
+    line-height: 1.7;
   }
 
   .research-box {
@@ -476,7 +476,7 @@
   .intro-text {
     font-size: 1rem;
     padding: 0 8px;
-    line-height: 2.1;
+    line-height: 1.7;
   }
 
   .section-subtitle {
@@ -500,7 +500,7 @@
 
   .algorithm-text {
     font-size: 0.95rem;
-    line-height: 2.1;
+    line-height: 1.7;
   }
 
   .research-box {
@@ -514,7 +514,7 @@
 
   .research-text {
     font-size: 0.95rem;
-    line-height: 2.1;
+    line-height: 1.7;
   }
 
   .source-tag {
@@ -557,13 +557,13 @@
 
   .role-card p {
     font-size: 0.9rem;
-    line-height: 1.9;
+    line-height: 1.7;
   }
 
   .conclusion-text {
     font-size: 0.95rem;
     padding: 16px 14px;
-    line-height: 2.1;
+    line-height: 1.7;
   }
 }
 </style>

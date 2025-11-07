@@ -1,5 +1,5 @@
 <template>
-  <section id="digital-labor" class="section concept-section fullscreen">
+  <section id="digital-labor" class="section concept-section">
     <h2 class="highlight-text anim-reveal">当你在刷手机时真的是在进行纯粹的娱乐吗？</h2>
     <p class="concept-intro highlight-text2">
       你有没有想过自己是在劳动，而屏幕那头的儿童或许在进行另一种看不见的劳动。</p>
@@ -21,9 +21,10 @@
 <style scoped>
 /* ==================== 基础布局 ==================== */
 .section {
-  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  padding: var(--section-padding-top, 80px) var(--container-padding, 40px) var(--section-padding-bottom, 80px);
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
 }
 
 .concept-section {
@@ -31,6 +32,7 @@
   color: white;
   position: relative;
   overflow: hidden;
+  min-height: auto;
 }
 
 .concept-section::before {
@@ -58,15 +60,15 @@
 
 /* ==================== 标题样式 ==================== */
 .highlight-text {
-  font-size: 2.4rem;
+  font-size: var(--font-size-h2, 2.2rem);
   text-align: center;
   color: #fff;
-  margin-bottom: var(--spacing-lg, 25px);
+  margin-bottom: var(--title-margin-bottom, 40px);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.4;
   letter-spacing: -0.02em;
   position: relative;
-  padding-bottom: var(--spacing-md, 20px);
+  padding-bottom: var(--spacing-lg, 30px);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -83,12 +85,12 @@
 }
 
 .highlight-text2 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-align: center;
   color: #fff;
-  margin-bottom: var(--spacing-lg, 30px);
+  margin-bottom: var(--spacing-xl, 40px);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.7;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
   max-width: 1200px;
@@ -102,11 +104,11 @@
 }
 
 .concept-intro {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-align: justify;
   text-justify: inter-ideograph;
-  margin-bottom: var(--spacing-lg, 30px);
-  line-height: 1.5;
+  margin-bottom: var(--spacing-xl, 40px);
+  line-height: 1.7;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -119,7 +121,7 @@
 .concept-box {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
-  padding: var(--spacing-lg, 25px) var(--spacing-lg, 30px);
+  padding: var(--spacing-xl, 40px) var(--spacing-xl, 40px);
   border-radius: var(--radius-lg, 20px);
   max-width: 1200px;
   margin: 0 auto;
@@ -139,13 +141,12 @@
 .concept-detail,
 .concept-explain {
   font-size: 1.1rem;
-  line-height: 1.5;
-  margin-bottom: var(--spacing-md, 20px);
+  line-height: 1.7;
+  margin-bottom: var(--paragraph-spacing, 20px);
   text-align: justify;
   text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
-  word-break: normal;
 }
 
 .concept-explain {
@@ -155,19 +156,27 @@
 /* ==================== 响应式样式 ==================== */
 @media (max-width: 1024px) {
   .section {
-    padding: var(--container-padding, 50px) var(--spacing-md, 20px) var(--container-padding, 70px);
+    padding: var(--section-padding-top, 60px) var(--container-padding, 25px) var(--section-padding-bottom, 60px);
+  }
+
+  .highlight-text {
+    font-size: 2rem;
+  }
+
+  .highlight-text2 {
+    font-size: 1.2rem;
   }
 }
 
 @media (max-width: 768px) {
   .section {
-    padding: var(--spacing-xl, 40px) var(--spacing-md, 20px) var(--spacing-xl, 50px);
+    padding: var(--section-padding-top, 50px) var(--container-padding, 20px) var(--section-padding-bottom, 50px);
   }
 
   .highlight-text {
     font-size: 1.8rem;
-    line-height: 1.3;
-    margin-bottom: var(--spacing-lg, 30px);
+    line-height: 1.4;
+    margin-bottom: var(--title-margin-bottom, 25px);
     padding-bottom: var(--spacing-md, 20px);
   }
 
@@ -177,50 +186,46 @@
   }
 
   .highlight-text2 {
-    font-size: 1.3rem;
-    line-height: 1.4;
-    margin-bottom: var(--spacing-xl, 40px);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg, 30px);
     padding: 0 var(--spacing-md, 20px);
   }
 
   .concept-intro {
-    font-size: 1.15rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.7;
     margin-bottom: var(--spacing-lg, 30px);
     padding: 0 var(--spacing-md, 20px);
-    text-align: justify;
-    text-justify: inter-ideograph;
   }
 
   .concept-box {
-    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
+    padding: var(--spacing-lg, 30px) var(--spacing-md, 25px);
     border-radius: 16px;
   }
 
   .concept-box h3 {
     font-size: 1.6rem;
-    margin-bottom: var(--spacing-md, 25px);
+    margin-bottom: var(--spacing-md, 20px);
   }
 
   .concept-detail,
   .concept-explain {
     font-size: 1rem;
-    line-height: 1.5;
-    text-align: justify;
-    text-justify: inter-ideograph;
-    margin-bottom: var(--spacing-md, 25px);
+    line-height: 1.7;
+    margin-bottom: var(--paragraph-spacing, 18px);
   }
 }
 
 @media (max-width: 480px) {
   .section {
-    padding: var(--spacing-lg, 30px) 12px var(--spacing-xl, 40px);
+    padding: var(--section-padding-top, 40px) var(--container-padding, 15px) var(--section-padding-bottom, 40px);
   }
 
   .highlight-text {
     font-size: 1.5rem;
-    line-height: 1.3;
-    margin-bottom: var(--spacing-lg, 30px);
+    line-height: 1.4;
+    margin-bottom: var(--title-margin-bottom, 20px);
     padding-bottom: var(--spacing-sm, 15px);
   }
 
@@ -230,19 +235,17 @@
   }
 
   .highlight-text2 {
-    font-size: 1.15rem;
-    line-height: 1.4;
-    margin-bottom: var(--spacing-lg, 30px);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg, 25px);
     padding: 0 12px;
   }
 
   .concept-intro {
-    font-size: 1.05rem;
-    line-height: 1.5;
-    margin-bottom: var(--spacing-lg, 30px);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg, 25px);
     padding: 0 12px;
-    text-align: justify;
-    text-justify: inter-ideograph;
   }
 
   .concept-box {
@@ -252,16 +255,14 @@
 
   .concept-box h3 {
     font-size: 1.4rem;
-    margin-bottom: var(--spacing-md, 20px);
+    margin-bottom: var(--spacing-md, 18px);
   }
 
   .concept-detail,
   .concept-explain {
     font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: var(--spacing-md, 20px);
-    text-align: justify;
-    text-justify: inter-ideograph;
+    line-height: 1.7;
+    margin-bottom: var(--paragraph-spacing, 15px);
   }
 
   .concept-explain {

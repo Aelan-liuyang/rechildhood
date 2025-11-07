@@ -268,7 +268,7 @@ onUnmounted(() => {
   text-align: justify;
   text-justify: inter-ideograph;
   max-width: 1200px;
-  line-height: 2;
+  line-height: 1.7;
   color: #444;
   margin: 0 auto var(--spacing-2xl, 60px);
   padding: 0 var(--spacing-md, 20px);
@@ -282,7 +282,7 @@ onUnmounted(() => {
   font-size: 1.3rem;
   text-align: justify;
   text-justify: inter-ideograph;
-  line-height: 2;
+  line-height: 1.8;
   max-width: 1200px;
   margin: var(--spacing-2xl, 60px) auto;
   padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
@@ -309,14 +309,14 @@ onUnmounted(() => {
 
 /* ==================== 图表容器 ==================== */
 .chart-container {
-  width: 100%;
+  width: 95%;
   max-width: 1200px;
   height: var(--chart-height, 450px);
   background: white;
   border-radius: var(--radius-lg, 20px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   padding: var(--spacing-md, 20px);
-  margin: 0 auto var(--spacing-2xl, 60px);
+  margin: 0 auto var(--spacing-lg, 30px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -332,7 +332,8 @@ onUnmounted(() => {
   padding: 0;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
-  margin: 0 auto var(--spacing-2xl, 60px);
+  width: 95%;
+  margin: 0 auto var(--spacing-lg, 30px);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: auto !important;
@@ -431,7 +432,7 @@ onUnmounted(() => {
   line-height: 1.6;
   text-align: justify;
   text-justify: inter-ideograph;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto 16px;
   padding: 0;
   word-break: keep-all;
@@ -651,7 +652,7 @@ onUnmounted(() => {
   .section-intro {
     font-size: 1.1rem;
     padding: 0 var(--spacing-md, 20px);
-    line-height: 2;
+    line-height: 1.8;
     margin-bottom: var(--spacing-xl, 40px);
     text-align: justify;
     text-justify: inter-ideograph;
@@ -669,7 +670,8 @@ onUnmounted(() => {
 
   .chart-container {
     padding: 18px;
-    margin: var(--spacing-xl, 40px) auto;
+    margin: var(--spacing-lg, 30px) auto;
+    width: 100%;
     height: 380px;
     max-width: 100%;
   }
@@ -764,7 +766,7 @@ onUnmounted(() => {
   .section-intro {
     font-size: 1.05rem;
     padding: 0 12px;
-    line-height: 1.9;
+    line-height: 1.7;
     margin-bottom: var(--spacing-lg, 30px);
     text-align: justify;
     text-justify: inter-ideograph;
@@ -775,7 +777,7 @@ onUnmounted(() => {
     font-size: 1.05rem;
     padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
     margin: var(--spacing-lg, 30px) auto;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
     max-width: 100%;
@@ -787,7 +789,8 @@ onUnmounted(() => {
 
   .chart-container {
     padding: 15px 12px;
-    margin: var(--spacing-lg, 30px) auto;
+    margin: var(--spacing-md, 25px) auto;
+    width: 100%;
     height: 320px;
     max-width: 100%;
     border-radius: 14px;

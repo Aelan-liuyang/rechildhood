@@ -1100,7 +1100,7 @@ onUnmounted(() => {
   margin-right: auto;
   opacity: 0;
   transition: opacity 1.5s ease-out, transform 1.5s ease-out;
-  line-height: 2;
+  line-height: 1.8;
   max-width: 1200px;
   padding: var(--spacing-xl, 40px) var(--spacing-lg, 35px);
   text-shadow:

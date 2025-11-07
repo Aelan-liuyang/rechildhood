@@ -28,12 +28,12 @@
         <span class="char highlight" :class="{ 'char-show': charVisible[7] }"
           :style="{ animationDelay: '0.7s' }">：</span>
         <br>
-        <span class="char quote" :class="{ 'char-show': charVisible[8] }" :style="{ animationDelay: '0.8s' }">"</span>
+        <!-- <span class="char quote" :class="{ 'char-show': charVisible[8] }" :style="{ animationDelay: '0.8s' }">"</span> -->
         <span class="char" :class="{ 'char-show': charVisible[9] }" :style="{ animationDelay: '0.9s' }">网</span>
         <span class="char" :class="{ 'char-show': charVisible[10] }" :style="{ animationDelay: '1.0s' }">红</span>
         <span class="char" :class="{ 'char-show': charVisible[11] }" :style="{ animationDelay: '1.1s' }">儿</span>
         <span class="char" :class="{ 'char-show': charVisible[12] }" :style="{ animationDelay: '1.2s' }">童</span>
-        <span class="char quote" :class="{ 'char-show': charVisible[13] }" :style="{ animationDelay: '1.3s' }">"</span>
+        <!-- <span class="char quote" :class="{ 'char-show': charVisible[13] }" :style="{ animationDelay: '1.3s' }">"</span> -->
         <span class="char" :class="{ 'char-show': charVisible[14] }" :style="{ animationDelay: '1.4s' }">账</span>
         <span class="char" :class="{ 'char-show': charVisible[15] }" :style="{ animationDelay: '1.5s' }">号</span>
         <span class="char" :class="{ 'char-show': charVisible[16] }" :style="{ animationDelay: '1.6s' }">的</span>

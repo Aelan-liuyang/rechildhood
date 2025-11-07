@@ -738,10 +738,10 @@ onUnmounted(() => {
 .charts-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-2xl, 60px);
-  width: 90%;
+  gap: var(--spacing-lg, 25px);
+  width: 95%;
   max-width: 1200px;
-  margin: var(--spacing-2xl, 60px) auto;
+  margin: var(--spacing-lg, 30px) auto;
 }
 
 .chart-wrapper {
@@ -877,14 +877,14 @@ onUnmounted(() => {
 
 /* ==================== 图表说明文字 ==================== */
 .chart-explanation {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: var(--spacing-2xl, 60px) auto 0;
   padding: 0 var(--spacing-xl, 40px);
 }
 
 .explanation-text {
   font-size: 1.1rem;
-  line-height: 2.2;
+  line-height: 1.8;
   color: #2c3e50;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -984,8 +984,9 @@ onUnmounted(() => {
 
   .charts-row {
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl, 40px);
-    width: 95%;
+    gap: var(--spacing-md, 20px);
+    width: 100%;
+    margin: var(--spacing-lg, 30px) auto;
   }
 
   .chart-badge {
@@ -1000,7 +1001,7 @@ onUnmounted(() => {
 
   .explanation-text {
     font-size: 1rem;
-    line-height: 2.1;
+    line-height: 1.8;
     padding: 25px 20px;
     border-radius: 16px;
     letter-spacing: 0.3px;
@@ -1071,7 +1072,8 @@ onUnmounted(() => {
 
   .charts-row {
     width: 100%;
-    gap: 25px;
+    gap: var(--spacing-md, 20px);
+    margin: var(--spacing-md, 25px) auto;
     padding: 0 5px;
   }
 
@@ -1098,7 +1100,7 @@ onUnmounted(() => {
 
   .explanation-text {
     font-size: 0.95rem;
-    line-height: 2.2;
+    line-height: 1.8;
     padding: 20px 16px;
     border-radius: 12px;
     letter-spacing: 0.2px;

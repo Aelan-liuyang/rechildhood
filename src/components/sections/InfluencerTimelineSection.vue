@@ -317,7 +317,7 @@ onMounted(() => {
 
 .timeline-content p {
   color: #555;
-  line-height: 2;
+  line-height: 1.7;
   font-size: 1.05rem;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -592,7 +592,7 @@ onMounted(() => {
 /* ==================== 洞察文本 ==================== */
 .insight-text {
   font-size: 1.3rem;
-  line-height: 2;
+  line-height: 1.8;
   max-width: 1200px;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -792,7 +792,7 @@ onMounted(() => {
 
   .timeline-content p {
     font-size: 0.88rem;
-    line-height: 1.9;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -821,7 +821,7 @@ onMounted(() => {
     margin: var(--spacing-lg, 30px) auto;
     text-align: justify;
     text-justify: inter-ideograph;
-    line-height: 1.9;
+    line-height: 1.7;
     max-width: 100%;
   }
 }

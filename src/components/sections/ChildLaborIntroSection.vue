@@ -28,9 +28,10 @@
 <style scoped>
 /* ==================== 基础布局 ==================== */
 .section {
-  padding: var(--container-padding, 60px) var(--spacing-md, 20px) var(--container-padding, 80px);
+  padding: var(--section-padding-top, 80px) var(--container-padding, 40px) var(--section-padding-bottom, 80px);
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
 }
 
 .dark-section {
@@ -66,11 +67,11 @@
 /* ==================== 标题样式 ==================== */
 .section-title {
   text-align: center;
-  font-size: var(--font-size-h2, 2.4rem);
+  font-size: var(--font-size-h2, 2.2rem);
   color: #fff;
-  margin-bottom: var(--spacing-2xl, 60px);
+  margin-bottom: var(--title-margin-bottom, 40px);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.4;
   letter-spacing: -0.02em;
   position: relative;
   padding-bottom: var(--spacing-lg, 30px);
@@ -96,7 +97,7 @@
   color: rgba(255, 255, 255, 0.9);
   margin: 0 auto var(--spacing-xl, 40px);
   max-width: 1200px;
-  line-height: 1.6;
+  line-height: 1.7;
   padding: 0 var(--spacing-md, 20px);
 }
 
@@ -136,7 +137,7 @@
 
 .type-card p {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   text-align: justify;
   text-justify: inter-ideograph;
   word-break: keep-all;
@@ -151,7 +152,7 @@
   font-size: 1.3rem;
   text-align: justify;
   text-justify: inter-ideograph;
-  line-height: 1.6;
+  line-height: 1.7;
   max-width: 1200px;
   margin: var(--spacing-lg, 30px) auto;
   padding: var(--spacing-lg, 20px) var(--spacing-lg, 28px);
@@ -178,7 +179,7 @@
   text-align: justify;
   text-justify: inter-ideograph;
   font-size: 1.2rem;
-  line-height: 1.6;
+  line-height: 1.7;
   max-width: 1200px;
   margin: var(--spacing-lg, 30px) auto 0;
   backdrop-filter: blur(15px);
@@ -256,14 +257,14 @@
 
   .type-card p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
 
   .key-message {
     font-size: 1.15rem;
-    line-height: 1.6;
+    line-height: 1.7;
     padding: var(--spacing-md, 18px) var(--spacing-md, 22px);
     margin: var(--spacing-lg, 30px) auto;
     text-align: justify;
@@ -272,7 +273,7 @@
 
   .stat-box {
     font-size: 1.05rem;
-    line-height: 1.6;
+    line-height: 1.7;
     padding: var(--spacing-lg, 20px) var(--spacing-md, 25px);
     margin: var(--spacing-lg, 30px) auto 0;
     text-align: justify;
@@ -325,14 +326,14 @@
 
   .type-card p {
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
     text-align: justify;
     text-justify: inter-ideograph;
   }
 
   .key-message {
     font-size: 1.05rem;
-    line-height: 1.6;
+    line-height: 1.7;
     padding: var(--spacing-sm, 15px) var(--spacing-sm, 16px);
     margin: var(--spacing-md, 25px) auto;
     text-align: justify;
@@ -345,7 +346,7 @@
 
   .stat-box {
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
     padding: var(--spacing-md, 18px) var(--spacing-sm, 18px);
     margin: var(--spacing-md, 25px) auto 0;
     text-align: justify;

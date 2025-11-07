@@ -2703,7 +2703,7 @@ onUnmounted(() => {
 
 .modal-body p {
   font-size: 1.1rem;
-  line-height: 1.9;
+  line-height: 1.7;
   color: #555;
   margin-bottom: 20px;
 }
