@@ -2,16 +2,15 @@
   <section class="section dark-section">
     <h2 class="section-title white">儿童作为网络空间中数量庞大的群体，不可避免地被"召唤"，成为数字生产力，沦为"数字童工"
     </h2>
+    <p class="types-intro">数字童工大致可分为两类，媒介接触型和身体参与性。</p>
     <div class="childlabor-types">
       <div class="type-card">
         <h3>媒介接触型</h3>
-        <p>作为媒介接触型数字童工的代表 ，短视频社交媒体平台中的数字童工可大致分为两类 ：一类是学龄前儿童，年龄在 2 ～ 6 岁
-          ，他们以短视频的浏览为主要的使用形式 ，自身并不具备独立使用电子设备进行拍摄视频的能力 ，主要由监护人进行拍摄、发布。</p>
+        <p>媒介接触型可大致分为两类 ：一类是以短视频的浏览为主要的使用形式 ，自身并不具备独立使用电子设备进行拍摄视频的能力 ，主要由监护人进行拍摄、发布 ；而第二类不仅具有浏览能力 ，而且也有视频内容生产的能力。</p>
       </div>
       <div class="type-card">
         <h3>身体参与型</h3>
-        <p>正处于学龄阶段的儿童和青少年 ，其本身不仅具有浏览能力 ，而且也有视频内容生产的能力。身体参与型是指仍以体力劳动为主要的劳动形式
-          ，且劳动有着他人推动或是控制的原因的数字童工 ，诸如童模。</p>
+        <p>身体参与型是指仍以体力劳动为主要的劳动形式 ，通过身体的直接参与来从事相关数字劳动，且劳动有着他人推动或是控制的原因的数字童工。</p>
       </div>
     </div>
     <p class="key-message">在这其中，有一部分在父母的包装下成为了<span
@@ -90,6 +89,17 @@
   border-radius: 2px;
 }
 
+/* ==================== 类型介绍文字 ==================== */
+.types-intro {
+  font-size: 1.2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 auto var(--spacing-xl, 40px);
+  max-width: 1200px;
+  line-height: 1.6;
+  padding: 0 var(--spacing-md, 20px);
+}
+
 /* ==================== 类型卡片 ==================== */
 .childlabor-types {
   display: grid;
@@ -97,12 +107,12 @@
   gap: var(--spacing-xl, 40px);
   width: 100%;
   max-width: 1200px;
-  margin: var(--spacing-2xl, 60px) auto;
+  margin: var(--spacing-xl, 40px) auto;
 }
 
 .type-card {
   background: rgba(255, 255, 255, 0.12);
-  padding: var(--spacing-2xl, 40px) var(--spacing-xl, 35px);
+  padding: var(--spacing-lg, 25px) var(--spacing-lg, 28px);
   border-radius: var(--radius-lg, 20px);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -117,7 +127,7 @@
 
 .type-card h3 {
   font-size: 1.8rem;
-  margin-bottom: var(--spacing-lg, 25px);
+  margin-bottom: var(--spacing-md, 18px);
   color: #3498db;
   font-weight: 700;
   text-align: center;
@@ -126,12 +136,14 @@
 
 .type-card p {
   font-size: 1.1rem;
-  line-height: 2;
+  line-height: 1.6;
   text-align: justify;
   text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
   color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  word-break: normal;
 }
 
 /* ==================== 关键信息 ==================== */
@@ -139,10 +151,10 @@
   font-size: 1.3rem;
   text-align: justify;
   text-justify: inter-ideograph;
-  line-height: 2;
+  line-height: 1.6;
   max-width: 1200px;
-  margin: var(--spacing-2xl, 60px) auto;
-  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
+  margin: var(--spacing-lg, 30px) auto;
+  padding: var(--spacing-lg, 20px) var(--spacing-lg, 28px);
   background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg, 20px);
   backdrop-filter: blur(10px);
@@ -161,14 +173,14 @@
 /* ==================== 统计框 ==================== */
 .stat-box {
   background: rgba(255, 255, 255, 0.15);
-  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  padding: var(--spacing-lg, 25px) var(--spacing-lg, 30px);
   border-radius: var(--radius-lg, 20px);
   text-align: justify;
   text-justify: inter-ideograph;
   font-size: 1.2rem;
-  line-height: 2;
+  line-height: 1.6;
   max-width: 1200px;
-  margin: var(--spacing-2xl, 60px) auto 0;
+  margin: var(--spacing-lg, 30px) auto 0;
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -220,41 +232,49 @@
     height: 3px;
   }
 
+  .types-intro {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg, 30px);
+  }
+
   .childlabor-types {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg, 30px);
     max-width: 100%;
-    margin: var(--spacing-xl, 40px) auto;
+    margin: var(--spacing-lg, 30px) auto;
   }
 
   .type-card {
-    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
+    padding: var(--spacing-lg, 20px) var(--spacing-md, 25px);
     border-radius: 16px;
   }
 
   .type-card h3 {
     font-size: 1.5rem;
-    margin-bottom: var(--spacing-md, 20px);
+    margin-bottom: var(--spacing-sm, 15px);
   }
 
   .type-card p {
     font-size: 1rem;
+    line-height: 1.6;
     text-align: justify;
     text-justify: inter-ideograph;
   }
 
   .key-message {
     font-size: 1.15rem;
-    padding: var(--spacing-lg, 25px) var(--spacing-md, 25px);
-    margin: var(--spacing-xl, 40px) auto;
+    line-height: 1.6;
+    padding: var(--spacing-md, 18px) var(--spacing-md, 22px);
+    margin: var(--spacing-lg, 30px) auto;
     text-align: justify;
     text-justify: inter-ideograph;
   }
 
   .stat-box {
     font-size: 1.05rem;
-    padding: var(--spacing-xl, 35px) var(--spacing-lg, 30px);
-    margin: var(--spacing-xl, 40px) auto 0;
+    line-height: 1.6;
+    padding: var(--spacing-lg, 20px) var(--spacing-md, 25px);
+    margin: var(--spacing-lg, 30px) auto 0;
     text-align: justify;
     text-justify: inter-ideograph;
   }
@@ -282,36 +302,41 @@
     height: 3px;
   }
 
+  .types-intro {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md, 25px);
+  }
+
   .childlabor-types {
     gap: var(--spacing-md, 20px);
     max-width: 100%;
-    margin: var(--spacing-lg, 30px) auto;
+    margin: var(--spacing-md, 25px) auto;
   }
 
   .type-card {
-    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
+    padding: var(--spacing-md, 18px) var(--spacing-sm, 18px);
     border-radius: 14px;
   }
 
   .type-card h3 {
     font-size: 1.3rem;
-    margin-bottom: var(--spacing-sm, 18px);
+    margin-bottom: var(--spacing-xs, 12px);
   }
 
   .type-card p {
     font-size: 0.95rem;
-    line-height: 1.9;
+    line-height: 1.6;
     text-align: justify;
     text-justify: inter-ideograph;
   }
 
   .key-message {
     font-size: 1.05rem;
-    padding: var(--spacing-md, 20px) var(--spacing-sm, 18px);
-    margin: var(--spacing-lg, 30px) auto;
+    line-height: 1.6;
+    padding: var(--spacing-sm, 15px) var(--spacing-sm, 16px);
+    margin: var(--spacing-md, 25px) auto;
     text-align: justify;
     text-justify: inter-ideograph;
-    line-height: 1.9;
   }
 
   .highlight {
@@ -320,11 +345,11 @@
 
   .stat-box {
     font-size: 0.95rem;
-    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
-    margin: var(--spacing-lg, 30px) auto 0;
+    line-height: 1.6;
+    padding: var(--spacing-md, 18px) var(--spacing-sm, 18px);
+    margin: var(--spacing-md, 25px) auto 0;
     text-align: justify;
     text-justify: inter-ideograph;
-    line-height: 1.9;
   }
 
   .big-num {

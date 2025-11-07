@@ -898,6 +898,7 @@ onUnmounted(() => {
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
   border: 2px solid rgba(102, 126, 234, 0.1);
   backdrop-filter: blur(10px);
+  word-break: normal;
 }
 
 .highlight-emphasis {

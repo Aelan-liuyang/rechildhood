@@ -16,6 +16,38 @@
         <div class="glow-orb orb-3"></div>
       </div>
 
+      <!-- 大标题 -->
+      <div class="opening-text">
+        <span class="char" :class="{ 'char-show': charVisible[0] }" :style="{ animationDelay: '0s' }">屏</span>
+        <span class="char" :class="{ 'char-show': charVisible[1] }" :style="{ animationDelay: '0.1s' }">幕</span>
+        <span class="char" :class="{ 'char-show': charVisible[2] }" :style="{ animationDelay: '0.2s' }">后</span>
+        <span class="char" :class="{ 'char-show': charVisible[3] }" :style="{ animationDelay: '0.3s' }">的</span>
+        <span class="char" :class="{ 'char-show': charVisible[4] }" :style="{ animationDelay: '0.4s' }">小</span>
+        <span class="char" :class="{ 'char-show': charVisible[5] }" :style="{ animationDelay: '0.5s' }">劳</span>
+        <span class="char" :class="{ 'char-show': charVisible[6] }" :style="{ animationDelay: '0.6s' }">工</span>
+        <span class="char highlight" :class="{ 'char-show': charVisible[7] }"
+          :style="{ animationDelay: '0.7s' }">：</span>
+        <br>
+        <span class="char quote" :class="{ 'char-show': charVisible[8] }" :style="{ animationDelay: '0.8s' }">"</span>
+        <span class="char" :class="{ 'char-show': charVisible[9] }" :style="{ animationDelay: '0.9s' }">网</span>
+        <span class="char" :class="{ 'char-show': charVisible[10] }" :style="{ animationDelay: '1.0s' }">红</span>
+        <span class="char" :class="{ 'char-show': charVisible[11] }" :style="{ animationDelay: '1.1s' }">儿</span>
+        <span class="char" :class="{ 'char-show': charVisible[12] }" :style="{ animationDelay: '1.2s' }">童</span>
+        <span class="char quote" :class="{ 'char-show': charVisible[13] }" :style="{ animationDelay: '1.3s' }">"</span>
+        <span class="char" :class="{ 'char-show': charVisible[14] }" :style="{ animationDelay: '1.4s' }">账</span>
+        <span class="char" :class="{ 'char-show': charVisible[15] }" :style="{ animationDelay: '1.5s' }">号</span>
+        <span class="char" :class="{ 'char-show': charVisible[16] }" :style="{ animationDelay: '1.6s' }">的</span>
+        <span class="char" :class="{ 'char-show': charVisible[17] }" :style="{ animationDelay: '1.7s' }">流</span>
+        <span class="char" :class="{ 'char-show': charVisible[18] }" :style="{ animationDelay: '1.8s' }">量</span>
+        <span class="char" :class="{ 'char-show': charVisible[19] }" :style="{ animationDelay: '1.9s' }">密</span>
+        <span class="char" :class="{ 'char-show': charVisible[20] }" :style="{ animationDelay: '2.0s' }">码</span>
+      </div>
+
+      <!-- 文字光效 -->
+      <div class="text-particles">
+        <div class="text-particle" v-for="n in 15" :key="n"></div>
+      </div>
+
       <div class="phone-screen" :class="{ 'phone-show': phoneVisible }">
         <!-- 手机外发光 -->
         <div class="phone-glow"></div>
@@ -35,39 +67,6 @@
         <div class="screen-content">
           <!-- 屏幕光晕 -->
           <div class="screen-shine"></div>
-
-          <div class="opening-text">
-            <span class="char" :class="{ 'char-show': charVisible[0] }" :style="{ animationDelay: '0s' }">屏</span>
-            <span class="char" :class="{ 'char-show': charVisible[1] }" :style="{ animationDelay: '0.1s' }">幕</span>
-            <span class="char" :class="{ 'char-show': charVisible[2] }" :style="{ animationDelay: '0.2s' }">后</span>
-            <span class="char" :class="{ 'char-show': charVisible[3] }" :style="{ animationDelay: '0.3s' }">的</span>
-            <span class="char" :class="{ 'char-show': charVisible[4] }" :style="{ animationDelay: '0.4s' }">小</span>
-            <span class="char" :class="{ 'char-show': charVisible[5] }" :style="{ animationDelay: '0.5s' }">劳</span>
-            <span class="char" :class="{ 'char-show': charVisible[6] }" :style="{ animationDelay: '0.6s' }">工</span>
-            <span class="char highlight" :class="{ 'char-show': charVisible[7] }"
-              :style="{ animationDelay: '0.7s' }">：</span>
-            <br>
-            <span class="char quote" :class="{ 'char-show': charVisible[8] }"
-              :style="{ animationDelay: '0.8s' }">"</span>
-            <span class="char" :class="{ 'char-show': charVisible[9] }" :style="{ animationDelay: '0.9s' }">网</span>
-            <span class="char" :class="{ 'char-show': charVisible[10] }" :style="{ animationDelay: '1.0s' }">红</span>
-            <span class="char" :class="{ 'char-show': charVisible[11] }" :style="{ animationDelay: '1.1s' }">儿</span>
-            <span class="char" :class="{ 'char-show': charVisible[12] }" :style="{ animationDelay: '1.2s' }">童</span>
-            <span class="char quote" :class="{ 'char-show': charVisible[13] }"
-              :style="{ animationDelay: '1.3s' }">"</span>
-            <span class="char" :class="{ 'char-show': charVisible[14] }" :style="{ animationDelay: '1.4s' }">账</span>
-            <span class="char" :class="{ 'char-show': charVisible[15] }" :style="{ animationDelay: '1.5s' }">号</span>
-            <span class="char" :class="{ 'char-show': charVisible[16] }" :style="{ animationDelay: '1.6s' }">的</span>
-            <span class="char" :class="{ 'char-show': charVisible[17] }" :style="{ animationDelay: '1.7s' }">流</span>
-            <span class="char" :class="{ 'char-show': charVisible[18] }" :style="{ animationDelay: '1.8s' }">量</span>
-            <span class="char" :class="{ 'char-show': charVisible[19] }" :style="{ animationDelay: '1.9s' }">密</span>
-            <span class="char" :class="{ 'char-show': charVisible[20] }" :style="{ animationDelay: '2.0s' }">码</span>
-          </div>
-
-          <!-- 文字光效 -->
-          <div class="text-particles">
-            <div class="text-particle" v-for="n in 15" :key="n"></div>
-          </div>
         </div>
       </div>
 
@@ -390,12 +389,14 @@ onUnmounted(() => {
     0 0 0 3px #333,
     0 0 60px rgba(102, 126, 234, 0.5),
     inset 0 0 40px rgba(0, 0, 0, 0.3);
-  position: relative;
+  position: absolute;
+  bottom: 10%;
+  right: 8%;
   overflow: hidden;
   opacity: 0;
   transform: translateY(100vh) scale(0.5) rotate(10deg);
   transition: all 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 10;
+  z-index: 8;
 }
 
 @keyframes gradientShift {
@@ -424,7 +425,7 @@ onUnmounted(() => {
   }
 
   50% {
-    transform: translateY(-25px) rotate(-2deg);
+    transform: translateY(-15px) rotate(-2deg);
   }
 }
 
@@ -624,13 +625,20 @@ onUnmounted(() => {
 /* 文字样式 */
 .opening-text {
   color: white;
-  font-size: 1.6rem;
+  font-size: 4.5rem;
   font-weight: 900;
   text-align: center;
-  line-height: 1.8;
-  position: relative;
-  z-index: 6;
-  letter-spacing: 1.5px;
+  line-height: 1.4;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  letter-spacing: 2px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 var(--spacing-xl, 40px);
+  pointer-events: none;
 }
 
 .opening-text .char {
@@ -733,7 +741,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  z-index: 10;
 }
 
 .text-particle {
@@ -1330,6 +1338,19 @@ onUnmounted(() => {
   }
 }
 
+/* 中等屏幕响应式 */
+@media (max-width: 1024px) {
+  .opening-text {
+    font-size: 3.5rem;
+    top: 30%;
+  }
+
+  .phone-screen {
+    bottom: 8%;
+    right: 5%;
+  }
+}
+
 /* 平板和手机响应式 */
 @media (max-width: 768px) {
   .opening-section {
@@ -1341,6 +1362,14 @@ onUnmounted(() => {
     width: 200px;
     height: 400px;
     border: 6px solid #1a1a1a;
+    position: absolute;
+    bottom: 15%;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .phone-screen.phone-show {
+    transform: translateX(50%) translateY(0) scale(1) rotate(0deg);
   }
 
   .phone-glow {
@@ -1370,10 +1399,7 @@ onUnmounted(() => {
   }
 
   .opening-text {
-    font-size: 1.3rem;
-    padding: 20px 10px;
-    line-height: 1.7;
-    letter-spacing: 1px;
+    display: none;
   }
 
   .text-particles {
@@ -1520,6 +1546,14 @@ onUnmounted(() => {
     width: 160px;
     height: 320px;
     border: 5px solid #1a1a1a;
+    position: absolute;
+    bottom: 15%;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .phone-screen.phone-show {
+    transform: translateX(50%) translateY(0) scale(1) rotate(0deg);
   }
 
   .phone-glow {
@@ -1548,10 +1582,7 @@ onUnmounted(() => {
   }
 
   .opening-text {
-    font-size: 1.05rem;
-    padding: 15px 8px;
-    letter-spacing: 0.5px;
-    line-height: 1.8;
+    display: none;
   }
 
   .scroll-indicator {

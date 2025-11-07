@@ -135,11 +135,11 @@
         <span class="warning-icon">⚠️</span>
       </div>
       <p class="penalty-hint">鼠标悬停暂停弹幕</p>
-      <div class="danmaku-container">
+      <div class="danmaku-container" @mouseenter="pauseDanmaku" @mouseleave="resumeDanmaku">
         <div class="danmaku-track" v-for="(line, lineIndex) in 3" :key="lineIndex" :class="`track-${lineIndex + 1}`">
-          <div class="danmaku-content" :style="{
+          <div class="danmaku-content" :class="{ 'paused': isPaused }" :style="{
             animationDelay: `${lineIndex * 1.5}s`,
-            animationDuration: `${40 + lineIndex * 5}s`
+            animationDuration: `${35 + lineIndex * 3}s`
           }">
             <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-${index}`"
               :class="`item-style-${(index % 3) + 1}`">
@@ -222,6 +222,17 @@ const mcnModels = [
 const getItemIcon = (index) => {
   const icons = ['⚡', '💰', '⚠️', '🚫', '📄']
   return icons[index % icons.length]
+}
+
+// 弹幕暂停控制
+const isPaused = ref(false)
+
+const pauseDanmaku = () => {
+  isPaused.value = true
+}
+
+const resumeDanmaku = () => {
+  isPaused.value = false
 }
 
 onMounted(() => {
@@ -642,6 +653,7 @@ p {
   text-align: justify;
   word-break: keep-all;
   overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .tooltip-trigger:hover .tooltip-text {
@@ -797,6 +809,7 @@ p {
   word-break: keep-all;
   overflow-wrap: break-word;
   text-align: justify;
+  word-break: normal;
 }
 
 .note-text strong {
@@ -1077,6 +1090,11 @@ ul li::before {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+  /* 启用硬件加速 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .danmaku-track {
@@ -1084,6 +1102,9 @@ ul li::before {
   width: 100%;
   height: 65px;
   overflow: hidden;
+  /* 启用硬件加速 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .track-1 {
@@ -1101,23 +1122,28 @@ ul li::before {
 .danmaku-content {
   display: inline-block;
   white-space: nowrap;
-  animation: danmaku-scroll 40s linear infinite;
+  animation: danmaku-scroll 35s linear infinite;
   padding-left: 100%;
+  /* 优化性能 */
   will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.danmaku-content.paused {
+  animation-play-state: paused;
 }
 
 @keyframes danmaku-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
-}
-
-.danmaku-container:hover .danmaku-content {
-  animation-play-state: paused;
 }
 
 .danmaku-item {
@@ -1126,79 +1152,71 @@ ul li::before {
   gap: 8px;
   color: #fff;
   font-size: 1rem;
-  padding: 12px 20px;
-  margin-right: 40px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
-  border-radius: 28px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 18px;
+  margin-right: 35px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   position: relative;
   white-space: nowrap;
-  transition: all 0.3s ease;
+  /* 优化渲染性能 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* 简化阴影效果 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  /* 移除复杂的backdrop-filter以提高兼容性 */
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.danmaku-item::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 28px;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* 不同样式的弹幕项 */
+/* 不同样式的弹幕项 - 简化版本 */
 .item-style-1 {
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
-  border-color: rgba(231, 76, 60, 0.4);
+  background: rgba(231, 76, 60, 0.18);
+  border-color: rgba(231, 76, 60, 0.35);
 }
 
 .item-style-2 {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.1) 100%);
-  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.18);
+  border-color: rgba(255, 107, 107, 0.35);
 }
 
 .item-style-3 {
-  background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(255, 71, 87, 0.1) 100%);
-  border-color: rgba(255, 71, 87, 0.4);
+  background: rgba(255, 71, 87, 0.18);
+  border-color: rgba(255, 71, 87, 0.35);
 }
 
 .danmaku-container:hover .danmaku-item {
-  transform: scale(1.05);
+  opacity: 0.9;
+  transform: translateZ(0) scale(1.02);
 }
 
 .item-icon {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  display: inline-block;
+  line-height: 1;
 }
 
 .danmaku-text {
   display: inline;
   color: rgba(255, 255, 255, 0.95);
   font-weight: 400;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1.4;
 }
 
 .red-text {
   display: inline-block;
   color: #ff4757;
-  font-weight: 900;
-  font-size: 1.35rem;
-  text-shadow: 0 0 12px rgba(255, 71, 87, 0.9),
-    0 0 24px rgba(255, 71, 87, 0.6),
-    0 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 0 10px;
-  animation: glow-intense 2.5s ease-in-out infinite;
-  letter-spacing: 1px;
+  font-weight: 800;
+  font-size: 1.3rem;
+  text-shadow: 0 0 8px rgba(255, 71, 87, 0.8),
+    0 0 16px rgba(255, 71, 87, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 0 8px;
+  animation: glow-pulse 2s ease-in-out infinite;
+  letter-spacing: 0.5px;
   position: relative;
+  line-height: 1.4;
 }
 
 .red-text::after {
@@ -1207,28 +1225,28 @@ ul li::before {
   bottom: -2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 75%;
   height: 2px;
   background: linear-gradient(90deg, transparent, #ff4757, transparent);
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
-@keyframes glow-intense {
+@keyframes glow-pulse {
 
   0%,
   100% {
-    text-shadow: 0 0 12px rgba(255, 71, 87, 0.9),
-      0 0 24px rgba(255, 71, 87, 0.6),
-      0 2px 4px rgba(0, 0, 0, 0.5);
-    transform: scale(1);
+    text-shadow: 0 0 8px rgba(255, 71, 87, 0.8),
+      0 0 16px rgba(255, 71, 87, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.6);
+    opacity: 1;
   }
 
   50% {
-    text-shadow: 0 0 18px rgba(255, 71, 87, 1),
-      0 0 35px rgba(255, 71, 87, 0.8),
-      0 0 50px rgba(255, 71, 87, 0.6),
-      0 2px 4px rgba(0, 0, 0, 0.5);
-    transform: scale(1.05);
+    text-shadow: 0 0 12px rgba(255, 71, 87, 1),
+      0 0 24px rgba(255, 71, 87, 0.7),
+      0 0 36px rgba(255, 71, 87, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.6);
+    opacity: 1;
   }
 }
 
@@ -1388,20 +1406,26 @@ ul li::before {
     top: 114px;
   }
 
+  .danmaku-content {
+    animation-duration: 30s;
+  }
+
   .danmaku-item {
     font-size: 0.9rem;
-    padding: 10px 16px;
-    margin-right: 30px;
+    padding: 8px 14px;
+    margin-right: 25px;
     gap: 6px;
+    border-radius: 22px;
   }
 
   .item-icon {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .red-text {
     font-size: 1.15rem;
     padding: 0 6px;
+    letter-spacing: 0.3px;
   }
 
   .conclusion-text {
@@ -1525,33 +1549,35 @@ ul li::before {
   }
 
   .danmaku-content {
-    animation-duration: 35s;
+    animation-duration: 28s;
   }
 
   .danmaku-item {
-    font-size: 0.85rem;
-    padding: 8px 14px;
-    margin-right: 25px;
-    gap: 5px;
-    border-radius: 24px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    margin-right: 20px;
+    gap: 4px;
+    border-radius: 20px;
   }
 
   .item-icon {
-    font-size: 0.9rem;
-  }
-
-  .danmaku-text {
     font-size: 0.85rem;
   }
 
+  .danmaku-text {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+
   .red-text {
-    font-size: 1.05rem;
-    padding: 0 5px;
-    letter-spacing: 0.5px;
+    font-size: 1rem;
+    padding: 0 4px;
+    letter-spacing: 0.2px;
   }
 
   .red-text::after {
     height: 1.5px;
+    width: 70%;
   }
 
   .conclusion-text {

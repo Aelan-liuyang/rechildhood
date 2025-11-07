@@ -1,12 +1,10 @@
 <template>
   <div>
     <h3>观众：流量的推手</h3>
-    <p class="intro-text">流量的源头是基本流量，基本流量应该取决于作品本身制作的好坏而非观众。</p>
-
     <!-- 观众画像分析 -->
     <h4 class="section-subtitle">谁在观看萌娃视频？</h4>
 
-    <div class="audience-summary">
+    <!-- <div class="audience-summary">
       <p>观看萌娃类短视频的观众画像特征：</p>
       <ul>
         <li><strong>年龄：</strong>31-40岁占比最高，18-23岁偏好度最高</li>
@@ -16,7 +14,7 @@
     </div>
     <p class="data-source">
       数据来源：QuestMobile《2024短视频用户研究报告》、巨量算数《萌娃内容观众洞察报告》
-    </p>
+    </p> -->
     <div class="audience-charts">
       <!-- 年龄分布图 -->
       <div class="chart-card">
@@ -46,22 +44,40 @@
           <h5>性别分布</h5>
         </div>
         <div class="chart-summary">
-          <span class="highlight-text">女性</span>占比最高，
-          <span class="highlight-text">女性</span>偏好度（TGI指数）最高
+          <span class="highlight-text">女性</span>占比68%，偏好度达128
         </div>
-        <div class="chart-container gender-chart" ref="chartAudienceGender"></div>
+        <div class="gender-chart-container">
+          <img :src="genderChartImg" alt="性别分布注水图" class="gender-chart-image" />
+          <div class="gender-stats">
+            <div class="gender-stat-item">
+              <div class="gender-label" style="color: #FF6B9D;">女性</div>
+              <div class="stat-text">
+                <span>占比: <strong>68%</strong></span>
+              </div>
+              <div class="stat-text">
+                <span>TGI: <strong>128</strong></span>
+              </div>
+            </div>
+            <div class="gender-stat-item">
+              <div class="gender-label" style="color: #5B8FF9;">男性</div>
+              <div class="stat-text">
+                <span>占比: <strong>32%</strong></span>
+              </div>
+              <div class="stat-text">
+                <span>TGI: <strong>68</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- 地域分布 -->
-    <h4 class="section-subtitle">地域分布特征</h4>
+    <h4 class="section-subtitle">地域分布</h4>
     <p class="data-note">
-      观看萌娃类短视频的观众中，广东占比最高，辽宁偏好度（TGI指数）最高
+      观看萌娃类短视频的观众中，<span style="color:red">广东</span>占比最高，<span style="color:red">辽宁</span>偏好度（TGI指数）最高
     </p>
     <div class="chart-container map-chart" ref="chartAudienceRegion"></div>
-
-    <!-- 评论词云 -->
-    <h4 class="section-subtitle">评论区的声音</h4>
 
     <!-- 观众心理分析 -->
     <div class="audience-psychology">
@@ -73,13 +89,13 @@
       </div>
 
       <div class="psychology-negative">
+        <h4 class="section-subtitle">评论区的声音</h4>
         <p>
           <strong>"啃娃逻辑"</strong>正在逐渐被更多人接受。甚至出现了一批"母婴博主陪跑""宝妈专业运营"等专门教导家长如何打造"小网红"的账号。相关视频评论区里，对幼童擦边内容的追捧、对儿童"小小年纪挣大钱"的羡慕。
         </p>
+        <div class="chart-container wordcloud-chart" ref="chartWordCloud"></div>
       </div>
     </div>
-
-    <div class="chart-container wordcloud-chart" ref="chartWordCloud"></div>
 
     <!-- 流量狂潮案例 -->
     <div class="traffic-craze">
@@ -112,12 +128,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 
 const chartAudienceAge = ref(null)
-const chartAudienceGender = ref(null)
 const chartAudienceRegion = ref(null)
 const chartWordCloud = ref(null)
 
 // 流量案例图片
 const trafficCaseImg = new URL('@/assets/images/10.png', import.meta.url).href
+// 性别分布注水图
+const genderChartImg = new URL('@/assets/images/注水图.png', import.meta.url).href
 
 let cloudObserver = null
 
@@ -200,51 +217,6 @@ onMounted(() => {
         }
       ]
     })
-  }
-
-  // 性别分布（人形图标展示）
-  if (chartAudienceGender.value) {
-    const container = chartAudienceGender.value
-    container.innerHTML = `
-      <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 320px; padding: 30px 20px;">
-        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-          <div style="position: relative; margin-bottom: 20px;">
-            <svg width="110" height="170" viewBox="0 0 120 180">
-              <circle cx="60" cy="30" r="25" fill="#B0B0B0"/>
-              <rect x="35" y="55" width="50" height="60" rx="8" fill="#B0B0B0"/>
-              <rect x="42" y="115" width="15" height="60" rx="8" fill="#5B8FF9"/>
-              <rect x="63" y="115" width="15" height="60" rx="8" fill="#5B8FF9"/>
-            </svg>
-          </div>
-          <div style="font-size: 18px; color: #5B8FF9; font-weight: bold; margin-bottom: 8px;">男性</div>
-          <div style="font-size: 15px; color: #666; margin-bottom: 4px;">
-            占比: <span style="font-weight: bold; color: #333;">32%</span>
-          </div>
-          <div style="font-size: 15px; color: #666;">
-            TGI: <span style="font-weight: bold; color: #333;">68</span>
-          </div>
-        </div>
-
-        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-          <div style="position: relative; margin-bottom: 20px;">
-            <svg width="110" height="170" viewBox="0 0 120 180">
-              <circle cx="60" cy="30" r="25" fill="#B0B0B0"/>
-              <path d="M 40 55 L 35 115 L 85 115 L 80 55 Z" fill="#FF6B9D" rx="5"/>
-              <rect x="37" y="55" width="46" height="25" rx="8" fill="#B0B0B0"/>
-              <rect x="42" y="115" width="15" height="60" rx="8" fill="#FF6B9D"/>
-              <rect x="63" y="115" width="15" height="60" rx="8" fill="#FF6B9D"/>
-            </svg>
-          </div>
-          <div style="font-size: 18px; color: #FF6B9D; font-weight: bold; margin-bottom: 8px;">女性</div>
-          <div style="font-size: 15px; color: #666; margin-bottom: 4px;">
-            占比: <span style="font-weight: bold; color: #333;">68%</span>
-          </div>
-          <div style="font-size: 15px; color: #666;">
-            TGI: <span style="font-weight: bold; color: #333;">128</span>
-          </div>
-        </div>
-      </div>
-    `
   }
 
   // 地域分布（交互地图）
@@ -428,7 +400,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   cloudObserver?.disconnect?.()
-    ;[chartAudienceAge, chartAudienceGender, chartAudienceRegion, chartWordCloud].forEach(r => {
+    ;[chartAudienceAge, chartAudienceRegion, chartWordCloud].forEach(r => {
       if (r?.value) {
         const inst = echarts.getInstanceByDom(r.value)
         inst && inst.dispose()
@@ -438,6 +410,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* ==================== 全局段落样式 ==================== */
+p {
+  word-spacing: 0;
+  text-rendering: optimizeLegibility;
+  word-break: normal;
+}
+
 /* ==================== 文本样式 ==================== */
 h3 {
   font-size: var(--font-size-h2, 2.2rem);
@@ -454,7 +433,7 @@ h3 {
 }
 
 h3::after {
-  content: '';
+  /* content: ''; */
   position: absolute;
   bottom: 0;
   left: 0;
@@ -468,14 +447,13 @@ h3::after {
 
 .intro-text {
   font-size: 1.15rem;
-  line-height: 2;
+  line-height: 1.5;
   color: #555;
-  margin: 0 auto var(--spacing-xl, 40px);
+  margin: 0 auto var(--spacing-lg, 25px);
   max-width: 1400px;
-  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
   overflow-wrap: break-word;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   border-radius: var(--radius-md, 16px);
@@ -499,18 +477,17 @@ h3::after {
 /* ==================== 数据高亮样式 ==================== */
 .data-highlight {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 30px 35px;
+  padding: 22px 28px;
   border-radius: 18px;
   color: white;
-  margin: 25px 0 40px;
+  margin: 20px 0 30px;
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.35);
 }
 
 .data-highlight p {
-  margin: 12px 0;
+  margin: 8px 0;
   font-size: 1.1rem;
-  line-height: 1.9;
-  word-break: keep-all;
+  line-height: 1.5;
   overflow-wrap: break-word;
 }
 
@@ -550,9 +527,9 @@ h3::after {
 /* ==================== 观众总结框 ==================== */
 .audience-summary {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
   border-radius: var(--radius-md, 16px);
-  margin: var(--spacing-lg, 25px) auto var(--spacing-xl, 40px);
+  margin: var(--spacing-md, 20px) auto var(--spacing-lg, 25px);
   max-width: 1400px;
   border-left: 4px solid #667eea;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -563,7 +540,7 @@ h3::after {
   font-size: 1.05rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
 }
 
 .audience-summary ul {
@@ -575,12 +552,11 @@ h3::after {
 .audience-summary li {
   font-size: 1.05rem;
   color: #555;
-  line-height: 2;
+  line-height: 1.5;
   padding-left: 25px;
   position: relative;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
@@ -643,16 +619,15 @@ h3::after {
 
 .chart-summary {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-md, 15px) var(--spacing-lg, 20px);
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 18px);
   border-radius: var(--radius-sm, 12px);
   font-size: 1rem;
   color: #555;
-  margin-bottom: var(--spacing-md, 20px);
-  line-height: 2;
+  margin-bottom: var(--spacing-sm, 15px);
+  line-height: 1.5;
   border-left: 4px solid #667eea;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
   overflow-wrap: break-word;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -690,8 +665,53 @@ h3::after {
   height: 340px;
 }
 
-.gender-chart {
-  height: 320px;
+.gender-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md, 20px);
+  padding: var(--spacing-md, 20px);
+}
+
+.gender-chart-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+}
+
+.gender-stats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  gap: var(--spacing-lg, 30px);
+}
+
+.gender-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.gender-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm, 12px);
+}
+
+.gender-stat-item .stat-text {
+  font-size: 0.95rem;
+  color: #666;
+  margin: var(--spacing-xs, 6px) 0;
+  line-height: 1.5;
+}
+
+.gender-stat-item .stat-text strong {
+  color: #333;
+  font-weight: 700;
 }
 
 .map-chart {
@@ -727,6 +747,11 @@ h3::after {
   transition: all 0.3s ease;
 }
 
+.psychology-negative .wordcloud-chart {
+  margin: var(--spacing-lg, 20px) 0 0 0;
+  height: 500px;
+}
+
 .wordcloud-chart:hover {
   box-shadow:
     0 12px 40px rgba(102, 126, 234, 0.15),
@@ -738,16 +763,15 @@ h3::after {
   text-justify: inter-ideograph;
   color: #555;
   font-size: 1.05rem;
-  line-height: 2;
-  margin: var(--spacing-lg, 25px) auto var(--spacing-xl, 40px);
+  line-height: 1.5;
+  margin: var(--spacing-md, 20px) auto var(--spacing-lg, 25px);
   max-width: 1400px;
-  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
+  padding: var(--spacing-sm, 15px) var(--spacing-md, 20px);
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   border-radius: var(--radius-md, 16px);
   border-left: 4px solid #667eea;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
-  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
@@ -762,7 +786,7 @@ h3::after {
 
 .psychology-positive {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  padding: var(--spacing-lg, 20px) var(--spacing-xl, 28px);
   border-radius: var(--radius-lg, 20px);
   border-left: 5px solid #5B8FF9;
   box-shadow: 0 4px 15px rgba(91, 143, 249, 0.1);
@@ -782,9 +806,8 @@ h3::after {
 .psychology-positive p {
   color: #555;
   font-size: 1.1rem;
-  line-height: 2;
-  margin: var(--spacing-md, 15px) 0;
-  word-break: keep-all;
+  line-height: 1.5;
+  margin: var(--spacing-sm, 10px) 0;
   overflow-wrap: break-word;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -797,7 +820,7 @@ h3::after {
 
 .psychology-negative {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  padding: var(--spacing-lg, 20px) var(--spacing-xl, 28px);
   border-radius: var(--radius-lg, 20px);
   border-left: 5px solid #ff6b6b;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.1);
@@ -817,12 +840,16 @@ h3::after {
 .psychology-negative p {
   color: #555;
   font-size: 1.1rem;
-  line-height: 2;
-  margin: 0;
-  word-break: keep-all;
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-md, 15px) 0;
   overflow-wrap: break-word;
   text-align: justify;
   text-justify: inter-ideograph;
+}
+
+.psychology-negative .section-subtitle {
+  margin-top: 0;
+  margin-bottom: var(--spacing-md, 20px);
 }
 
 .psychology-negative strong {
@@ -832,8 +859,8 @@ h3::after {
 
 /* ==================== 流量狂潮案例 ==================== */
 .traffic-craze {
-  margin: var(--spacing-xl, 40px) auto;
-  padding: var(--spacing-xl, 35px) var(--spacing-2xl, 40px);
+  margin: var(--spacing-lg, 25px) auto;
+  padding: var(--spacing-lg, 20px) var(--spacing-xl, 28px);
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   border-radius: var(--radius-lg, 20px);
   border: 2px dashed rgba(102, 126, 234, 0.3);
@@ -844,13 +871,12 @@ h3::after {
 
 .craze-intro {
   font-size: 1.15rem;
-  line-height: 2;
+  line-height: 1.5;
   color: #555;
   text-align: justify;
   text-justify: inter-ideograph;
-  margin: 0 0 var(--spacing-xl, 35px) 0;
+  margin: 0 0 var(--spacing-lg, 25px) 0;
   font-weight: 500;
-  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
@@ -888,9 +914,9 @@ h3::after {
 }
 
 .case-caption {
-  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
   font-size: 1.1rem;
-  line-height: 2;
+  line-height: 1.5;
   color: #2c3e50;
   font-weight: 600;
   text-align: justify;
@@ -898,16 +924,15 @@ h3::after {
   margin: 0;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   border-top: 3px solid #667eea;
-  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
 /* ==================== 责任提示框 ==================== */
 .responsibility-box {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-xl, 30px) var(--spacing-2xl, 35px);
+  padding: var(--spacing-lg, 20px) var(--spacing-xl, 28px);
   border-radius: var(--radius-lg, 20px);
-  margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 25px);
+  margin: var(--spacing-lg, 25px) auto var(--spacing-md, 20px);
   max-width: 1400px;
   border-left: 5px solid #ff9800;
   box-shadow: 0 4px 15px rgba(255, 152, 0, 0.1);
@@ -917,12 +942,13 @@ h3::after {
 .responsibility-box p {
   color: #555;
   font-size: 1.1rem;
-  line-height: 2;
-  margin: var(--spacing-md, 15px) 0;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  line-height: 1.5;
+  margin: var(--spacing-sm, 10px) 0;
   text-align: justify;
-  text-justify: inter-ideograph;
+  /* text-align-last: left; */
+  text-justify: auto;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .responsibility-box strong {
@@ -935,17 +961,16 @@ h3::after {
   text-justify: inter-ideograph;
   color: #666;
   font-size: 0.95rem;
-  margin: var(--spacing-xl, 40px) auto var(--spacing-lg, 25px);
+  margin: var(--spacing-lg, 25px) auto var(--spacing-md, 20px);
   max-width: 1400px;
-  padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
+  padding: var(--spacing-md, 18px) var(--spacing-lg, 25px);
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   border-radius: var(--radius-md, 16px);
   border-top: 2px dashed rgba(102, 126, 234, 0.2);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
-  word-break: keep-all;
   overflow-wrap: break-word;
-  line-height: 2;
+  line-height: 1.5;
 }
 
 /* ==================== 响应式设计 ==================== */
@@ -1022,7 +1047,7 @@ h3::after {
 
   .audience-summary li {
     font-size: 0.95rem;
-    line-height: 1.9;
+    line-height: 1.5;
   }
 
   .chart-card {
@@ -1033,8 +1058,25 @@ h3::after {
     height: 280px;
   }
 
-  .gender-chart {
-    height: 280px;
+  .gender-chart-container {
+    padding: var(--spacing-sm, 15px);
+    gap: var(--spacing-sm, 15px);
+  }
+
+  .gender-chart-image {
+    max-height: 280px;
+  }
+
+  .gender-stats {
+    gap: var(--spacing-md, 20px);
+  }
+
+  .gender-label {
+    font-size: 1rem;
+  }
+
+  .gender-stat-item .stat-text {
+    font-size: 0.9rem;
   }
 
   .map-chart {
@@ -1068,7 +1110,12 @@ h3::after {
   .psychology-positive p,
   .psychology-negative p {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.5;
+  }
+
+  .psychology-negative .wordcloud-chart {
+    height: 380px;
+    margin-top: var(--spacing-md, 15px);
   }
 
   .traffic-craze {
@@ -1087,13 +1134,14 @@ h3::after {
   }
 
   .responsibility-box {
-    padding: var(--spacing-lg, 25px) var(--spacing-md, 20px);
-    margin: var(--spacing-lg, 30px) auto var(--spacing-md, 20px);
+    padding: var(--spacing-md, 18px) var(--spacing-md, 18px);
+    margin: var(--spacing-md, 20px) auto var(--spacing-sm, 15px);
   }
 
   .responsibility-box p {
     font-size: 1rem;
-    line-height: 1.9;
+    line-height: 1.5;
+    margin: var(--spacing-xs, 8px) 0;
   }
 
   .data-source {
@@ -1129,8 +1177,26 @@ h3::after {
     height: 250px;
   }
 
-  .gender-chart {
-    height: 250px;
+  .gender-chart-container {
+    padding: var(--spacing-xs, 12px);
+    gap: var(--spacing-xs, 12px);
+  }
+
+  .gender-chart-image {
+    max-height: 250px;
+  }
+
+  .gender-stats {
+    flex-direction: column;
+    gap: var(--spacing-sm, 15px);
+  }
+
+  .gender-label {
+    font-size: 0.95rem;
+  }
+
+  .gender-stat-item .stat-text {
+    font-size: 0.85rem;
   }
 
   .map-chart {
@@ -1141,6 +1207,11 @@ h3::after {
   .wordcloud-chart {
     height: 350px;
     padding: var(--spacing-xs, 10px);
+  }
+
+  .psychology-negative .wordcloud-chart {
+    height: 320px;
+    margin-top: var(--spacing-sm, 12px);
   }
 
   .psychology-positive p,

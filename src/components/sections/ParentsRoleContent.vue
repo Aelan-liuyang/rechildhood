@@ -1,16 +1,16 @@
 <template>
   <div>
     <h3>父母：“晒娃”是为了什么？</h3>
-    <p>"只是想分享一下"</p>
-    <p>是很多家长在社交媒体"晒娃"的初衷。许多账号由家长运营，或是以父母视角拍摄孩子的有趣瞬间，或是以孩子视角开设儿童账号，但是在流量至上、利益诱惑面前，这份分享可能就会变了味。</p>
+    <p>"只是想分享一下"是很多家长在社交媒体"晒娃"的初衷。许多账号由家长运营，或是以父母视角拍摄孩子的有趣瞬间，或是以孩子视角开设儿童账号，但是在流量至上、利益诱惑面前，这份分享可能就会变了味。</p>
 
-    <!-- 地图和养育成本左右布局 -->
+    <!-- 地图和养育成本上下布局 -->
     <div class="cost-layout-wrapper">
       <h4 class="cost-main-title">养育成本分析</h4>
-      <div class="cost-layout">
-        <!-- 左侧：地图 -->
-        <div class="map-section">
-          <div id="costMap" class="cost-map-chart"></div>
+
+      <!-- 地图区域 - 占据更大空间 -->
+      <div class="map-section">
+        <div id="costMap" class="cost-map-chart"></div>
+        <div class="map-footer">
           <div class="cost-legend">
             <span class="legend-item"><span class="legend-color" style="background: #fee5d9"></span>30-40万</span>
             <span class="legend-item"><span class="legend-color" style="background: #fcae91"></span>40-50万</span>
@@ -18,23 +18,28 @@
             <span class="legend-item"><span class="legend-color" style="background: #de2d26"></span>60-80万</span>
             <span class="legend-item"><span class="legend-color" style="background: #a50f15"></span>80万以上</span>
           </div>
-          <p class="chart-source">各地0-17岁孩子平均养育成本（港澳台未统计）<br>数据来源：《中国生育成本报告2024》</p>
+          <p class="chart-source">各地0-17岁孩子平均养育成本（港澳台未统计）数据来源：《中国生育成本报告2024》</p>
+        </div>
+      </div>
+
+      <!-- 信息卡片区域 - 横向排列 -->
+      <div class="cost-info-section">
+        <div class="cost-info-card cost-average-card">
+          <div class="money-bag-icon">
+            <span class="money-icon">💰</span>
+          </div>
+          <div class="cost-label">全国家庭0-17岁孩子的养育成本平均为</div>
+          <div class="cost-value-wrapper">
+            <span class="cost-big">53.8</span>
+            <span class="cost-unit">万元</span>
+          </div>
         </div>
 
-        <!-- 右侧：养育成本 -->
-        <div class="cost-section">
-          <div class="cost-info-box">
-            <div class="money-bag-icon">
-              <span class="money-icon">💰</span>
-            </div>
-            <div class="cost-average">
-              <p>全国家庭0-17岁孩子的养育成本平均为<span class="cost-big">53.8万元</span></p>
-            </div>
-            <div class="revenue-data-box">
-              <p class="revenue-text">据第三方数据，儿童网红@瑶一***其短视频社交媒体账号年广告收入或超1650万元，远超90%的同粉丝量级达人。</p>
-              <p class="revenue-source">数据来源：澎湃新闻、《齐鲁晚报》</p>
-            </div>
-          </div>
+        <div class="cost-info-card revenue-data-box">
+          <div class="revenue-icon">📊</div>
+          <p class="revenue-text">据第三方数据，儿童网红@瑶一***其短视频社交媒体账号年广告收入或超<span
+              class="revenue-highlight">1650万元</span>，远超90%的同粉丝量级达人。</p>
+          <p class="revenue-source">数据来源：澎湃新闻、《齐鲁晚报》</p>
         </div>
       </div>
     </div>
@@ -51,7 +56,7 @@
     </div>
 
     <!-- 儿童认知发展的真相 -->
-    <div class="piaget-section">
+    <!-- <div class="piaget-section">
       <h3 class="piaget-title">儿童认知发展的真相</h3>
       <p class="piaget-intro">
         皮亚杰理论清晰表明，7岁以下儿童无法理解抽象商业行为，11岁以下难以真正自主决策。当儿童账号展示"想红""爱表演"时，背后往往是父母将自身价值观嫁接给认知能力受限的孩子。
@@ -75,7 +80,7 @@
           </transition>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -308,39 +313,55 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ==================== 养育成本平均值样式 ==================== */
-.cost-average {
-  width: 100%;
-  margin: 0;
-  padding: 10px 12px;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-  border-radius: 8px;
-  border-left: 3px solid #667eea;
+/* ==================== 全局段落样式 ==================== */
+p {
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: normal;
 }
 
-.cost-average p {
-  margin: 0;
-  font-size: 0.88rem;
+/* ==================== 养育成本平均值样式 ==================== */
+.cost-label {
+  font-size: 0.9rem;
   line-height: 1.5;
-  color: #2c3e50;
+  color: #495057;
   text-align: center;
+  margin-bottom: 10px;
   word-break: keep-all;
   overflow-wrap: break-word;
+  font-weight: 500;
+}
+
+.cost-value-wrapper {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
 }
 
 .cost-big {
-  font-size: 1.3rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 900;
   color: #667eea;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  letter-spacing: -1px;
 }
 
-/* ==================== 地图和养育成本左右布局 ==================== */
+.cost-unit {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #667eea;
+  opacity: 0.85;
+}
+
+/* ==================== 地图和养育成本上下布局 ==================== */
 .cost-layout-wrapper {
   background: white;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  margin: 25px 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 24px 0;
 }
 
 .cost-main-title {
@@ -350,66 +371,84 @@ onUnmounted(() => {
   text-align: center;
   font-weight: 700;
   padding-bottom: 12px;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 3px solid #e9ecef;
 }
 
-.cost-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-}
-
-.map-section,
-.cost-section {
-  background: transparent;
-  padding: 0;
-  border-radius: 0;
-  box-shadow: none;
-  transition: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.map-section:hover,
-.cost-section:hover {
-  transform: none;
-  box-shadow: none;
+/* 地图区域 - 占据更大空间 */
+.map-section {
+  width: 100%;
+  margin-bottom: 18px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .cost-map-chart {
   width: 100%;
-  height: 380px;
-  background: #f8f9fa;
+  height: 450px;
+  background: #fff;
   border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.map-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
 .chart-source {
   text-align: center;
   color: #666;
-  margin-top: 10px;
   font-size: 0.85rem;
   line-height: 1.5;
+  margin: 0;
 }
 
-.cost-info-box {
+/* 信息卡片区域 - 横向排列 */
+.cost-info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.cost-info-card {
+  padding: 18px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-  margin-top: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.cost-info-card:hover {
+  transform: translateY(-4px);
+}
+
+.cost-average-card {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+  border-left: 4px solid #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.cost-average-card:hover {
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
 }
 
 .money-bag-icon {
-  width: auto;
+  width: 100%;
   height: auto;
-  min-width: 100px;
-  min-height: 100px;
-  margin: 0 auto 8px;
+  min-height: 60px;
+  margin: 0 auto 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: pulse 2s ease-in-out infinite;
+  position: relative;
 }
 
 @keyframes pulse {
@@ -420,33 +459,79 @@ onUnmounted(() => {
   }
 
   50% {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 }
 
 .money-icon {
-  font-size: 23rem;
+  font-size: 3.5rem;
   display: block;
   line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(255, 193, 7, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.cost-average-card:hover .money-icon {
+  transform: rotate(10deg) scale(1.1);
 }
 
 .revenue-data-box {
-  width: 100%;
-  margin: 0;
-  padding: 10px 12px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 8px;
-  border-left: 3px solid #667eea;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe5cc 100%);
+  border-left: 4px solid #ff9800;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.revenue-data-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff9800, #ff6b6b, #ff9800);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.revenue-data-box:hover {
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.25);
+}
+
+.revenue-icon {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .revenue-text {
-  font-size: 0.83rem;
-  line-height: 1.5;
+  font-size: 0.88rem;
+  line-height: 1.6;
   color: #495057;
-  margin: 0 0 6px 0;
-  text-align: left;
+  margin: 0 0 8px 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
+}
+
+.revenue-highlight {
+  font-weight: 800;
+  color: #ff6b6b;
+  font-size: 1.1em;
+  text-shadow: 0 1px 3px rgba(255, 107, 107, 0.3);
 }
 
 .revenue-source {
@@ -454,15 +539,20 @@ onUnmounted(() => {
   color: #6c757d;
   margin: 0;
   text-align: left;
+  font-style: italic;
+  padding-top: 6px;
+  border-top: 1px solid rgba(108, 117, 125, 0.2);
 }
 
 .cost-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   justify-content: center;
-  margin: 12px 0;
-  padding: 10px 0;
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(248, 249, 250, 0.6);
+  border-radius: 8px;
 }
 
 .legend-item {
@@ -470,35 +560,48 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   font-size: 0.9rem;
-  color: #555;
+  color: #495057;
+  font-weight: 500;
+  padding: 4px 8px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.legend-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* ==================== 销售额折线图 ==================== */
 .sales-section {
-  margin: 20px 0;
+  margin: 16px 0;
   background: white;
   border-radius: 12px;
-  padding: 18px 20px;
+  padding: 16px 18px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .sales-chart {
   width: 100%;
-  height: 320px;
+  height: 300px;
   margin: 0;
   padding: 0;
 }
 
 .sales-highlight {
-  margin: 12px 0;
-  padding: 10px 15px;
+  margin: 10px 0;
+  padding: 8px 12px;
   background: linear-gradient(135deg, #fff5e6 0%, #ffe5cc 100%);
   border-radius: 8px;
   border-left: 3px solid #ff9800;
@@ -507,7 +610,7 @@ onUnmounted(() => {
 .sales-highlight p {
   margin: 0;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #2c3e50;
   text-align: center;
   word-break: keep-all;
@@ -521,9 +624,9 @@ onUnmounted(() => {
 }
 
 .sales-text {
-  margin-top: 15px;
+  margin-top: 12px;
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.6;
   color: #2c3e50;
   text-align: justify;
   word-break: keep-all;
@@ -553,40 +656,168 @@ onUnmounted(() => {
 @media (max-width: 1024px) {
   .cost-layout-wrapper {
     padding: 18px;
+    margin: 20px 0;
   }
 
   .cost-main-title {
     font-size: 1.2rem;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     padding-bottom: 10px;
   }
 
-  .cost-layout {
-    grid-template-columns: 1fr;
-    gap: 15px;
+  .cost-map-chart {
+    height: 420px;
   }
 
-  .cost-map-chart {
-    height: 350px;
+  .cost-info-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .map-section {
+    margin-bottom: 16px;
+    padding: 14px;
+  }
+
+  .sales-section {
+    margin: 14px 0;
+    padding: 14px 16px;
+  }
+
+  .sales-chart {
+    height: 280px;
+  }
+
+  .piaget-section {
+    margin-top: 24px;
+    padding: 18px 16px;
   }
 }
 
 @media (max-width: 768px) {
-  .cost-average {
-    padding: 8px 12px;
-    margin: 10px 0;
+  .cost-layout-wrapper {
+    padding: 14px;
+    margin: 18px 0;
   }
 
-  .cost-average p {
-    font-size: 0.85rem;
+  .cost-main-title {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
   }
 
-  .cost-big {
-    font-size: 1.1rem;
+  .map-section {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .cost-map-chart {
+    height: 380px;
+    margin-bottom: 10px;
+  }
+
+  .cost-info-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .sales-section {
+    margin: 12px 0;
+    padding: 14px 15px;
+  }
+
+  .sales-chart {
+    height: 260px;
   }
 
   .sales-highlight {
-    padding: 8px 12px;
+    margin: 8px 0;
+    padding: 7px 10px;
+  }
+
+  .sales-text {
+    margin-top: 10px;
+  }
+
+  .piaget-section {
+    margin-top: 20px;
+    padding: 16px 14px;
+  }
+
+  .piaget-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .piaget-intro {
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+
+  .piaget-container {
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .cost-info-card {
+    padding: 16px 14px;
+  }
+
+  .money-bag-icon {
+    min-height: 55px;
+    margin-bottom: 10px;
+  }
+
+  .money-icon {
+    font-size: 3rem;
+  }
+
+  .cost-label {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .cost-big {
+    font-size: 1.9rem;
+  }
+
+  .cost-unit {
+    font-size: 1rem;
+  }
+
+  .revenue-icon {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+
+  .revenue-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .revenue-highlight {
+    font-size: 1.05em;
+  }
+
+  .revenue-source {
+    font-size: 0.7rem;
+    padding-top: 6px;
+  }
+
+  .cost-legend {
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .legend-item {
+    font-size: 0.85rem;
+  }
+
+  .sales-highlight {
+    padding: 10px 12px;
     margin: 10px 0;
   }
 
@@ -609,63 +840,6 @@ onUnmounted(() => {
   .sales-text {
     font-size: 0.9rem;
     margin-top: 12px;
-  }
-
-  .cost-layout-wrapper {
-    padding: 15px;
-  }
-
-  .cost-main-title {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-  }
-
-  .cost-info-box {
-    gap: 8px;
-  }
-
-  .money-bag-icon {
-    width: auto;
-    height: auto;
-    min-width: 80px;
-    min-height: 80px;
-    margin-bottom: 6px;
-  }
-
-  .money-icon {
-    font-size: 4rem;
-  }
-
-  .cost-average,
-  .revenue-data-box {
-    padding: 8px 10px;
-  }
-
-  .cost-average p {
-    font-size: 0.82rem;
-  }
-
-  .cost-big {
-    font-size: 1.15rem;
-  }
-
-  .revenue-text {
-    font-size: 0.8rem;
-    line-height: 1.4;
-  }
-
-  .revenue-source {
-    font-size: 0.7rem;
-  }
-
-  .cost-map-chart {
-    height: 350px;
-  }
-
-  .cost-legend {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .piaget-section {
@@ -711,6 +885,136 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
+  .cost-layout-wrapper {
+    padding: 12px;
+    margin: 16px 0;
+  }
+
+  .cost-main-title {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+  }
+
+  .map-section {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .cost-map-chart {
+    height: 320px;
+    margin-bottom: 8px;
+  }
+
+  .cost-info-section {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .sales-section {
+    margin: 10px 0;
+    padding: 12px 14px;
+  }
+
+  .sales-chart {
+    height: 240px;
+  }
+
+  .sales-highlight {
+    margin: 6px 0;
+    padding: 6px 10px;
+  }
+
+  .sales-text {
+    margin-top: 8px;
+  }
+
+  .piaget-section {
+    margin-top: 18px;
+    padding: 14px 12px;
+  }
+
+  .piaget-title {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .piaget-intro {
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .piaget-container {
+    gap: 8px;
+    padding: 5px 0;
+  }
+
+  .cost-info-card {
+    padding: 14px 12px;
+  }
+
+  .money-bag-icon {
+    min-height: 50px;
+    margin-bottom: 8px;
+  }
+
+  .money-icon {
+    font-size: 2.5rem;
+  }
+
+  .cost-label {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .cost-big {
+    font-size: 1.7rem;
+  }
+
+  .cost-unit {
+    font-size: 0.95rem;
+  }
+
+  .revenue-icon {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .revenue-text {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .revenue-highlight {
+    font-size: 1em;
+  }
+
+  .revenue-source {
+    font-size: 0.7rem;
+    padding-top: 6px;
+  }
+
+  .cost-legend {
+    gap: 6px;
+    padding: 10px;
+    margin: 8px 0;
+  }
+
+  .legend-item {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+
+  .legend-color {
+    width: 18px;
+    height: 18px;
+  }
+
+  .chart-source {
+    font-size: 0.8rem;
+  }
+
   .piaget-container {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -733,8 +1037,8 @@ onUnmounted(() => {
 
 /* ==================== Piaget 阶段样式 ==================== */
 .piaget-section {
-  margin-top: 40px;
-  padding: 25px 20px;
+  margin-top: 30px;
+  padding: 20px 18px;
   background: linear-gradient(135deg, rgba(255, 236, 210, 0.4) 0%, rgba(252, 182, 159, 0.4) 100%);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -742,20 +1046,20 @@ onUnmounted(() => {
 
 .piaget-title {
   color: #2c3e50;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   text-align: center;
-  margin: 0 0 15px 0;
+  margin: 0 0 12px 0;
 }
 
 .piaget-intro {
   color: #555;
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.6;
   text-align: justify;
   text-justify: inter-ideograph;
   max-width: 900px;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
   padding: 0;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -764,11 +1068,11 @@ onUnmounted(() => {
 .piaget-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 12px;
   align-items: end;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 10px 0;
+  padding: 8px 0;
 }
 
 .piaget-stage {
@@ -789,7 +1093,7 @@ onUnmounted(() => {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -809,7 +1113,7 @@ onUnmounted(() => {
   object-position: center bottom;
   border-radius: 50% 50% 15px 15px;
   opacity: 0.92;
-  padding: 8px;
+  padding: 6px;
   transition: opacity 0.3s, transform 0.3s;
 }
 
@@ -829,9 +1133,9 @@ onUnmounted(() => {
 
 .stage-info {
   background: white;
-  padding: 12px 10px;
+  padding: 10px 8px;
   border-radius: 12px;
-  margin-top: 12px;
+  margin-top: 10px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   text-align: center;
   transition: all 0.3s;
@@ -843,10 +1147,11 @@ onUnmounted(() => {
 }
 
 .stage-age {
+  text-align: center;
   font-size: 0.9rem;
   color: #667eea;
   font-weight: 700;
-  margin: 0 0 6px 0;
+  margin: 0 0 0 0;
 }
 
 .stage-name {

@@ -232,13 +232,9 @@ onMounted(() => {
     if (exists) { exists.resize(); setupChart3HighlightOnReveal(); return }
     const myChart3 = echarts.init(chart3.value)
     // 过滤掉"随拍"类型
-    const originalCategories = ['随拍', '剧情', '明星八卦', '舞蹈', '游戏', '亲子', '音乐', '颜值', '时政社会', '校园教育', '美食', '医疗健康', '财经', '休闲']
-    const originalValues = [108045.7, 37819.9, 34845.9, 27364.2, 19072.4, 13513.8, 13518.6, 10068.6, 5773.9, 4761.7, 4761.7, 2337.6, 2149.5, 1772.5]
+    const originalCategories = ['剧情', '明星八卦', '舞蹈', '游戏', '音乐', '亲子', '颜值', '时政社会', '校园教育', '美食', '医疗健康', '财经', '休闲']
+    const originalValues = [37819.9, 34845.9, 27364.2, 19072.4, 13518.6, 13513.8, 10068.6, 5773.9, 4761.7, 4761.7, 2337.6, 2149.5, 1772.5]
 
-    // 找到"随拍"的索引并移除
-    const skipIndex = originalCategories.indexOf('随拍')
-    const categories = originalCategories.filter((_, index) => index !== skipIndex)
-    const values = originalValues.filter((_, index) => index !== skipIndex)
     const isMobile = window.innerWidth <= 480
     const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
     const sourceFontSize = isMobile ? 9 : isTablet ? 10 : 12
@@ -246,9 +242,9 @@ onMounted(() => {
       title: { text: '各类型视频平均点赞数', subtext: '截至2025年10月23日', left: 'center' },
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       xAxis: { type: 'value', axisLabel: { formatter: '{value}' } },
-      yAxis: { type: 'category', data: categories, axisLabel: { fontSize: 12 } },
+      yAxis: { type: 'category', data: originalCategories, axisLabel: { fontSize: 12 } },
       series: [{
-        data: values,
+        data: originalValues,
         type: 'bar',
         itemStyle: {
           color: (params) => {
@@ -316,7 +312,7 @@ onMounted(() => {
 
     // 添加定时器，让"亲子"类型更加高亮
     const highlightInterval = setTimeout(() => {
-      const cats = categories || []
+      const cats = originalCategories || []
       const idx = cats.indexOf('亲子')
       if (idx >= 0 && myChart3) {
         // 高亮显示"亲子"类型

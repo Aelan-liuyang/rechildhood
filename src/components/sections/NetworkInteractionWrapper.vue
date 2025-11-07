@@ -4,13 +4,15 @@
     <section class="section interactive-section">
       <h2 class="section-title">屏幕背后的利益网络</h2>
       <p class="section-hint" v-if="!allRolesViewed">💡 点击下方角色查看相关数据，了解各方在利益网络中的角色</p>
-      <p class="section-hint viewed-hint" v-else>✨ 所有角色已查看！箭头指向中心的儿童，展现利益网络的核心</p>
+      <p class="section-hint viewed-hint" v-else>✨ 所有角色已查看！请点击中间的儿童</p>
 
       <div class="circle-interaction">
         <svg ref="networkSvg" class="network-lines"></svg>
         <div ref="centerChildEl" class="center-child" :class="{ shrink: selectedRole }" @click="showChildImages = true"
           style="cursor: pointer;" title="点击查看儿童在利益网络中的处境">
-          <div class="child-icon">👶</div>
+          <div class="child-icon">
+            <img :src="childIconImg" alt="儿童" class="child-icon-image" />
+          </div>
         </div>
 
         <div ref="rolesContainerEl" class="roles-container">
@@ -48,6 +50,9 @@ import * as echarts from 'echarts'
 import RoleModalSection from './RoleModalSection.vue'
 import ChildSurroundingModal from './ChildSurroundingModal.vue'
 import MotivationSection from './MotivationSection.vue'
+
+// 导入儿童图标图片
+const childIconImg = new URL('@/assets/images/child.png', import.meta.url).href
 
 // ==================== 四方角色数据 ====================
 const roles = [
@@ -379,30 +384,31 @@ watch(allRolesViewed, async (newVal) => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 80px 20px;
+  padding: 50px 20px;
 }
 
 .section-title {
   font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-align: center;
   position: relative;
   z-index: 1;
+  line-height: 1.3;
 }
 
 .section-hint {
   font-size: 1.1rem;
   color: #667eea;
   text-align: center;
-  margin: 0 auto 40px;
-  padding: 15px 30px;
+  margin: 0 auto 25px;
+  padding: 12px 25px;
   background: rgba(102, 126, 234, 0.1);
   border-radius: 25px;
   border: 2px solid rgba(102, 126, 234, 0.3);
   display: block;
   max-width: 90%;
-  line-height: 1.6;
+  line-height: 1.4;
   animation: hintFadeIn 0.5s ease-out;
   font-weight: 500;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
@@ -443,8 +449,8 @@ watch(allRolesViewed, async (newVal) => {
 
 .circle-interaction {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 550px;
+  height: 550px;
   max-width: 90vw;
   max-height: 90vw;
 }
@@ -510,8 +516,8 @@ watch(allRolesViewed, async (newVal) => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   border-radius: 50%;
   display: flex;
@@ -528,18 +534,30 @@ watch(allRolesViewed, async (newVal) => {
 }
 
 .center-child.shrink {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
 }
 
 .child-icon {
-  font-size: 3rem;
-  transition: font-size 0.3s;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s;
 }
 
-.center-child.shrink .child-icon {
-  font-size: 1.8rem;
+.child-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  /* padding: 12%; */
 }
+
 
 .roles-container {
   position: absolute;
@@ -601,17 +619,17 @@ watch(allRolesViewed, async (newVal) => {
 }
 
 .role-avatar {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   background: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   transition: all 0.3s;
-  margin: 0 auto 10px;
+  margin: 0 auto 8px;
 }
 
 .role-item:hover .role-avatar,
@@ -622,23 +640,25 @@ watch(allRolesViewed, async (newVal) => {
 
 .role-name {
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #2c3e50;
   white-space: nowrap;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  line-height: 1.3;
 }
 
 .role-hint {
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #667eea;
   white-space: nowrap;
   opacity: 0;
   transform: translateY(-5px);
   transition: all 0.3s ease;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 3px;
+  line-height: 1.3;
 }
 
 .role-item:hover .role-hint,
@@ -659,111 +679,114 @@ watch(allRolesViewed, async (newVal) => {
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 768px) {
+  .interactive-section {
+    padding: 40px 15px;
+  }
+
   .circle-interaction {
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
   }
 
   .section-title {
     font-size: 1.8rem;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    line-height: 1.3;
   }
 
   .section-hint {
     font-size: 0.95rem;
-    padding: 12px 20px;
-    margin-bottom: 30px;
+    padding: 10px 18px;
+    margin-bottom: 20px;
+    line-height: 1.4;
   }
 
   .center-child {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
   }
 
   .center-child.shrink {
-    width: 45px;
-    height: 45px;
-  }
-
-  .child-icon {
-    font-size: 2rem;
-  }
-
-  .center-child.shrink .child-icon {
-    font-size: 1.2rem;
+    width: 42px;
+    height: 42px;
   }
 
   .role-avatar {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 55px;
+    height: 55px;
+    font-size: 1.4rem;
+    margin: 0 auto 6px;
   }
 
   .role-name {
     font-size: 0.85rem;
+    margin-bottom: 2px;
+    line-height: 1.3;
   }
 
   .role-hint {
     font-size: 0.7rem;
+    margin-top: 2px;
+    line-height: 1.3;
   }
 }
 
 @media (max-width: 480px) {
   .interactive-section {
-    padding: 40px 10px;
+    padding: 35px 10px;
   }
 
   .section-title {
     font-size: 1.4rem;
     padding: 0 5px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    line-height: 1.3;
   }
 
   .section-hint {
     font-size: 0.85rem;
-    padding: 10px 15px;
-    margin-bottom: 25px;
+    padding: 8px 12px;
+    margin-bottom: 18px;
     max-width: 95%;
+    line-height: 1.4;
   }
 
   .circle-interaction {
-    height: 420px;
+    width: 350px;
+    height: 350px;
   }
 
   .center-child {
-    width: 90px;
-    height: 90px;
-  }
-
-  .child-icon {
-    font-size: 2.5rem;
+    width: 75px;
+    height: 75px;
   }
 
   .center-child.shrink {
-    width: 70px;
-    height: 70px;
-  }
-
-  .center-child.shrink .child-icon {
-    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
   }
 
   .role-item {
-    padding: 8px;
+    padding: 6px;
   }
 
   .role-avatar {
-    width: 50px;
-    height: 50px;
-    font-size: 1.3rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+    margin: 0 auto 5px;
   }
 
   .role-name {
     font-size: 0.75rem;
+    margin-bottom: 2px;
+    line-height: 1.3;
   }
 
   .role-hint {
     font-size: 0.65rem;
+    margin-top: 2px;
+    line-height: 1.3;
   }
 }
 </style>

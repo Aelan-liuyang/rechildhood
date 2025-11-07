@@ -6,15 +6,10 @@
         <div class="modal-body">
           <!-- 标题区域 -->
           <h3 class="modal-main-title">儿童：被裹挟的主角</h3>
-          <p class="modal-main-subtitle">流量狂欢背后，儿童成为最大的受害者</p>
+          <p class="modal-main-subtitle">流量狂欢背后，儿童成为被裹挟的主角</p>
 
           <!-- 影响数据区域 -->
           <div class="impact-data-section">
-            <h4 class="impact-title">萌娃流量狂潮</h4>
-            <p class="impact-intro">
-              萌娃的天然流量优势再加之粉丝追捧，"晒娃"行为在相关平台越烧越旺。某千万级网红父母为其新生儿"光速"注册账号，仅1条视频，抖音吸粉十几万，点赞超30万。
-            </p>
-
             <!-- 示例图片 -->
             <div class="example-images">
               <div class="example-image-card" v-for="(img, index) in exampleImages" :key="index">
@@ -243,7 +238,7 @@ const impactStats = [
   color: #666;
   font-size: 1.2rem;
   margin: 0 auto var(--spacing-xl, 40px);
-  line-height: 2;
+  line-height: 1.6;
   max-width: 1400px;
   padding: 0 var(--spacing-md, 20px);
   font-weight: 400;
@@ -454,7 +449,7 @@ const impactStats = [
   text-justify: inter-ideograph;
   font-size: 1.15rem;
   color: #555;
-  line-height: 2;
+  line-height: 1.6;
   margin: 0 auto var(--spacing-xl, 45px);
   max-width: 1400px;
   padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px);
@@ -651,7 +646,7 @@ const impactStats = [
 
 .stat-text {
   font-size: 1.05rem;
-  line-height: 2;
+  line-height: 1.6;
   color: #555;
   margin: 0;
   word-break: normal;
@@ -693,7 +688,7 @@ const impactStats = [
   text-justify: inter-ideograph;
   font-size: 0.95rem;
   color: #666;
-  line-height: 2;
+  line-height: 1.6;
   margin: var(--spacing-xl, 40px) 0 0;
   padding: var(--spacing-lg, 25px) var(--spacing-xl, 30px) var(--spacing-lg, 25px) var(--spacing-2xl, 50px);
   border-top: 2px dashed rgba(102, 126, 234, 0.2);
@@ -715,7 +710,7 @@ const impactStats = [
   top: var(--spacing-lg, 25px);
   font-size: 1.2rem;
   opacity: 0.6;
-  line-height: 2;
+  line-height: 1.6;
 }
 
 .modal-fade-enter-active,
@@ -884,7 +879,7 @@ const impactStats = [
 
   .stat-text {
     font-size: 0.95rem;
-    line-height: 2;
+    line-height: 1.6;
     text-align: justify;
     text-justify: inter-ideograph;
     padding: var(--spacing-sm, 12px) var(--spacing-md, 16px);
@@ -1010,7 +1005,7 @@ const impactStats = [
 
   .stat-text {
     font-size: 0.88rem;
-    line-height: 2;
+    line-height: 1.6;
     text-align: justify;
     text-justify: inter-ideograph;
     padding: var(--spacing-sm, 12px) var(--spacing-sm, 14px);

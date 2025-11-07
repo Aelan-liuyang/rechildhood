@@ -22,8 +22,6 @@
 
     <!-- 儿童使用数字设备统计图表 -->
     <div class="device-usage-chart">
-      <!-- <h3 class="chart-title-small">ENJOYING INTERNET ACCESS SINCE AN EARLY AGE</h3> -->
-      <p class="chart-subtitle-small">他们很早开始使用数字设备，已经是重要的互联网用户</p>
       <div class="chart-container" ref="chartDeviceUsage"></div>
     </div>
 
@@ -31,9 +29,6 @@
       截至2024年6月,10岁以前首次"触网"的未成年人占比达52%,较上年提高7.4%。村镇儿童过早接触直播/短视频的比例(82.3%)远高于城市儿童(51.6%)。以刚进入幼儿园的3岁儿童为例,78.6%的儿童屏幕时间超过了每天1小时的指南推荐标准。
     </p>
 
-    <!-- <p class="data-source">
-      数据来源：中国互联网络信息中心（CNNIC）《第53次中国互联网络发展状况统计报告》、《中国儿童发展报告（2024）》
-    </p> -->
   </section>
 </template>
 
@@ -53,12 +48,12 @@ let deviceUsageResizeHandler = null
 
 // 儿童使用数字设备统计数据
 const deviceUsageData = [
-  { percentage: 84, label: 'Use Smart Phone 使用智能手机', age: '7岁' },
-  { percentage: 37, label: 'Use Computer 使用电脑', age: '8岁' },
-  { percentage: 30, label: 'Use Tablet 使用平板电脑', age: '8岁' },
-  { percentage: 87, label: 'Play Video Games 玩电子游戏', age: '7岁' },
-  { percentage: 83, label: 'Watch TV 看电视', age: '7岁' },
-  { percentage: 68, label: 'Online Social 网上社交', age: '9岁' }
+  { percentage: 84, label: '使用智能手机', age: '7岁 ' },
+  { percentage: 37, label: ' 使用电脑', age: '8岁' },
+  { percentage: 30, label: '使用平板电脑', age: '8岁' },
+  { percentage: 87, label: '玩电子游戏', age: '7岁' },
+  { percentage: 83, label: '看电视', age: '7岁' },
+  { percentage: 68, label: '网上社交', age: '9岁' }
 ]
 
 onMounted(() => {
@@ -384,45 +379,84 @@ onMounted(() => {
     const percentages = deviceUsageData.map(item => item.percentage)
     const ages = deviceUsageData.map(item => item.age)
 
-    // 响应式布局计算
-    const isMobile = window.innerWidth <= 480
-    const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
+    // 响应式布局计算函数
+    const getResponsiveConfig = () => {
+      const isMobile = window.innerWidth <= 480
+      const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
 
-    const gridLeft = isMobile ? '60px' : isTablet ? '70px' : '80px'
-    const gridRight = isMobile ? '180px' : isTablet ? '250px' : '320px'
-    const barWidth = isMobile ? 28 : isTablet ? 32 : 36
-    const sourceFontSize = isMobile ? 9 : isTablet ? 10 : 11
+      return {
+        gridLeft: isMobile ? '5%' : isTablet ? '5%' : '10%',
+        gridRight: isMobile ? '23%' : isTablet ? '21%' : '20%',
+        barWidth: isMobile ? 32 : isTablet ? 38 : 42,
+        sourceFontSize: isMobile ? 9 : isTablet ? 10 : 11,
+        legendRight: isMobile ? '2%' : isTablet ? '1.5%' : '1.5%',
+        legendFontSize: isMobile ? 11 : isTablet ? 12 : 13,
+        percentageFontSize: isMobile ? 12 : isTablet ? 13 : 14
+      }
+    }
+
+    // 更新图例位置以精确对齐条形图
+    const updateLegendPositions = () => {
+      if (!myChartDeviceUsageInstance) return
+
+      const config = getResponsiveConfig()
+      const updatedGraphic = []
+
+      categories.forEach((label, index) => {
+        // 正确的 convertToPixel 用法：传入坐标系ID和值
+        // 对于 category 轴，index 就是对应的值
+        const pixelPos = myChartDeviceUsageInstance.convertToPixel('grid', [50, index])
+
+        if (pixelPos && Array.isArray(pixelPos)) {
+          const barCenterY = pixelPos[1] - 8 // 微调垂直对齐
+
+          updatedGraphic.push({
+            type: 'text',
+            right: config.legendRight,
+            top: barCenterY,
+            z: 100,
+            id: `legend-${index}`,
+            style: {
+              text: `${label.trim()}  ${ages[index].trim()}`,
+              fill: '#333',
+              fontSize: config.legendFontSize,
+              fontWeight: 500
+            }
+          })
+        }
+      })
+
+      // 添加数据来源
+      updatedGraphic.push({
+        type: 'text',
+        left: 'center',
+        bottom: 5,
+        z: 100,
+        style: {
+          text: '数据来源：中国互联网络信息中心（CNNIC）《第53次中国互联网络发展状况统计报告》、《中国儿童发展报告（2024）》',
+          textAlign: 'center',
+          fill: '#666',
+          fontSize: config.sourceFontSize
+        }
+      })
+
+      myChartDeviceUsageInstance.setOption({
+        graphic: updatedGraphic
+      })
+    }
+
+    const config = getResponsiveConfig()
 
     myChartDeviceUsageInstance.setOption({
       backgroundColor: 'transparent',
       tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-          shadowStyle: {
-            color: 'rgba(102, 126, 234, 0.1)'
-          }
-        },
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderColor: '#ddd',
-        borderWidth: 1,
-        padding: [12, 16],
-        textStyle: {
-          color: '#333',
-          fontSize: 13
-        },
-        formatter: (params) => {
-          const index = params[0].dataIndex
-          return `<div style="font-weight:bold;margin-bottom:6px;color:#2c3e50;">${categories[index]}</div>
-                  <div style="margin:4px 0;"><span style="color:#667eea;font-weight:bold;">${percentages[index]}%</span> 的儿童使用</div>
-                  <div style="margin:4px 0;">开始使用年龄: <span style="color:#667eea;font-weight:bold;">${ages[index]}</span></div>`
-        }
+        show: false
       },
       grid: {
-        left: gridLeft,
-        right: gridRight,
-        top: '40px',
-        bottom: '40px',
+        left: config.gridLeft,
+        right: config.gridRight,
+        top: '50px',
+        bottom: '50px',
         containLabel: false
       },
       xAxis: {
@@ -435,28 +469,20 @@ onMounted(() => {
           show: true,
           formatter: '{value}%',
           fontSize: 12,
-          color: '#666',
-          margin: 8
+          color: '#999',
+          margin: 10
         },
         axisLine: {
-          show: true,
-          lineStyle: {
-            color: '#e0e0e0',
-            width: 1
-          }
+          show: false
         },
         axisTick: {
-          show: true,
-          length: 4,
-          lineStyle: {
-            color: '#e0e0e0'
-          }
+          show: false
         },
         splitLine: {
           show: true,
           lineStyle: {
-            color: '#f0f0f0',
-            type: 'dashed',
+            color: '#f5f5f5',
+            type: 'solid',
             width: 1
           }
         }
@@ -469,75 +495,49 @@ onMounted(() => {
           show: false
         },
         axisLine: {
-          show: true,
-          lineStyle: {
-            color: '#e0e0e0',
-            width: 1
-          }
+          show: false
         },
         axisTick: {
-          show: true,
-          length: 4,
-          lineStyle: {
-            color: '#e0e0e0'
-          }
+          show: false
         },
         splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#f0f0f0',
-            type: 'dashed',
-            width: 1
-          }
+          show: false
         }
       },
       series: [
         {
           name: '百分比',
           type: 'bar',
-          data: percentages.map((val, index) => ({
+          data: percentages.map((val) => ({
             value: val,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                { offset: 0, color: '#fff9c4' },
-                { offset: 0.5, color: '#fff59d' },
-                { offset: 1, color: '#fdd835' }
+                { offset: 0, color: '#ffeb3b' },
+                { offset: 0.5, color: '#ffd54f' },
+                { offset: 1, color: '#ffc107' }
               ]),
-              borderRadius: [0, 6, 6, 0],
-              shadowBlur: 8,
-              shadowColor: 'rgba(255, 235, 59, 0.4)',
-              shadowOffsetY: 2
+              borderRadius: [0, 4, 4, 0]
             }
           })),
-          barWidth: barWidth,
-          barGap: '20%',
+          barWidth: config.barWidth,
+          barGap: '25%',
           label: {
             show: true,
             position: 'left',
+            distance: 8,
             formatter: (params) => {
-              const index = params.dataIndex
-              return `{percent|${percentages[index]}%}`
+              return `{percent|${params.value}%}`
             },
             rich: {
               percent: {
-                fontSize: 15,
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                padding: [0, 10, 0, 0],
-                textShadowColor: 'rgba(255, 255, 255, 0.8)',
-                textShadowBlur: 2
+                fontSize: config.percentageFontSize,
+                color: '#333',
+                fontWeight: 600
               }
             }
           },
           emphasis: {
-            itemStyle: {
-              shadowBlur: 15,
-              shadowColor: 'rgba(255, 235, 59, 0.6)',
-              shadowOffsetY: 4
-            },
-            label: {
-              fontSize: 16
-            }
+            disabled: true
           },
           z: 2,
           animationDelay: (idx) => idx * 100
@@ -546,109 +546,65 @@ onMounted(() => {
           name: '背景',
           type: 'bar',
           data: categories.map(() => 100),
-          barWidth: barWidth,
-          barGap: '20%',
+          barWidth: config.barWidth,
+          barGap: '25%',
           itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-              { offset: 0, color: 'rgba(0, 0, 0, 0.03)' },
-              { offset: 1, color: 'rgba(0, 0, 0, 0.05)' }
-            ]),
-            borderRadius: [0, 6, 6, 0]
+            color: '#f5f5f5',
+            borderRadius: [0, 4, 4, 0]
           },
           silent: true,
           z: 1
-        },
-        {
-          name: '标签',
-          type: 'scatter',
-          data: categories.map((_, index) => [110, index]),
-          symbolSize: 0,
-          label: {
-            show: true,
-            formatter: (params) => {
-              const index = params.dataIndex
-              return `{label|${categories[index]}} {icon|□} {age|${ages[index]}}`
-            },
-            rich: {
-              label: {
-                fontSize: 13.5,
-                color: '#2c3e50',
-                align: 'left',
-                fontWeight: 'normal',
-                lineHeight: 20
-              },
-              icon: {
-                fontSize: 13,
-                color: '#999',
-                opacity: 0.6,
-                padding: [0, 10, 0, 10]
-              },
-              age: {
-                fontSize: 14,
-                fontWeight: 'bold',
-                color: '#667eea',
-                align: 'left',
-                padding: [0, 0, 0, 5]
-              }
-            },
-            position: 'right',
-            distance: 12
-          },
-          z: 3
         }
       ],
-      graphic: [
-        {
-          type: 'text',
-          left: 'center',
-          bottom: 5,
-          z: 100,
-          style: {
-            text: '数据来源：中国互联网络信息中心（CNNIC）《第53次中国互联网络发展状况统计报告》、《中国儿童发展报告（2024）》',
-            textAlign: 'center',
-            fill: '#666',
-            fontSize: sourceFontSize
-          }
-        }
-      ],
+      graphic: [],
       animationDuration: 1200,
       animationEasing: 'cubicOut',
       animationDelayUpdate: (idx) => idx * 100
     })
 
+    // 使用 finished 事件确保图表渲染完成后更新图例
+    myChartDeviceUsageInstance.on('finished', () => {
+      updateLegendPositions()
+    })
+
+    // 首次手动触发一次（某些情况下 finished 可能不触发）
+    setTimeout(() => {
+      updateLegendPositions()
+    }, 100)
+
     // 响应式调整
     deviceUsageResizeHandler = () => {
       if (myChartDeviceUsageInstance) {
-        const isMobile = window.innerWidth <= 480
-        const isTablet = window.innerWidth <= 768 && window.innerWidth > 480
-
-        const newGridLeft = isMobile ? '60px' : isTablet ? '70px' : '80px'
-        const newGridRight = isMobile ? '180px' : isTablet ? '250px' : '320px'
-        const newBarWidth = isMobile ? 28 : isTablet ? 32 : 36
-        const newSourceFontSize = isMobile ? 9 : isTablet ? 10 : 11
+        const newConfig = getResponsiveConfig()
 
         myChartDeviceUsageInstance.setOption({
           grid: {
-            left: newGridLeft,
-            right: newGridRight
+            left: newConfig.gridLeft,
+            right: newConfig.gridRight
           },
           series: [
             {
-              barWidth: newBarWidth
+              barWidth: newConfig.barWidth,
+              label: {
+                rich: {
+                  percent: {
+                    fontSize: newConfig.percentageFontSize
+                  }
+                }
+              }
             },
             {
-              barWidth: newBarWidth
-            }
-          ],
-          graphic: [
-            {
-              style: {
-                fontSize: newSourceFontSize
-              }
+              barWidth: newConfig.barWidth
             }
           ]
         })
+
         myChartDeviceUsageInstance.resize()
+
+        // resize 后更新图例位置
+        setTimeout(() => {
+          updateLegendPositions()
+        }, 50)
       }
     }
 
@@ -732,7 +688,6 @@ onUnmounted(() => {
   text-align: center;
   font-size: 2.8rem;
   color: #e74c3c;
-  margin: var(--spacing-2xl, 60px) auto var(--spacing-xl, 40px);
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: 0.02em;
@@ -743,7 +698,6 @@ onUnmounted(() => {
 .highlight-box {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
-  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
   border-radius: var(--radius-lg, 20px);
   text-align: justify;
   text-justify: inter-ideograph;
@@ -756,6 +710,11 @@ onUnmounted(() => {
   box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
   position: relative;
   overflow: hidden;
+
+}
+
+.highlight-box p {
+  word-break: normal;
 }
 
 .highlight-box::before {
@@ -810,10 +769,8 @@ onUnmounted(() => {
   line-height: 2;
   color: #555;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  padding: var(--spacing-xl, 30px) var(--spacing-lg, 35px);
   border-radius: 16px;
   border-left: 4px solid #667eea;
-  margin: var(--spacing-2xl, 60px) auto;
   max-width: 1200px;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -842,6 +799,21 @@ onUnmounted(() => {
   margin: var(--spacing-2xl, 60px) auto;
 }
 
+.device-usage-chart .chart-container {
+  width: 100%;
+  height: var(--chart-height, 450px);
+  background: white;
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-md, 20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.device-usage-chart .chart-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
 .chart-title-small {
   font-size: 1.1rem;
   font-weight: 700;
@@ -858,21 +830,6 @@ onUnmounted(() => {
   margin: 0 0 var(--spacing-xl, 40px) 0;
   line-height: 1.8;
   font-weight: 500;
-}
-
-.device-usage-chart .chart-container {
-  width: 100%;
-  height: var(--chart-height, 450px);
-  background: white;
-  border-radius: var(--radius-lg, 20px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  padding: var(--spacing-md, 20px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.device-usage-chart .chart-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
 }
 
 /* 移动端优化 - 平板 */

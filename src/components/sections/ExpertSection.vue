@@ -53,55 +53,57 @@
           在法律层面，未来应探索出台未成年人网络保护实施细则和行为规范，进一步优化年龄段治理模式。借鉴国外治理经验，孩子们必须获取相关执照才能成为"网红"，而他们因此获得的收入，必须存入一个专门的银行账户，供他们年满16岁后使用。
         </p>
       </div>
-    </div>
 
-    <!-- 儿童权利分级模式表格 -->
-    <div class="rights-table-section">
-      <h2 class="table-section-title">儿童网络内容生产权利分级模式</h2>
-      <div class="rights-table-wrapper">
-        <div class="age-column age-0-8">
-          <div class="age-header">0-8岁</div>
-          <div class="age-content">
-            <p class="content-text">应禁止参与带营销性质的内容生产</p>
-            <div class="icon-wrapper">
-              <svg viewBox="0 0 100 100" class="prohibition-icon">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" />
-                <line x1="20" y1="20" x2="80" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
-              </svg>
+      <!-- 儿童权利分级模式表格 -->
+      <div class="rights-table-section">
+        <h2 class="table-section-title">儿童网络内容生产权利分级模式</h2>
+        <div class="rights-table-wrapper">
+          <div class="age-column age-0-8">
+            <div class="age-header">0-8岁</div>
+            <div class="age-content">
+              <p class="content-text">应禁止参与带营销性质的内容生产</p>
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 100 100" class="prohibition-icon">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" />
+                  <line x1="20" y1="20" x2="80" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="age-column age-8-12">
+            <div class="age-header">8-12岁</div>
+            <div class="age-content">
+              <p class="content-text">探索设置"儿童同意权"</p>
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 100 100" class="question-icon">
+                  <text x="50" y="70" font-size="80" text-anchor="middle" fill="currentColor"
+                    font-weight="bold">?</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="age-column age-12-18">
+            <div class="age-header">12-18岁</div>
+            <div class="age-content">
+              <p class="content-text">可根据其认知能力设置相应的权利义务</p>
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 100 100" class="balance-icon">
+                  <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="4" />
+                  <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="4" />
+                  <line x1="20" y1="40" x2="30" y2="60" stroke="currentColor" stroke-width="4" />
+                  <line x1="80" y1="40" x2="70" y2="60" stroke="currentColor" stroke-width="4" />
+                  <circle cx="50" cy="20" r="8" fill="currentColor" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="age-column age-8-12">
-          <div class="age-header">8-12岁</div>
-          <div class="age-content">
-            <p class="content-text">探索设置"儿童同意权"</p>
-            <div class="icon-wrapper">
-              <svg viewBox="0 0 100 100" class="question-icon">
-                <text x="50" y="70" font-size="80" text-anchor="middle" fill="currentColor" font-weight="bold">?</text>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="age-column age-12-18">
-          <div class="age-header">12-18岁</div>
-          <div class="age-content">
-            <p class="content-text">可根据其认知能力设置相应的权利义务</p>
-            <div class="icon-wrapper">
-              <svg viewBox="0 0 100 100" class="balance-icon">
-                <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="4" />
-                <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="4" />
-                <line x1="20" y1="40" x2="30" y2="60" stroke="currentColor" stroke-width="4" />
-                <line x1="80" y1="40" x2="70" y2="60" stroke="currentColor" stroke-width="4" />
-                <circle cx="50" cy="20" r="8" fill="currentColor" />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <p class="table-source">基于儿童成长发育规律的分级保护机制</p>
       </div>
-      <p class="table-source">基于儿童成长发育规律的分级保护机制</p>
     </div>
+
 
     <!-- 家长建议文本 -->
     <div class="parent-advice-text">

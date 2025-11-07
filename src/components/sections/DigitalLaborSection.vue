@@ -61,12 +61,12 @@
   font-size: 2.4rem;
   text-align: center;
   color: #fff;
-  margin-bottom: var(--spacing-xl, 40px);
+  margin-bottom: var(--spacing-lg, 25px);
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.3;
   letter-spacing: -0.02em;
   position: relative;
-  padding-bottom: var(--spacing-lg, 30px);
+  padding-bottom: var(--spacing-md, 20px);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -86,8 +86,9 @@
   font-size: 1.5rem;
   text-align: center;
   color: #fff;
-  margin-bottom: var(--spacing-2xl, 60px);
+  margin-bottom: var(--spacing-lg, 30px);
   font-weight: 600;
+  line-height: 1.4;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
   max-width: 1200px;
@@ -104,8 +105,8 @@
   font-size: 1.3rem;
   text-align: justify;
   text-justify: inter-ideograph;
-  margin-bottom: var(--spacing-xl, 40px);
-  line-height: 2;
+  margin-bottom: var(--spacing-lg, 30px);
+  line-height: 1.5;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -118,7 +119,7 @@
 .concept-box {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
-  padding: var(--spacing-2xl, 50px) var(--spacing-xl, 40px);
+  padding: var(--spacing-lg, 25px) var(--spacing-lg, 30px);
   border-radius: var(--radius-lg, 20px);
   max-width: 1200px;
   margin: 0 auto;
@@ -128,7 +129,7 @@
 
 .concept-box h3 {
   font-size: 1.8rem;
-  margin-bottom: var(--spacing-lg, 30px);
+  margin-bottom: var(--spacing-md, 20px);
   color: #ffd700;
   font-weight: 700;
   text-align: center;
@@ -138,12 +139,13 @@
 .concept-detail,
 .concept-explain {
   font-size: 1.1rem;
-  line-height: 2;
-  margin-bottom: var(--spacing-lg, 30px);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md, 20px);
   text-align: justify;
   text-justify: inter-ideograph;
   word-break: keep-all;
   overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .concept-explain {
@@ -164,6 +166,7 @@
 
   .highlight-text {
     font-size: 1.8rem;
+    line-height: 1.3;
     margin-bottom: var(--spacing-lg, 30px);
     padding-bottom: var(--spacing-md, 20px);
   }
@@ -175,12 +178,14 @@
 
   .highlight-text2 {
     font-size: 1.3rem;
+    line-height: 1.4;
     margin-bottom: var(--spacing-xl, 40px);
     padding: 0 var(--spacing-md, 20px);
   }
 
   .concept-intro {
     font-size: 1.15rem;
+    line-height: 1.5;
     margin-bottom: var(--spacing-lg, 30px);
     padding: 0 var(--spacing-md, 20px);
     text-align: justify;
@@ -200,6 +205,7 @@
   .concept-detail,
   .concept-explain {
     font-size: 1rem;
+    line-height: 1.5;
     text-align: justify;
     text-justify: inter-ideograph;
     margin-bottom: var(--spacing-md, 25px);
@@ -213,9 +219,9 @@
 
   .highlight-text {
     font-size: 1.5rem;
+    line-height: 1.3;
     margin-bottom: var(--spacing-lg, 30px);
     padding-bottom: var(--spacing-sm, 15px);
-    line-height: 1.5;
   }
 
   .highlight-text::after {
@@ -225,17 +231,18 @@
 
   .highlight-text2 {
     font-size: 1.15rem;
+    line-height: 1.4;
     margin-bottom: var(--spacing-lg, 30px);
     padding: 0 12px;
   }
 
   .concept-intro {
     font-size: 1.05rem;
+    line-height: 1.5;
     margin-bottom: var(--spacing-lg, 30px);
     padding: 0 12px;
     text-align: justify;
     text-justify: inter-ideograph;
-    line-height: 1.9;
   }
 
   .concept-box {
@@ -251,7 +258,7 @@
   .concept-detail,
   .concept-explain {
     font-size: 0.95rem;
-    line-height: 1.9;
+    line-height: 1.5;
     margin-bottom: var(--spacing-md, 20px);
     text-align: justify;
     text-justify: inter-ideograph;

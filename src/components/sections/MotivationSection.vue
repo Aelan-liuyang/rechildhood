@@ -277,6 +277,7 @@ watch(showMindmap, async (v) => {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   word-break: keep-all;
   overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* ==================== 动机流程卡片 ==================== */
