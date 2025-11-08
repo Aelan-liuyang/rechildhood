@@ -34,14 +34,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ✅ 根据不同 target 使用不同打包命令
+      # ✅ 通过环境变量设置 DEPLOY_TARGET
       - name: Build project
-        run: |
-          if [ "${{ matrix.target }}" = "github" ]; then
-            npm run build:github
-          else
-            npm run build
-          fi
+        run: npm run build
+        env:
+          DEPLOY_TARGET: ${{ matrix.target }}
 
       # ✅ GitHub Pages 部署
       - name: Setup GitHub Pages

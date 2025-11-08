@@ -13,10 +13,11 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory("/rechildhood/"),
+  // ✅ 使用 Vite 的 BASE_URL 环境变量
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
   strict: false,
-  scrollBehavior: () => ({ left: 0, top: 0, behavior: "smooth" }), //可以使用 "smooth" 实现平滑滚动效果
+  scrollBehavior: () => ({ left: 0, top: 0, behavior: "smooth" }),
 });
 
 export default router;
