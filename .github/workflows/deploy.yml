@@ -1,26 +1,29 @@
-name: Deploy to GitHub Pages & Cloudflare Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
+# 设置权限
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 确保只有一个部署作业运行
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target: [github, cloudflare]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-    name: Build & Deploy (${{ matrix.target }})
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,34 +37,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ✅ 通过环境变量设置 DEPLOY_TARGET
       - name: Build project
         run: npm run build
-        env:
-          DEPLOY_TARGET: ${{ matrix.target }}
 
-      # ✅ GitHub Pages 部署
-      - name: Setup GitHub Pages
-        if: matrix.target == 'github'
+      - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact (GitHub Pages)
-        if: matrix.target == 'github'
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist"
 
       - name: Deploy to GitHub Pages
-        if: matrix.target == 'github'
         id: deployment
         uses: actions/deploy-pages@v4
-
-      # ✅ Cloudflare Pages 部署
-      - name: Deploy to Cloudflare Pages
-        if: matrix.target == 'cloudflare'
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "rechildhood1"
-          directory: "dist"
