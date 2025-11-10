@@ -13,7 +13,7 @@ export default defineConfig(({ command, mode }) => {
   // 开发环境 -> "/"
   // GitHub Pages -> "/rechildhood/"
   // Cloudflare Pages -> "./"
-  const base = !isProduction ? "/" : isGithub ? "/rechildhood/" : "./";
+  const base = !isProduction ? "/" : isGithub ? "/rechildhood/" : "/";
 
   // ✅ 新增：构建日志
   if (isProduction) {
