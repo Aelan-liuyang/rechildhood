@@ -6,7 +6,8 @@
 
       <!-- 粒子效果 -->
       <div class="particles">
-        <div class="particle" v-for="n in 30" :key="n" :style="getParticleStyle(n)"></div>
+        <div class="particle" v-for="n in 30" :key="n"
+          :style="getParticleStyle(n)"></div>
       </div>
 
       <!-- 光圈装饰 -->
@@ -18,29 +19,47 @@
 
       <!-- 大标题 -->
       <div class="opening-text">
-        <span class="char" :class="{ 'char-show': charVisible[0] }" :style="{ animationDelay: '0s' }">屏</span>
-        <span class="char" :class="{ 'char-show': charVisible[1] }" :style="{ animationDelay: '0.1s' }">幕</span>
-        <span class="char" :class="{ 'char-show': charVisible[2] }" :style="{ animationDelay: '0.2s' }">后</span>
-        <span class="char" :class="{ 'char-show': charVisible[3] }" :style="{ animationDelay: '0.3s' }">的</span>
-        <span class="char" :class="{ 'char-show': charVisible[4] }" :style="{ animationDelay: '0.4s' }">小</span>
-        <span class="char" :class="{ 'char-show': charVisible[5] }" :style="{ animationDelay: '0.5s' }">劳</span>
-        <span class="char" :class="{ 'char-show': charVisible[6] }" :style="{ animationDelay: '0.6s' }">工</span>
+        <span class="char" :class="{ 'char-show': charVisible[0] }"
+          :style="{ animationDelay: '0s' }">屏</span>
+        <span class="char" :class="{ 'char-show': charVisible[1] }"
+          :style="{ animationDelay: '0.1s' }">幕</span>
+        <span class="char" :class="{ 'char-show': charVisible[2] }"
+          :style="{ animationDelay: '0.2s' }">后</span>
+        <span class="char" :class="{ 'char-show': charVisible[3] }"
+          :style="{ animationDelay: '0.3s' }">的</span>
+        <span class="char" :class="{ 'char-show': charVisible[4] }"
+          :style="{ animationDelay: '0.4s' }">小</span>
+        <span class="char" :class="{ 'char-show': charVisible[5] }"
+          :style="{ animationDelay: '0.5s' }">劳</span>
+        <span class="char" :class="{ 'char-show': charVisible[6] }"
+          :style="{ animationDelay: '0.6s' }">工</span>
         <span class="char highlight" :class="{ 'char-show': charVisible[7] }"
           :style="{ animationDelay: '0.7s' }">：</span>
         <br>
         <!-- <span class="char quote" :class="{ 'char-show': charVisible[8] }" :style="{ animationDelay: '0.8s' }">"</span> -->
-        <span class="char" :class="{ 'char-show': charVisible[9] }" :style="{ animationDelay: '0.9s' }">网</span>
-        <span class="char" :class="{ 'char-show': charVisible[10] }" :style="{ animationDelay: '1.0s' }">红</span>
-        <span class="char" :class="{ 'char-show': charVisible[11] }" :style="{ animationDelay: '1.1s' }">儿</span>
-        <span class="char" :class="{ 'char-show': charVisible[12] }" :style="{ animationDelay: '1.2s' }">童</span>
+        <span class="char" :class="{ 'char-show': charVisible[9] }"
+          :style="{ animationDelay: '0.9s' }">网</span>
+        <span class="char" :class="{ 'char-show': charVisible[10] }"
+          :style="{ animationDelay: '1.0s' }">红</span>
+        <span class="char" :class="{ 'char-show': charVisible[11] }"
+          :style="{ animationDelay: '1.1s' }">儿</span>
+        <span class="char" :class="{ 'char-show': charVisible[12] }"
+          :style="{ animationDelay: '1.2s' }">童</span>
         <!-- <span class="char quote" :class="{ 'char-show': charVisible[13] }" :style="{ animationDelay: '1.3s' }">"</span> -->
-        <span class="char" :class="{ 'char-show': charVisible[14] }" :style="{ animationDelay: '1.4s' }">账</span>
-        <span class="char" :class="{ 'char-show': charVisible[15] }" :style="{ animationDelay: '1.5s' }">号</span>
-        <span class="char" :class="{ 'char-show': charVisible[16] }" :style="{ animationDelay: '1.6s' }">的</span>
-        <span class="char" :class="{ 'char-show': charVisible[17] }" :style="{ animationDelay: '1.7s' }">流</span>
-        <span class="char" :class="{ 'char-show': charVisible[18] }" :style="{ animationDelay: '1.8s' }">量</span>
-        <span class="char" :class="{ 'char-show': charVisible[19] }" :style="{ animationDelay: '1.9s' }">密</span>
-        <span class="char" :class="{ 'char-show': charVisible[20] }" :style="{ animationDelay: '2.0s' }">码</span>
+        <span class="char" :class="{ 'char-show': charVisible[14] }"
+          :style="{ animationDelay: '1.4s' }">账</span>
+        <span class="char" :class="{ 'char-show': charVisible[15] }"
+          :style="{ animationDelay: '1.5s' }">号</span>
+        <span class="char" :class="{ 'char-show': charVisible[16] }"
+          :style="{ animationDelay: '1.6s' }">的</span>
+        <span class="char" :class="{ 'char-show': charVisible[17] }"
+          :style="{ animationDelay: '1.7s' }">流</span>
+        <span class="char" :class="{ 'char-show': charVisible[18] }"
+          :style="{ animationDelay: '1.8s' }">量</span>
+        <span class="char" :class="{ 'char-show': charVisible[19] }"
+          :style="{ animationDelay: '1.9s' }">密</span>
+        <span class="char" :class="{ 'char-show': charVisible[20] }"
+          :style="{ animationDelay: '2.0s' }">码</span>
       </div>
 
       <!-- 文字光效 -->
@@ -70,7 +89,8 @@
         </div>
       </div>
 
-      <div class="scroll-indicator" :class="{ 'indicator-show': indicatorVisible }">
+      <div class="scroll-indicator"
+        :class="{ 'indicator-show': indicatorVisible }">
         <div class="indicator-line"></div>
         <span class="indicator-text">向下滚动开始</span>
         <div class="scroll-arrow">
@@ -94,7 +114,8 @@
         </div>
 
         <div class="nav-menu" :class="{ active: menuOpen }">
-          <a @click.prevent="scrollToSection('chapter0-content')" class="nav-link"
+          <a @click.prevent="scrollToSection('chapter0-content')"
+            class="nav-link"
             :class="{ active: activeSection === 'chapter0-content' }">
             <span class="link-icon">👋</span>
             <span class="link-text">你好，屏幕里的童年</span>
@@ -114,7 +135,8 @@
           </a>
         </div>
 
-        <div class="nav-toggle" @click="toggleMenu" :class="{ active: menuOpen }" :aria-expanded="menuOpen"
+        <div class="nav-toggle" @click="toggleMenu"
+          :class="{ active: menuOpen }" :aria-expanded="menuOpen"
           aria-label="打开导航" role="button" tabindex="0">
           <span></span>
           <span></span>
