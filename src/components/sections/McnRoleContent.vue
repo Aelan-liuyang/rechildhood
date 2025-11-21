@@ -1,7 +1,8 @@
 <template>
   <div>
     <h3>MCN机构：流量公式的制造者</h3>
-    <p>"网红儿童"内容的制作者远不止是分享生活的父母，其背后通常有专业的推手——<span class="tooltip-trigger">多频道网络<span
+    <p>"网红儿童"内容的制作者远不止是分享生活的父母，其背后通常有专业的推手——<span
+        class="tooltip-trigger">多频道网络<span
           class="tooltip-text">MCN机构是与内容创作者合作或直接生产各种独特内容的任何实体或组织，并在发布内容的网络平台上执行业务和营销功能。其核心角色是充当创作者的"经纪人"或"服务商"，通过专业化运营帮助创作者扩大影响力并实现商业变现。</span></span>（Multi-Channel
       Network，MCN）机构。</p>
 
@@ -35,23 +36,28 @@
         <div class="note-content">
           <div class="note-item">
             <span class="note-label">1.</span>
-            <span class="note-text"><strong>有孩家庭人群</strong>：画像标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
+            <span
+              class="note-text"><strong>有孩家庭人群</strong>：画像标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
           </div>
           <div class="note-item">
             <span class="note-label">2.</span>
-            <span class="note-text"><strong>Z世代父母</strong>：95后+00后中标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
+            <span
+              class="note-text"><strong>Z世代父母</strong>：95后+00后中标签为已婚且家庭有孩子（0-18岁）的活跃用户</span>
           </div>
           <div class="note-item">
             <span class="note-label">3.</span>
-            <span class="note-text"><strong>活跃占比</strong>：目标人群具有某个标签属性的月活跃用户数 ÷ 该目标人群的月活跃用户数</span>
+            <span class="note-text"><strong>活跃占比</strong>：目标人群具有某个标签属性的月活跃用户数 ÷
+              该目标人群的月活跃用户数</span>
           </div>
           <div class="note-item">
             <span class="note-label">4.</span>
-            <span class="note-text"><strong>占比差值</strong>：Z世代父母兴趣标签活跃占比 - 有孩家庭人群兴趣标签活跃占比</span>
+            <span class="note-text"><strong>占比差值</strong>：Z世代父母兴趣标签活跃占比 -
+              有孩家庭人群兴趣标签活跃占比</span>
           </div>
           <div class="note-item">
             <span class="note-label">5.</span>
-            <span class="note-text"><strong>活跃占比TGI</strong>：目标人群某个标签属性的月活跃占比 ÷ 全网具有该标签属性的月活跃占比 × 100</span>
+            <span class="note-text"><strong>活跃占比TGI</strong>：目标人群某个标签属性的月活跃占比 ÷
+              全网具有该标签属性的月活跃占比 × 100</span>
           </div>
           <div class="note-item">
             <span class="note-label">6.</span>
@@ -61,7 +67,8 @@
         </div>
         <div class="note-source">
           <span class="source-icon">📊</span>
-          <span class="source-text">数据来源：<strong class="source-highlight">QuestMobile</strong> GROWTH 用户画像标签数据库
+          <span class="source-text">数据来源：<strong
+              class="source-highlight">QuestMobile</strong> GROWTH 用户画像标签数据库
             2025年3月</span>
         </div>
       </div>
@@ -71,8 +78,10 @@
       <p class="formula">萌娃(40%) + 冲突剧情(30%) + 商品植入(30%) = 爆款模板</p>
     </div>
 
-    <p>MCN机构为了获得更多流量常会套用这样的流量公式，主动签约有潜力的素人账号，提供从人设定位、剧本编写到拍摄剪辑、商业变现的全套服务。粉丝量百万以上账号中，<span
+    <p style=" word-break: normal;">
+      MCN机构为了获得更多流量常会套用这样的流量公式，主动签约有潜力的素人账号，提供从人设定位、剧本编写到拍摄剪辑、商业变现的全套服务。粉丝量百万以上账号中，<span
         class="highlight-percentage">54.9%</span>已与MCN签约。</p>
+    <p class="chart-source">数据来源：抖查查</p>
 
     <p class="warning">但是MCN资质参差不齐，签约后伴随着的是：</p>
     <ul>
@@ -82,10 +91,12 @@
     </ul>
 
     <p class="conclusion-text">这促使着父母不得不将儿童账号的商业性提高。</p>
-    <h4 style="margin-top: 30px; color: #2c3e50; font-size: 1.4rem;">MCN合作模式与分成比例</h4>
+    <h4 style="margin-top: 30px; color: #2c3e50; font-size: 1.4rem;">
+      MCN合作模式与分成比例</h4>
     <div class="mcn-revenue-chart">
       <div class="revenue-model" v-for="model in mcnModels" :key="model.name">
-        <div class="model-header" :style="{ background: model.gradient, color: model.headerTextColor }">
+        <div class="model-header"
+          :style="{ background: model.gradient, color: model.headerTextColor }">
           <h5>{{ model.name }}</h5>
           <p class="model-desc">{{ model.desc }}</p>
         </div>
@@ -135,13 +146,16 @@
         <span class="warning-icon">⚠️</span>
       </div>
       <p class="penalty-hint">鼠标悬停暂停弹幕</p>
-      <div class="danmaku-container" @mouseenter="pauseDanmaku" @mouseleave="resumeDanmaku">
-        <div class="danmaku-track" v-for="(line, lineIndex) in 3" :key="lineIndex" :class="`track-${lineIndex + 1}`">
+      <div class="danmaku-container" @mouseenter="pauseDanmaku"
+        @mouseleave="resumeDanmaku">
+        <div class="danmaku-track" v-for="(line, lineIndex) in 3"
+          :key="lineIndex" :class="`track-${lineIndex + 1}`">
           <div class="danmaku-content" :class="{ 'paused': isPaused }" :style="{
             animationDelay: `${lineIndex * 1.5}s`,
             animationDuration: `${35 + lineIndex * 3}s`
           }">
-            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-${index}`"
+            <span class="danmaku-item" v-for="(item, index) in penaltyItems"
+              :key="`${lineIndex}-${index}`"
               :class="`item-style-${(index % 3) + 1}`">
               <span class="item-icon">{{ getItemIcon(index) }}</span>
               <span class="danmaku-text">{{ item.text }}</span>
@@ -149,7 +163,8 @@
               <span class="danmaku-text">{{ item.suffix }}</span>
             </span>
             <!-- 复制一份用于无缝循环 -->
-            <span class="danmaku-item" v-for="(item, index) in penaltyItems" :key="`${lineIndex}-copy-${index}`"
+            <span class="danmaku-item" v-for="(item, index) in penaltyItems"
+              :key="`${lineIndex}-copy-${index}`"
               :class="`item-style-${(index % 3) + 1}`">
               <span class="item-icon">{{ getItemIcon(index) }}</span>
               <span class="danmaku-text">{{ item.text }}</span>
@@ -651,7 +666,6 @@ p {
   transition: opacity 0.3s ease, visibility 0.3s ease;
   pointer-events: none;
   text-align: justify;
-  word-break: keep-all;
   overflow-wrap: break-word;
   word-break: normal;
 }
@@ -682,7 +696,7 @@ p {
   line-height: 1.8;
   color: #2e7d32;
   box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
   text-align: justify;
 }
@@ -810,7 +824,6 @@ p {
   font-size: 0.95rem;
   line-height: 1.8;
   color: #495057;
-  word-break: keep-all;
   overflow-wrap: break-word;
   text-align: justify;
   word-break: normal;
@@ -862,7 +875,7 @@ p {
   margin: 12px 0;
   font-size: 1.1rem;
   line-height: 1.8;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -997,7 +1010,7 @@ ul li {
   margin: 12px 0;
   line-height: 1.8;
   color: #2c3e50;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -1235,6 +1248,13 @@ ul li::before {
   opacity: 0.7;
 }
 
+.chart-source {
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
 @keyframes glow-pulse {
 
   0%,
@@ -1268,7 +1288,7 @@ ul li::before {
   box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
   letter-spacing: 0.5px;
   line-height: 1.8;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 

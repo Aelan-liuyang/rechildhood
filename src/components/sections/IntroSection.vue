@@ -21,8 +21,10 @@
 
       <!-- 时间选项 -->
       <div class="time-options">
-        <div class="time-option" v-for="(option, index) in timeOptions" :key="option"
-          :class="{ selected: selectedTime === option }" @click="selectTime(option)"
+        <div class="time-option" v-for="(option, index) in timeOptions"
+          :key="option"
+          :class="{ selected: selectedTime === option }"
+          @click="selectTime(option)"
           :style="{ animationDelay: `${index * 0.1}s` }">
           <span class="option-icon">⏰</span>
           <span class="option-text">{{ option }}</span>
@@ -34,11 +36,13 @@
       <transition name="slide-down">
         <div v-if="showCharts" class="charts-row">
           <div class="chart-wrapper">
-            <div class="chart-container half animated-chart" ref="chart1" data-parallax="0.15"></div>
+            <div class="chart-container half animated-chart" ref="chart1"
+              data-parallax="0.15"></div>
             <div class="chart-badge">趋势分析</div>
           </div>
           <div class="chart-wrapper">
-            <div class="chart-container half animated-chart" ref="chartPhoneUsers" data-parallax="0.15"></div>
+            <div class="chart-container half animated-chart"
+              ref="chartPhoneUsers" data-parallax="0.15"></div>
             <div class="chart-badge">占比数据</div>
           </div>
         </div>
@@ -48,8 +52,10 @@
       <transition name="fade-in">
         <div v-if="showCharts" class="chart-explanation">
           <p class="explanation-text">
-            随着移动互联网技术的快速发展，无论是通勤途中的 15 分钟短视频浏览，还是睡前 1 小时的社交软件互动，手机以其便携性将互联网使用时间 "绑定" 在指尖，推动整体时长攀升。<span
-              class="highlight-emphasis">当 "手机不离手" 从生活调侃变为普遍现实，手机已成为当代中国居民接入数字世界、消耗日常时间的重要载体，中国居民的
+            随着移动互联网技术的快速发展，无论是通勤途中的 15 分钟短视频浏览，还是睡前 1 小时的社交软件互动，手机以其便携性将互联网使用时间
+            "绑定" 在指尖，推动整体时长攀升。<span
+              class="highlight-emphasis">当 "手机不离手"
+              从生活调侃变为普遍现实，手机已成为当代中国居民接入数字世界、消耗日常时间的重要载体，中国居民的
               "屏幕时间"早已高度聚焦于手机屏幕。</span>
           </p>
         </div>
@@ -123,7 +129,7 @@ const initCharts = () => {
       },
       xAxis: {
         type: 'category',
-        data: ['2020', '2021', '2022', '2023', '2024'],
+        data: ['2020.12', '2021.12', '2022.12', '2023.12', '2024.12', '2025.6'],
         axisLabel: { fontSize: axisLabelFontSize, color: '#666', rotate: isMobile ? 0 : 0 },
         axisLine: { lineStyle: { color: '#ddd' } }
       },
@@ -135,7 +141,7 @@ const initCharts = () => {
         splitLine: { lineStyle: { color: '#f0f0f0' } }
       },
       series: [{
-        data: [4.4, 4.07, 4.21, 5.33, 6.05],
+        data: [3.7, 4.1, 3.8, 3.7, 4.1, 4.4],
         type: 'bar',
         barWidth: isMobile ? '50%' : '45%',
         itemStyle: {
@@ -162,7 +168,7 @@ const initCharts = () => {
         bottom: 5,
         z: 100,
         style: {
-          text: '数据来源：国家统计局、中国互联网络信息中心（CNNIC）',
+          text: '数据来源：中国互联网络信息中心（CNNIC）',
           textAlign: 'center',
           fill: '#666',
           fontSize: sourceFontSize
@@ -200,7 +206,7 @@ const initCharts = () => {
         left: 'center',
         textStyle: { fontSize: titleFontSize, fontWeight: 'bold' },
         subtextStyle: { fontSize: subtextFontSize, color: '#666' },
-        top: isMobile ? 8 : 15
+        top: isMobile ? 8 : 5
       },
       tooltip: {
         trigger: 'item',
@@ -240,7 +246,7 @@ const initCharts = () => {
           bottom: 5,
           z: 100,
           style: {
-            text: '数据来源：中国互联网络信息中心（CNNIC）、QuestMobile',
+            text: '数据来源：中国互联网络信息中心（CNNIC',
             textAlign: 'center',
             fill: '#666',
             fontSize: sourceFontSize
@@ -251,7 +257,7 @@ const initCharts = () => {
         type: 'pie',
         radius: [radiusInner, radiusOuter],
         center: ['50%', '50%'],
-        startAngle: 60,
+        startAngle: 55,
         clockwise: true,
         avoidLabelOverlap: false,
         itemStyle: {

@@ -27,7 +27,12 @@
 
     <p class="data-note small">
       截至2024年6月,10岁以前首次"触网"的未成年人占比达52%,较上年提高7.4%。村镇儿童过早接触直播/短视频的比例(82.3%)远高于城市儿童(51.6%)。以刚进入幼儿园的3岁儿童为例,78.6%的儿童屏幕时间超过了每天1小时的指南推荐标准。
+      <span class="data-source-note">
+        数据来源：第52次《中国互联网络发展状况统计报告》《中国青少年蓝皮书》、JAMA Pediatrics
+      </span>
     </p>
+
+
 
   </section>
 </template>
@@ -360,7 +365,7 @@ onMounted(() => {
           bottom: 5,
           z: 100,
           style: {
-            text: '数据来源：CNNIC',
+            text: '数据来源：《全国未成年人互联网使用情况研究报告》',
             textAlign: 'center',
             fill: '#666',
             fontSize: sourceFontSize5
@@ -777,6 +782,16 @@ onUnmounted(() => {
   word-break: keep-all;
   overflow-wrap: break-word;
   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+}
+
+.data-source-note {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  max-width: 1200px;
+  margin: 10px auto 0;
+  padding-left: 10px;
 }
 
 /* 平板优化 */

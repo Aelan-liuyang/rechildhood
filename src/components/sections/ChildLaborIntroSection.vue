@@ -6,7 +6,8 @@
     <div class="childlabor-types">
       <div class="type-card">
         <h3>媒介接触型</h3>
-        <p>媒介接触型可大致分为两类 ：一类是以短视频的浏览为主要的使用形式 ，自身并不具备独立使用电子设备进行拍摄视频的能力 ，主要由监护人进行拍摄、发布 ；而第二类不仅具有浏览能力 ，而且也有视频内容生产的能力。</p>
+        <p>媒介接触型可大致分为两类 ：一类是以短视频的浏览为主要的使用形式 ，自身并不具备独立使用电子设备进行拍摄视频的能力
+          ，主要由监护人进行拍摄、发布 ；而第二类不仅具有浏览能力 ，而且也有视频内容生产的能力。</p>
       </div>
       <div class="type-card">
         <h3>身体参与型</h3>
@@ -16,9 +17,9 @@
     <p class="key-message">在这其中，有一部分在父母的包装下成为了<span
         class="highlight">小网红博主</span>（后文称为"网红儿童"）。当"晒娃"念起了"生意经"，儿童也就变成了"摇钱树"。
     </p>
-    <div class="stat-box">据第三方数据机构统计，2025年国内3-12岁儿童网红超<span class="big-num">180万</span>，日均直播时长<span
+    <!-- <div class="stat-box">据第三方数据机构统计，2025年国内3-12岁儿童网红超<span class="big-num">180万</span>，日均直播时长<span
         class="big-num">3.6小时</span>，头部账号月收入可达<span class="big-num">百万</span>。
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -140,7 +141,6 @@
   line-height: 1.7;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
   overflow-wrap: break-word;
   color: rgba(255, 255, 255, 0.95);
   margin: 0;
@@ -160,9 +160,9 @@
   border-radius: var(--radius-lg, 20px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  word-break: keep-all;
   overflow-wrap: break-word;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  word-break: normal;
 }
 
 .highlight {

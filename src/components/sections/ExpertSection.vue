@@ -7,11 +7,15 @@
       要整治"网红儿童"背后的流量牟利乱象，必须多方协同发力。
     </p>
 
-    <swiper class="expert-swiper" :modules="[Navigation, Autoplay, EffectCoverflow, Pagination]" :slides-per-view="1.5"
+    <swiper class="expert-swiper"
+      :modules="[Navigation, Autoplay, EffectCoverflow, Pagination]"
+      :slides-per-view="1.5"
       :space-between="50" :centered-slides="true" :loop="true"
-      :autoplay="{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }" :effect="'coverflow'"
+      :autoplay="{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }"
+      :effect="'coverflow'"
       :coverflowEffect="{ rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true }"
-      :navigation="{ enabled: true, clickable: true }" :pagination="{ clickable: true, dynamicBullets: true }"
+      :navigation="{ enabled: true, clickable: true }"
+      :pagination="{ clickable: true, dynamicBullets: true }"
       :allowTouchMove="true" :grabCursor="true" :breakpoints="{
         320: {
           slidesPerView: 1,
@@ -34,7 +38,8 @@
           coverflowEffect: { rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true }
         }
       }" @swiper="onSwiper" @slideChange="onSlideChange">
-      <swiper-slide v-for="(expert, index) in experts" :key="index" class="expert-slide"
+      <swiper-slide v-for="(expert, index) in experts" :key="index"
+        class="expert-slide"
         :style="{ backgroundImage: `url(${expert.bg})` }">
         <div class="overlay"></div>
         <div class="expert-content">
@@ -48,7 +53,9 @@
     <!-- 平台建议对话 -->
     <div class="platform-dialogue">
       <div class="dialogue-content">
-        <p>平台可从儿童出镜频率、账号收益中儿童贡献的比例、商业化内容占比等维度建立量化标准来识别是分享还是牟利；推流机制要在法律范围内，减少对可能损害儿童权益内容的流量倾斜。</p>
+        <p>
+          平台可从儿童出镜频率、账号收益中儿童贡献的比例、商业化内容占比等维度建立量化标准来识别是分享还是牟利；推流机制要在法律范围内，减少对可能损害儿童权益内容的流量倾斜。
+        </p>
         <p>
           在法律层面，未来应探索出台未成年人网络保护实施细则和行为规范，进一步优化年龄段治理模式。借鉴国外治理经验，孩子们必须获取相关执照才能成为"网红"，而他们因此获得的收入，必须存入一个专门的银行账户，供他们年满16岁后使用。
         </p>
@@ -64,8 +71,10 @@
               <p class="content-text">应禁止参与带营销性质的内容生产</p>
               <div class="icon-wrapper">
                 <svg viewBox="0 0 100 100" class="prohibition-icon">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" />
-                  <line x1="20" y1="20" x2="80" y2="80" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+                  <circle cx="50" cy="50" r="40" fill="none"
+                    stroke="currentColor" stroke-width="6" />
+                  <line x1="20" y1="20" x2="80" y2="80" stroke="currentColor"
+                    stroke-width="6" stroke-linecap="round" />
                 </svg>
               </div>
             </div>
@@ -77,7 +86,8 @@
               <p class="content-text">探索设置"儿童同意权"</p>
               <div class="icon-wrapper">
                 <svg viewBox="0 0 100 100" class="question-icon">
-                  <text x="50" y="70" font-size="80" text-anchor="middle" fill="currentColor"
+                  <text x="50" y="70" font-size="80" text-anchor="middle"
+                    fill="currentColor"
                     font-weight="bold">?</text>
                 </svg>
               </div>
@@ -90,10 +100,14 @@
               <p class="content-text">可根据其认知能力设置相应的权利义务</p>
               <div class="icon-wrapper">
                 <svg viewBox="0 0 100 100" class="balance-icon">
-                  <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="4" />
-                  <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="4" />
-                  <line x1="20" y1="40" x2="30" y2="60" stroke="currentColor" stroke-width="4" />
-                  <line x1="80" y1="40" x2="70" y2="60" stroke="currentColor" stroke-width="4" />
+                  <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor"
+                    stroke-width="4" />
+                  <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor"
+                    stroke-width="4" />
+                  <line x1="20" y1="40" x2="30" y2="60" stroke="currentColor"
+                    stroke-width="4" />
+                  <line x1="80" y1="40" x2="70" y2="60" stroke="currentColor"
+                    stroke-width="4" />
                   <circle cx="50" cy="20" r="8" fill="currentColor" />
                 </svg>
               </div>
@@ -370,7 +384,7 @@ onMounted(() => {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   animation: fadeUp 1s ease 0.4s forwards;
   opacity: 0;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -444,7 +458,7 @@ onMounted(() => {
   text-align: justify;
   text-justify: inter-ideograph;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -503,7 +517,7 @@ onMounted(() => {
   font-weight: 500;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   letter-spacing: 0.5px;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -729,7 +743,7 @@ onMounted(() => {
   text-justify: inter-ideograph;
   font-weight: 600;
   margin: 0;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -827,7 +841,7 @@ onMounted(() => {
   text-align: justify;
   text-justify: inter-ideograph;
   margin: 0;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 

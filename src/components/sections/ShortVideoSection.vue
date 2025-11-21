@@ -4,25 +4,29 @@
       <h2 class="section-title gradient-title">你每天有多少时间是在和短视频度过？</h2>
       <p class="section-subtitle animate-float">选择你的平均使用时长</p>
       <div class="time-options">
-        <div class="time-option" :class="{ selected: selectedTimeOption === '30-60min' }"
+        <div class="time-option"
+          :class="{ selected: selectedTimeOption === '30-60min' }"
           @click="selectTimeOption('30-60min')">
           <span class="time-icon">⏱️</span>
           <span class="time-text">30-60min</span>
           <div class="option-ripple"></div>
         </div>
-        <div class="time-option" :class="{ selected: selectedTimeOption === '60-90min' }"
+        <div class="time-option"
+          :class="{ selected: selectedTimeOption === '60-90min' }"
           @click="selectTimeOption('60-90min')">
           <span class="time-icon">⏰</span>
           <span class="time-text">60-90min</span>
           <div class="option-ripple"></div>
         </div>
-        <div class="time-option" :class="{ selected: selectedTimeOption === '90-120min' }"
+        <div class="time-option"
+          :class="{ selected: selectedTimeOption === '90-120min' }"
           @click="selectTimeOption('90-120min')">
           <span class="time-icon">⌚</span>
           <span class="time-text">90-120min</span>
           <div class="option-ripple"></div>
         </div>
-        <div class="time-option" :class="{ selected: selectedTimeOption === '120min以上' }"
+        <div class="time-option"
+          :class="{ selected: selectedTimeOption === '120min以上' }"
           @click="selectTimeOption('120min以上')">
           <span class="time-icon">⏳</span>
           <span class="time-text">120min以上</span>
@@ -30,7 +34,8 @@
         </div>
       </div>
       <transition name="chart-fade">
-        <div v-if="showChart2" class="chart-container animated-chart" ref="chart2"></div>
+        <div v-if="showChart2" class="chart-container animated-chart"
+          ref="chart2"></div>
       </transition>
       <transition name="chart-fade">
         <p v-if="showChart2" class="data-note chart-explanation">
@@ -43,7 +48,8 @@
       <h2 class="section-title gradient-title-light">这样的视频有在你的喜欢列表吗？</h2>
       <p class="section-subtitle-light animate-float">向下滑动查看典型的儿童短视频内容</p>
       <div class="video-examples">
-        <div class="video-card floating-card" @mouseenter="activeCard = 0" @mouseleave="activeCard = null">
+        <div class="video-card floating-card" @mouseenter="activeCard = 0"
+          @mouseleave="activeCard = null">
           <div class="video-badge">热门</div>
           <img src="@/assets/images/1.png" alt="视频示例1" class="video-image" />
           <div class="video-info">
@@ -59,7 +65,8 @@
           <div class="card-glow"></div>
           <div class="card-shine"></div>
         </div>
-        <div class="video-card floating-card" @mouseenter="activeCard = 1" @mouseleave="activeCard = null">
+        <div class="video-card floating-card" @mouseenter="activeCard = 1"
+          @mouseleave="activeCard = null">
           <div class="video-badge trending">爆款</div>
           <img src="@/assets/images/2.png" alt="视频示例2" class="video-image" />
           <div class="video-info">
@@ -83,7 +90,8 @@
           <span class="btn-icon">✓</span>
           <span class="btn-text">有</span>
         </button>
-        <button class="choice-btn choice-no" @click="selectChoice('no')" :class="{ selected: selectedChoice === 'no' }">
+        <button class="choice-btn choice-no" @click="selectChoice('no')"
+          :class="{ selected: selectedChoice === 'no' }">
           <span class="btn-icon">✗</span>
           <span class="btn-text">没有</span>
         </button>
@@ -158,7 +166,7 @@ const selectTimeOption = (option) => {
           axisLabel: { formatter: '{value}min', fontSize: axisLabelFontSize }
         },
         series: [{
-          data: [110, 87, 150, 151, 156],
+          data: [124, 139, 168, 151, 156],
           type: 'bar',
           barWidth: isMobile ? '50%' : '45%',
           itemStyle: {
@@ -177,10 +185,10 @@ const selectTimeOption = (option) => {
           bottom: 0,
           z: 100,
           style: {
-            text: '数据来源：中国互联网络信息中心（CNNIC）、《2020中国网络视听发展研究报告》等',
+            text: '数据来源：《中国网络视听发展研究报告》',
             textAlign: 'center',
             fill: '#666',
-            fontSize: sourceFontSize
+            fontSize: 12
           }
         }]
       })
@@ -1114,14 +1122,14 @@ onMounted(() => {
   max-width: 1200px;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
 .data-note.chart-explanation {
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
   max-width: 1200px;
   margin-left: auto;

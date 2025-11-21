@@ -36,6 +36,7 @@
           </span>
         </div>
         <div class="chart-container" ref="chartAudienceAge"></div>
+        <p class="chart-source">数据来源：巨量算数</p>
       </div>
 
       <!-- 性别分布图 -->
@@ -69,13 +70,15 @@
             </div>
           </div>
         </div>
+        <p class="chart-source">数据来源：巨量算数</p>
       </div>
     </div>
 
     <!-- 地域分布 -->
     <h4 class="section-subtitle">地域分布</h4>
     <p class="data-note">
-      观看萌娃类短视频的观众中，<span style="color:red">广东</span>占比最高，<span style="color:red">辽宁</span>偏好度（TGI指数）最高
+      观看萌娃类短视频的观众中，<span style="color:red">广东</span>占比最高，<span
+        style="color:red">北京</span>偏好度（TGI指数）最高
     </p>
     <div class="chart-container map-chart" ref="chartAudienceRegion"></div>
 
@@ -114,8 +117,11 @@
 
     <!-- 观众责任提示 -->
     <div class="responsibility-box">
-      <p>观众的每一次点击、每一个赞，都在无形中鼓励着更多父母将孩子推向镜头。而平台的算法会进一步放大这种效应，让"萌娃"内容获得更多曝光，形成正反馈循环。</p>
-      <p>作为观众，我们需要意识到：我们的关注和互动，可能在无意中成为了儿童被过度曝光的推手。<strong>理性消费内容，拒绝猎奇和消费儿童隐私的视频，是每个观众应有的责任。</strong>
+      <p>
+        观众的每一次点击、每一个赞，都在无形中鼓励着更多父母将孩子推向镜头。而平台的算法会进一步放大这种效应，让"萌娃"内容获得更多曝光，形成正反馈循环。
+      </p>
+      <p>
+        作为观众，我们需要意识到：我们的关注和互动，可能在无意中成为了儿童被过度曝光的推手。<strong>理性消费内容，拒绝猎奇和消费儿童隐私的视频，是每个观众应有的责任。</strong>
       </p>
     </div>
 
@@ -224,16 +230,46 @@ onMounted(() => {
     const el = chartAudienceRegion.value
     const myChartRegion = echarts.init(el)
     const regionData = [
-      { name: '广东', value: 15.2 },
-      { name: '辽宁', value: 12.8 },
-      { name: '江苏', value: 10.5 },
-      { name: '浙江', value: 9.8 },
-      { name: '山东', value: 8.6 },
-      { name: '河南', value: 7.3 },
-      { name: '四川', value: 6.9 },
-      { name: '湖北', value: 6.2 },
-      { name: '北京', value: 5.8 },
-      { name: '上海', value: 5.1 }
+      { name: '广东', value: 11.26, tgiValue: 107.00 },
+      { name: '河南', value: 7.31, tgiValue: 105.00 },
+      { name: '江苏', value: 7.19, tgiValue: 99.00 },
+      { name: '山东', value: 6.69, tgiValue: 100.00 },
+      { name: '浙江', value: 6.32, tgiValue: 89.00 },
+      { name: '四川', value: 5.06, tgiValue: 100.00 },
+      { name: '安徽', value: 4.79, tgiValue: 120.00 },
+      { name: '河北', value: 4.26, tgiValue: 92.00 },
+      { name: '湖北', value: 4.13, tgiValue: 101.00 },
+      { name: '湖南', value: 3.76, tgiValue: 97.00 },
+
+      { name: '云南', value: 3.65, tgiValue: 106.00 },
+      { name: '福建', value: 3.43, tgiValue: 97.00 },
+      { name: '陕西', value: 3.37, tgiValue: 98.00 },
+      { name: '广西', value: 3.25, tgiValue: 99.00 },
+      { name: '江西', value: 2.97, tgiValue: 101.00 },
+
+      { name: '贵州', value: 2.92, tgiValue: 82.00 },
+      { name: '山西', value: 2.40, tgiValue: 98.00 },
+      { name: '新疆', value: 2.05, tgiValue: 117.00 },
+      { name: '辽宁', value: 1.93, tgiValue: 89.00 },
+      { name: '重庆', value: 1.92, tgiValue: 91.00 },
+
+      { name: '上海', value: 1.85, tgiValue: 96.00 },
+      { name: '北京', value: 1.80, tgiValue: 122.00 },
+      { name: '内蒙古', value: 1.25, tgiValue: 109.00 },
+      { name: '甘肃', value: 1.23, tgiValue: 103.00 },
+      { name: '黑龙江', value: 1.13, tgiValue: 101.00 },
+
+      { name: '宁夏', value: 0.40, tgiValue: 104.00 },
+      { name: '青海', value: 0.30, tgiValue: 99.00 },
+      { name: '香港', value: 0.01, tgiValue: 65.00 },
+      { name: '台湾', value: 0.00, tgiValue: 0.00 },
+      { name: '澳门', value: 0.00, tgiValue: 0.00 },
+
+      { name: '海南', value: 0.98, tgiValue: 108.00 },
+      { name: '吉林', value: 0.95, tgiValue: 85.00 },
+      { name: '天津', value: 0.94, tgiValue: 87.00 },
+      { name: '西藏', value: 0.51, tgiValue: 111.00 },
+      { name: '宁夏', value: 0.40, tgiValue: 104.00 }
     ]
       ; (async () => {
         try {
@@ -250,8 +286,8 @@ onMounted(() => {
           myChartRegion.setOption({
             tooltip: {
               trigger: 'item',
-              formatter: (p) => (p?.value
-                ? `<strong>${p.name}</strong><br/>占比：<span style="color:#667eea;font-weight:bold;">${p.value}%</span>`
+              formatter: (p) => (p?.data?.value
+                ? `<strong>${p.name}</strong><br/>占比：<span style="color:#667eea;font-weight:bold;">${p.data.value}%</span><br/>TGI：<span style="color:#667eea;font-weight:bold;">${p.data.tgiValue}.00</span>`
                 : `${p.name}<br/>暂无数据`),
               backgroundColor: 'rgba(255,255,255,0.95)',
               borderColor: '#ddd',
@@ -971,6 +1007,14 @@ h3::after {
   backdrop-filter: blur(10px);
   overflow-wrap: break-word;
   line-height: 1.5;
+}
+
+.chart-source {
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 0.5rem;
 }
 
 /* ==================== 响应式设计 ==================== */

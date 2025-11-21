@@ -1,7 +1,8 @@
 <template>
   <div>
     <h3>平台：算法与规则的制定者</h3>
-    <p class="intro-text">社交媒体平台在"网红儿童"现象中扮演着关键角色。平台的算法机制、推荐规则和内容审核标准，直接影响着儿童内容的传播范围和变现能力。</p>
+    <p class="intro-text">
+      社交媒体平台在"网红儿童"现象中扮演着关键角色。平台的算法机制、推荐规则和内容审核标准，直接影响着儿童内容的传播范围和变现能力。</p>
 
     <div class="algorithm-box">
       <h4 class="algorithm-title">
@@ -9,7 +10,8 @@
         算法驱动的流量循环
       </h4>
       <p class="algorithm-text">
-        平台的推荐算法会识别出<span class="highlight">完播率</span>、<span class="highlight">互动率</span>更高的内容类型，并给予更大的流量推荐，从而形成<span
+        平台的推荐算法会识别出<span class="highlight">完播率</span>、<span
+          class="highlight">互动率</span>更高的内容类型，并给予更大的流量推荐，从而形成<span
           class="highlight-strong">"表现越好-推荐越多"</span>的循环。为了追求流量和商业利益，部分平台对晒娃视频的内容审核把关不严，任由带有广告植入、过度商业化的视频肆意传播。甚至为了吸引眼球、增加热度，还对一些"网红儿童"及其相关视频进行推波助澜。
       </p>
     </div>
@@ -30,7 +32,8 @@
       <div class="research-icon">📊</div>
       <div class="research-content">
         <p class="research-text">
-          <span class="source-tag">东北财经大学研究显示</span>，儿童网红账号的<span class="highlight-number">完播率</span>比成人账号高<span
+          <span class="source-tag">东北财经大学研究显示</span>，儿童网红账号的<span
+            class="highlight-number">完播率</span>比成人账号高<span
             class="highlight-number strong">47%</span>，平台因此加大流量倾斜，形成<span
             class="highlight-warning">"数据越好-流量越多-变现越强"</span>的恶性循环。
         </p>
@@ -70,7 +73,7 @@
   margin-bottom: 25px;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -85,7 +88,7 @@
   background: rgba(102, 126, 234, 0.05);
   border-left: 4px solid #667eea;
   border-radius: 8px;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -95,7 +98,7 @@
   color: #2c3e50;
   font-size: 1.4rem;
   font-weight: 700;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -152,7 +155,7 @@
   margin: 0;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -211,7 +214,7 @@
   margin: 0;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -271,7 +274,7 @@
 
 .data-label {
   color: rgba(255, 255, 255, 0.95);
-  word-break: keep-all;
+  word-break: normal;
 }
 
 .data-highlight .big {
@@ -375,7 +378,7 @@
   font-size: 1rem;
   line-height: 1.8;
   opacity: 0.95;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
   position: relative;
   z-index: 1;

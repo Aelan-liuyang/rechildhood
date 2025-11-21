@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3>父母：“晒娃”是为了什么？</h3>
-    <p>"只是想分享一下"是很多家长在社交媒体"晒娃"的初衷。许多账号由家长运营，或是以父母视角拍摄孩子的有趣瞬间，或是以孩子视角开设儿童账号，但是在流量至上、利益诱惑面前，这份分享可能就会变了味。</p>
+    <p>
+      "只是想分享一下"是很多家长在社交媒体"晒娃"的初衷。许多账号由家长运营，或是以父母视角拍摄孩子的有趣瞬间，或是以孩子视角开设儿童账号，但是在流量至上、利益诱惑面前，这份分享可能就会变了味。
+    </p>
 
     <!-- 地图和养育成本上下布局 -->
     <div class="cost-layout-wrapper">
@@ -12,11 +14,16 @@
         <div id="costMap" class="cost-map-chart"></div>
         <div class="map-footer">
           <div class="cost-legend">
-            <span class="legend-item"><span class="legend-color" style="background: #fee5d9"></span>30-40万</span>
-            <span class="legend-item"><span class="legend-color" style="background: #fcae91"></span>40-50万</span>
-            <span class="legend-item"><span class="legend-color" style="background: #fb6a4a"></span>50-60万</span>
-            <span class="legend-item"><span class="legend-color" style="background: #de2d26"></span>60-80万</span>
-            <span class="legend-item"><span class="legend-color" style="background: #a50f15"></span>80万以上</span>
+            <span class="legend-item"><span class="legend-color"
+                style="background: #fee5d9"></span>30-40万</span>
+            <span class="legend-item"><span class="legend-color"
+                style="background: #fcae91"></span>40-50万</span>
+            <span class="legend-item"><span class="legend-color"
+                style="background: #fb6a4a"></span>50-60万</span>
+            <span class="legend-item"><span class="legend-color"
+                style="background: #de2d26"></span>60-80万</span>
+            <span class="legend-item"><span class="legend-color"
+                style="background: #a50f15"></span>80万以上</span>
           </div>
           <p class="chart-source">各地0-17岁孩子平均养育成本（港澳台未统计）数据来源：《中国生育成本报告2024》</p>
         </div>
@@ -47,8 +54,11 @@
       <p>2025年7月，儿童博主的平均销售额就达到<span class="sales-big">85万元</span>，约是养育成本的两倍。</p>
     </div>
     <div class="sales-section">
-      <h4 style="margin-top: 20px; color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">亲子头部网红月销售额趋势</h4>
+      <h4
+        style="margin-top: 20px; color: #2c3e50; font-size: 1.3rem; margin-bottom: 15px;">
+        亲子头部网红月销售额趋势</h4>
       <div ref="salesChart" class="sales-chart"></div>
+      <p class="chart-source">数据来源：抖查查</p>
 
       <p class="sales-text">
         以一头部亲子类型网红分析，其近一个月销售额最高可达3750万。可以看到，当前家庭育儿面临高经济压力，而在高额生育成本与亲子网红收益可观的情况下，<span
@@ -300,7 +310,7 @@ onMounted(() => {
         textStyle: {
           fontSize: 12
         }
-      }
+      },
     })
   }
 })
@@ -523,7 +533,7 @@ p {
   margin: 0 0 8px 0;
   text-align: justify;
   text-justify: inter-ideograph;
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
